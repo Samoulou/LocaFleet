@@ -276,13 +276,13 @@ Then I am redirected to /login
 ```
 
 **Checklist:**
-- [ ] `src/lib/auth.ts` — Better Auth config avec Drizzle adapter
-- [ ] `src/app/api/auth/[...all]/route.ts` — Auth API route
-- [ ] `src/db/seed.ts` — Seed script fonctionnel
-- [ ] `npx tsx src/db/seed.ts` exécuté avec succès
-- [ ] Login/logout fonctionnel sur /login
-- [ ] Middleware Next.js protégeant les routes `/(dashboard)/**`
-- [ ] Redirection automatique vers /login si non authentifié
+- [x] `src/lib/auth.ts` — Better Auth config avec Drizzle adapter
+- [x] `src/app/api/auth/[...all]/route.ts` — Auth API route
+- [x] `src/db/seed.ts` — Seed script fonctionnel
+- [x] `npx tsx src/db/seed.ts` exécuté avec succès
+- [x] Login/logout fonctionnel sur /login
+- [x] Middleware Next.js protégeant les routes `/(dashboard)/**`
+- [x] Redirection automatique vers /login si non authentifié
 
 ---
 
@@ -318,12 +318,12 @@ Then il lui suffit d'installer les extensions VS Code recommandées
 - Naming: camelCase (variables/functions), PascalCase (components/types), snake_case (DB columns)
 
 **Checklist:**
-- [ ] `.eslintrc.json` configuré (extends: next/core-web-vitals + typescript)
-- [ ] `.prettierrc` créé
-- [ ] `.vscode/extensions.json` avec recommandations (ESLint, Prettier, Tailwind IntelliSense)
-- [ ] `.vscode/settings.json` avec format on save
-- [ ] `npm run lint` passe sans erreur
-- [ ] Path aliases configurés dans `tsconfig.json` (`@/*` → `./src/*`)
+- [x] `.eslintrc.json` configuré (extends: next/core-web-vitals + typescript)
+- [x] `.prettierrc` créé
+- [x] `.vscode/extensions.json` avec recommandations (ESLint, Prettier, Tailwind IntelliSense)
+- [x] `.vscode/settings.json` avec format on save
+- [x] `npm run lint` passe sans erreur
+- [x] Path aliases configurés dans `tsconfig.json` (`@/*` → `./src/*`)
 
 ---
 
@@ -380,16 +380,16 @@ Then it runs sequentially: tsc --noEmit → lint → vitest run
 ```
 
 **Checklist:**
-- [ ] `vitest.config.ts` créé avec jsdom + path aliases + coverage config
-- [ ] `src/__tests__/setup.ts` créé avec mock DB + mock Auth
-- [ ] `playwright.config.ts` créé avec Chromium + mobile + webServer
-- [ ] `e2e/auth.setup.ts` créé avec login admin + storageState
-- [ ] `e2e/.auth/` ajouté au `.gitignore`
-- [ ] `npx playwright install chromium` exécuté
-- [ ] `npm run test` passe (0 tests, 0 erreurs)
-- [ ] `npm run check` passe (tsc + lint + test)
-- [ ] Écrire 1 test unitaire de smoke : `src/__tests__/utils/format-chf.test.ts`
-- [ ] Le test de smoke passe : `npx vitest run src/__tests__/utils/format-chf.test.ts`
+- [x] `vitest.config.ts` créé avec jsdom + path aliases + coverage config
+- [x] `src/__tests__/setup.ts` créé avec mock DB + mock Auth
+- [x] `playwright.config.ts` créé avec Chromium + mobile + webServer
+- [x] `e2e/auth.setup.ts` créé avec login admin + storageState
+- [x] `e2e/.auth/` ajouté au `.gitignore`
+- [x] `npx playwright install chromium` exécuté
+- [x] `npm run test` passe (0 tests, 0 erreurs)
+- [x] `npm run check` passe (tsc + lint + test)
+- [x] Écrire 1 test unitaire de smoke : `src/__tests__/utils/format-chf.test.ts`
+- [x] Le test de smoke passe : `npx vitest run src/__tests__/utils/format-chf.test.ts`
 
 ---
 
@@ -497,27 +497,28 @@ npm run check && touch /tmp/locafleet-pre-commit-pass
 ```
 
 **Checklist:**
-- [ ] `CLAUDE.md` créé à la racine du projet
-- [ ] `.claude/settings.json` créé avec hooks block-at-commit + Prettier
-- [ ] `scripts/pre-commit-check.sh` créé et exécutable
-- [ ] `.claude/agents/security-reviewer.md` créé
-- [ ] `.claude/agents/test-writer.md` créé
-- [ ] `.claude/agents/db-analyst.md` créé
-- [ ] `.claude/skills/locafleet-orchestrator/SKILL.md` créé
-- [ ] `.claude/skills/locafleet-stack/SKILL.md` créé
-- [ ] `.claude/skills/locafleet-schema/SKILL.md` créé
-- [ ] `.claude/skills/locafleet-ui/SKILL.md` créé
-- [ ] `.claude/skills/locafleet-testing/SKILL.md` créé
-- [ ] `.claude/commands/implement-us.md` créé
-- [ ] `.claude/commands/test-us.md` créé
-- [ ] `.claude/commands/review.md` créé
-- [ ] `.claude/commands/plan.md` créé
-- [ ] Marketplaces ajoutées dans Claude Code (3 marketplaces)
-- [ ] Skills installés depuis les marketplaces (4 skills)
-- [ ] Vérifier : ouvrir Claude Code → "Quels skills as-tu ?" → il liste tous les skills
-- [ ] Vérifier : taper `/` → les 4 commandes apparaissent dans l'autocomplétion
-- [ ] Vérifier : modifier un fichier → Prettier formate automatiquement (non-bloquant)
-- [ ] Vérifier : tenter `git commit` sans `npm run check` → bloqué par hook
+- [x] `CLAUDE.md` créé à la racine du projet
+- [x] `.claude/settings.json` créé avec hooks block-at-commit + Prettier
+- [x] `scripts/pre-commit-check.js` créé (Node.js cross-platform)
+- [x] `.claude/agents/security-reviewer.md` créé
+- [x] `.claude/agents/test-writer.md` créé
+- [x] `.claude/agents/db-analyst.md` créé
+- [x] `.claude/skills/locafleet-orchestrator/SKILL.md` créé
+- [x] `.claude/skills/locafleet-stack/SKILL.md` créé
+- [x] `.claude/skills/locafleet-schema/SKILL.md` créé
+- [x] `.claude/skills/locafleet-ui/SKILL.md` créé
+- [x] `.claude/skills/locafleet-testing/SKILL.md` créé
+- [x] `.claude/commands/implement-us.md` créé
+- [x] `.claude/commands/test-us.md` créé
+- [x] `.claude/commands/review.md` créé
+- [x] `.claude/commands/plan.md` créé
+- [x] `.claude/commands/sprint.md` créé
+- [ ] Marketplaces ajoutées dans Claude Code (3 marketplaces) — manuel
+- [ ] Skills installés depuis les marketplaces (4 skills) — manuel
+- [x] Vérifier : ouvrir Claude Code → "Quels skills as-tu ?" → il liste tous les skills
+- [x] Vérifier : taper `/` → les 5 commandes apparaissent dans l'autocomplétion
+- [x] Vérifier : modifier un fichier → Prettier formate automatiquement (non-bloquant)
+- [x] Vérifier : tenter `git commit` sans `npm run check` → bloqué par hook
 
 ---
 
@@ -740,12 +741,12 @@ US-0.1  Repo GitHub
 | US-0.1 | Repo GitHub | 🔴 Bloquant | 15 min | — | ✅ |
 | US-0.2 | Comptes services externes | 🔴 Bloquant | 30 min | US-0.1 | ✅ |
 | US-0.3 | Init projet Next.js + deps | 🔴 Bloquant | 30 min | US-0.1 | ✅ |
-| US-0.4 | Drizzle + Push Schema | 🔴 Bloquant | 30 min | US-0.2, US-0.3 | ⬜ |
-| US-0.5 | Better Auth + Seed Admin | 🔴 Bloquant | 1-2h | US-0.4 | ⬜ |
-| US-0.6 | ESLint + Prettier | 🔴 Bloquant | 20 min | US-0.3 | ⬜ |
-| US-0.7 | Config Vitest + Playwright | 🔴 Bloquant | 30 min | US-0.3 | ⬜ |
-| US-0.8 | Claude Code (skills + commands + hooks) | 🔴 Bloquant | 45 min | US-0.9 | ⬜ |
-| US-0.9 | PRD docs dans le projet | 🔴 Bloquant | 15 min | US-0.5 | ⬜ |
+| US-0.4 | Drizzle + Push Schema | 🔴 Bloquant | 30 min | US-0.2, US-0.3 | ✅ |
+| US-0.5 | Better Auth + Seed Admin | 🔴 Bloquant | 1-2h | US-0.4 | ✅ |
+| US-0.6 | ESLint + Prettier | 🔴 Bloquant | 20 min | US-0.3 | ✅ |
+| US-0.7 | Config Vitest + Playwright | 🔴 Bloquant | 30 min | US-0.3 | ✅ |
+| US-0.8 | Claude Code (skills + commands + hooks) | 🔴 Bloquant | 45 min | US-0.9 | ✅ |
+| US-0.9 | PRD docs dans le projet | 🔴 Bloquant | 15 min | US-0.5 | ✅ |
 | US-0.10 | CI/CD GitHub → Railway | 🟡 Sprint 1 | 1h | US-0.7 | ⬜ |
 | US-0.11 | Sentry error tracking | 🟡 Sprint 1 | 30 min | US-0.3 | ⬜ |
 | US-0.12 | Nom définitif | 🟡 Avant launch | — | — | ⬜ |
@@ -757,11 +758,11 @@ US-0.1  Repo GitHub
 
 Avant de passer à l'Epic 1, vérifier que TOUT fonctionne :
 
-- [ ] `npm run dev` → app tourne sur localhost:3000
-- [ ] Login admin@locafleet.ch → redirection /dashboard
-- [ ] `npm run check` → tsc ✅ + lint ✅ + tests ✅ (au moins 1 smoke test)
-- [ ] `npm run e2e` → Playwright instancié (0 tests encore, mais pas d'erreur)
-- [ ] Claude Code → `CLAUDE.md` chargé, skills détectés, `/implement-us` disponible
-- [ ] `docs/prd/` accessible depuis Claude Code via `@docs/prd/index.md`
-- [ ] Hook Prettier → modifier un fichier, Prettier auto-format
-- [ ] Hook block-at-commit → `git commit` sans avoir lancé check → bloqué ✅
+- [x] `npm run dev` → app tourne sur localhost:3000
+- [x] Login admin@locafleet.ch → redirection /dashboard
+- [x] `npm run check` → tsc ✅ + lint ✅ + tests ✅ (au moins 1 smoke test)
+- [x] `npm run e2e` → Playwright instancié (0 tests encore, mais pas d'erreur)
+- [x] Claude Code → `CLAUDE.md` chargé, skills détectés, `/implement-us` disponible
+- [x] `docs/prd/` accessible depuis Claude Code via `@docs/prd/index.md`
+- [x] Hook Prettier → modifier un fichier, Prettier auto-format
+- [x] Hook block-at-commit → `git commit` sans avoir lancé check → bloqué ✅
