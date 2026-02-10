@@ -26,11 +26,7 @@ import {
 // ENUMS
 // ============================================================================
 
-export const userRoleEnum = pgEnum("user_role", [
-  "admin",
-  "agent",
-  "viewer",
-]);
+export const userRoleEnum = pgEnum("user_role", ["admin", "agent", "viewer"]);
 
 export const vehicleStatusEnum = pgEnum("vehicle_status", [
   "available",
@@ -46,10 +42,7 @@ export const fuelTypeEnum = pgEnum("fuel_type", [
   "hybrid",
 ]);
 
-export const transmissionEnum = pgEnum("transmission", [
-  "manual",
-  "automatic",
-]);
+export const transmissionEnum = pgEnum("transmission", ["manual", "automatic"]);
 
 export const maintenanceTypeEnum = pgEnum("maintenance_type", [
   "regular_service",
@@ -114,10 +107,7 @@ export const damageSeverityEnum = pgEnum("damage_severity", [
   "high",
 ]);
 
-export const cleanlinessEnum = pgEnum("cleanliness", [
-  "clean",
-  "dirty",
-]);
+export const cleanlinessEnum = pgEnum("cleanliness", ["clean", "dirty"]);
 
 export const photoPositionEnum = pgEnum("photo_position", [
   "front",
@@ -128,12 +118,12 @@ export const photoPositionEnum = pgEnum("photo_position", [
 ]);
 
 export const invoiceStatusEnum = pgEnum("invoice_status", [
-  "pending",     // À facturer
-  "invoiced",    // Facturé (envoyé)
-  "verification",// Vérification
-  "paid",        // Payé
-  "conflict",    // Conflit
-  "cancelled",   // Annulé
+  "pending", // À facturer
+  "invoiced", // Facturé (envoyé)
+  "verification", // Vérification
+  "paid", // Payé
+  "conflict", // Conflit
+  "cancelled", // Annulé
 ]);
 
 export const dossierStatusEnum = pgEnum("dossier_status", [
@@ -270,17 +260,14 @@ export const accounts = pgTable(
   (table) => [index("accounts_user_idx").on(table.userId)]
 );
 
-export const verifications = pgTable(
-  "verifications",
-  {
-    id: uuid("id").defaultRandom().primaryKey(),
-    identifier: text("identifier").notNull(),
-    value: text("value").notNull(),
-    expiresAt: timestamp("expires_at").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
-  }
-);
+export const verifications = pgTable("verifications", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
 
 // ============================================================================
 // EPIC 2 — FLEET MANAGEMENT
@@ -297,7 +284,7 @@ export const vehicleCategories = pgTable(
       .references(() => tenants.id, { onDelete: "cascade" }),
     name: varchar("name", { length: 100 }).notNull(),
     description: text("description"),
-    dailyRate: decimal("daily_rate", { precision: 10, scale: 2 }),  // Tarif jour par défaut
+    dailyRate: decimal("daily_rate", { precision: 10, scale: 2 }), // Tarif jour par défaut
     weeklyRate: decimal("weekly_rate", { precision: 10, scale: 2 }), // Tarif semaine par défaut
     sortOrder: integer("sort_order").default(0),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -450,7 +437,11 @@ export const clients = pgTable(
   },
   (table) => [
     index("clients_tenant_idx").on(table.tenantId),
-    index("clients_name_idx").on(table.tenantId, table.lastName, table.firstName),
+    index("clients_name_idx").on(
+      table.tenantId,
+      table.lastName,
+      table.firstName
+    ),
     index("clients_email_idx").on(table.tenantId, table.email),
   ]
 );
@@ -531,9 +522,18 @@ export const rentalContracts = pgTable(
     dailyRate: decimal("daily_rate", { precision: 10, scale: 2 }).notNull(),
     totalDays: integer("total_days").notNull(),
     baseAmount: decimal("base_amount", { precision: 10, scale: 2 }).notNull(), // days × rate
-    optionsAmount: decimal("options_amount", { precision: 10, scale: 2 }).default("0"),
-    excessKmAmount: decimal("excess_km_amount", { precision: 10, scale: 2 }).default("0"),
-    damagesAmount: decimal("damages_amount", { precision: 10, scale: 2 }).default("0"),
+    optionsAmount: decimal("options_amount", {
+      precision: 10,
+      scale: 2,
+    }).default("0"),
+    excessKmAmount: decimal("excess_km_amount", {
+      precision: 10,
+      scale: 2,
+    }).default("0"),
+    damagesAmount: decimal("damages_amount", {
+      precision: 10,
+      scale: 2,
+    }).default("0"),
     totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
     // Deposit
     depositAmount: decimal("deposit_amount", { precision: 10, scale: 2 }),
@@ -556,7 +556,11 @@ export const rentalContracts = pgTable(
     index("contracts_client_idx").on(table.clientId),
     index("contracts_vehicle_idx").on(table.vehicleId),
     index("contracts_status_idx").on(table.tenantId, table.status),
-    index("contracts_dates_idx").on(table.vehicleId, table.startDate, table.endDate),
+    index("contracts_dates_idx").on(
+      table.vehicleId,
+      table.startDate,
+      table.endDate
+    ),
     uniqueIndex("contracts_number_tenant_idx").on(
       table.contractNumber,
       table.tenantId
@@ -573,9 +577,12 @@ export const contractOptions = pgTable(
     contractId: uuid("contract_id")
       .notNull()
       .references(() => rentalContracts.id, { onDelete: "cascade" }),
-    rentalOptionId: uuid("rental_option_id").references(() => rentalOptions.id, {
-      onDelete: "set null",
-    }),
+    rentalOptionId: uuid("rental_option_id").references(
+      () => rentalOptions.id,
+      {
+        onDelete: "set null",
+      }
+    ),
     name: varchar("name", { length: 100 }).notNull(), // Snapshot du nom au moment de la création
     dailyPrice: decimal("daily_price", { precision: 10, scale: 2 }).notNull(),
     quantity: integer("quantity").default(1),
@@ -649,9 +656,7 @@ export const inspectionPhotos = pgTable(
     sortOrder: integer("sort_order").default(0),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
-  (table) => [
-    index("inspection_photos_inspection_idx").on(table.inspectionId),
-  ]
+  (table) => [index("inspection_photos_inspection_idx").on(table.inspectionId)]
 );
 
 // -- Inspection Damages -------------------------------------------------------
@@ -671,9 +676,7 @@ export const inspectionDamages = pgTable(
     isPreExisting: boolean("is_pre_existing").default(false).notNull(), // true = existed at departure
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
-  (table) => [
-    index("inspection_damages_inspection_idx").on(table.inspectionId),
-  ]
+  (table) => [index("inspection_damages_inspection_idx").on(table.inspectionId)]
 );
 
 // ============================================================================
@@ -1044,29 +1047,26 @@ export const contractOptionsRelations = relations(
   })
 );
 
-export const inspectionsRelations = relations(
-  inspections,
-  ({ one, many }) => ({
-    tenant: one(tenants, {
-      fields: [inspections.tenantId],
-      references: [tenants.id],
-    }),
-    contract: one(rentalContracts, {
-      fields: [inspections.contractId],
-      references: [rentalContracts.id],
-    }),
-    vehicle: one(vehicles, {
-      fields: [inspections.vehicleId],
-      references: [vehicles.id],
-    }),
-    conductedBy: one(users, {
-      fields: [inspections.conductedByUserId],
-      references: [users.id],
-    }),
-    photos: many(inspectionPhotos),
-    damages: many(inspectionDamages),
-  })
-);
+export const inspectionsRelations = relations(inspections, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [inspections.tenantId],
+    references: [tenants.id],
+  }),
+  contract: one(rentalContracts, {
+    fields: [inspections.contractId],
+    references: [rentalContracts.id],
+  }),
+  vehicle: one(vehicles, {
+    fields: [inspections.vehicleId],
+    references: [vehicles.id],
+  }),
+  conductedBy: one(users, {
+    fields: [inspections.conductedByUserId],
+    references: [users.id],
+  }),
+  photos: many(inspectionPhotos),
+  damages: many(inspectionDamages),
+}));
 
 export const inspectionPhotosRelations = relations(
   inspectionPhotos,
@@ -1119,23 +1119,20 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
   }),
 }));
 
-export const rentalDossiersRelations = relations(
-  rentalDossiers,
-  ({ one }) => ({
-    tenant: one(tenants, {
-      fields: [rentalDossiers.tenantId],
-      references: [tenants.id],
-    }),
-    contract: one(rentalContracts, {
-      fields: [rentalDossiers.contractId],
-      references: [rentalContracts.id],
-    }),
-    invoice: one(invoices, {
-      fields: [rentalDossiers.invoiceId],
-      references: [invoices.id],
-    }),
-  })
-);
+export const rentalDossiersRelations = relations(rentalDossiers, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [rentalDossiers.tenantId],
+    references: [tenants.id],
+  }),
+  contract: one(rentalContracts, {
+    fields: [rentalDossiers.contractId],
+    references: [rentalContracts.id],
+  }),
+  invoice: one(invoices, {
+    fields: [rentalDossiers.invoiceId],
+    references: [invoices.id],
+  }),
+}));
 
 export const emailLogsRelations = relations(emailLogs, ({ one }) => ({
   tenant: one(tenants, {

@@ -39,7 +39,9 @@ yarn-error.log*
 
 # IDE
 .idea/
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 *.swp
 *.swo
 .DS_Store
@@ -47,3 +49,6 @@ yarn-error.log*
 # Misc
 *.log
 .turbo/
+
+# Drizzle
+drizzle/

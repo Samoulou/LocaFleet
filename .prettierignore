@@ -1,0 +1,9 @@
+node_modules
+.next
+dist
+build
+coverage
+playwright-report
+*.md
+pnpm-lock.yaml
+package-lock.json
