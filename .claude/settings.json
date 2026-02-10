@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const fs=require('fs'),os=require('os'),path=require('path');const i=JSON.parse(require('fs').readFileSync(0,'utf8'));if(i.tool_input&&i.tool_input.command&&i.tool_input.command.startsWith('git commit')){const f=path.join(os.tmpdir(),'locafleet-pre-commit-pass');if(!fs.existsSync(f)){console.error('BLOCK: Run node scripts/pre-commit-check.js first.');process.exit(2);}}\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const p=JSON.parse(require('fs').readFileSync(0,'utf8'));if(p.tool_input&&p.tool_input.file_path){require('child_process').execSync('npx prettier --write '+JSON.stringify(p.tool_input.file_path),{stdio:'inherit'});}\" 2>nul || exit 0",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo Remember: run node scripts/pre-commit-check.js before committing."
+          }
+        ]
+      }
+    ]
+  }
+}
