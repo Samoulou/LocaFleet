@@ -1,0 +1,38 @@
+{
+  "common": {
+    "appName": "LocaFleet",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "export": "Exporter",
+    "actions": "Actions",
+    "yes": "Oui",
+    "no": "Non",
+    "confirm": "Confirmer"
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "loginButton": "Se connecter",
+    "loginError": "Email ou mot de passe incorrect"
+  },
+  "navigation": {
+    "dashboard": "Tableau de bord",
+    "vehicles": "Véhicules",
+    "clients": "Clients",
+    "contracts": "Contrats",
+    "inspections": "États des lieux",
+    "planning": "Planning",
+    "invoices": "Factures",
+    "settings": "Paramètres"
+  }
+}
