@@ -36,3 +36,5 @@
 | — | [**Opérations & Observabilité**](./20-ops-observability.md) | Logging structuré, health check, métriques, export, rollback |
 | — | [**Navigation PRD pour Claude**](./21-prd-navigation-strategy.md) | 3 couches de context, routing table, chargement sélectif |
 | — | [**🚀 Flow de Développement**](./22-development-flow-summary.md) | Le one-pager à garder ouvert pendant tout le dev |
+| — | [Prompt Maquettes](./prompt-maquettes-locafleet.md) | Prompts pour la génération de maquettes UI |
+| — | [Railway Setup](./railway-setup.md) | Guide de déploiement Railway |

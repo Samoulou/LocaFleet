@@ -561,15 +561,23 @@ docs/
     ├── 14-claude-code-setup-guide.md
     ├── 15-testing-strategy.md
     ├── 16-workflow-developpement-us.md
+    ├── 17-claude-code-advanced-orchestration.md
+    ├── 18-security-compliance.md
+    ├── 19-performance-scalability.md
+    ├── 20-ops-observability.md
+    ├── 21-prd-navigation-strategy.md
+    ├── 22-development-flow-summary.md
+    ├── prompt-maquettes-locafleet.md
+    ├── railway-setup.md
     ├── change-log.md
     └── schema.ts
 ```
 
 **Checklist:**
-- [ ] Dossier `docs/prd/` créé dans le projet
-- [ ] Tous les fichiers PRD copiés depuis les livrables
-- [ ] `schema.ts` accessible dans `docs/prd/schema.ts` (référence, le vrai est dans `src/db/schema.ts`)
-- [ ] Vérifier : dans Claude Code, `@docs/prd/index.md` ouvre le fichier correctement
+- [x] Dossier `docs/prd/` créé dans le projet
+- [x] Tous les fichiers PRD copiés depuis les livrables (28 fichiers dont 8 ajoutés post-spec)
+- [x] `schema.ts` accessible dans `docs/prd/schema.ts` (référence, le vrai est dans `src/db/schema.ts`)
+- [x] Vérifier : dans Claude Code, `@docs/prd/index.md` ouvre le fichier correctement
 - [ ] `docs/` committé sur `develop` (c'est de la documentation, pas du code)
 
 ---
