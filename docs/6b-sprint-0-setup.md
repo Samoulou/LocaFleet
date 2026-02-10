@@ -29,11 +29,11 @@ And il merge via Pull Request avec au moins 1 review (ou self-merge si solo dev)
 ```
 
 **Checklist:**
-- [ ] Repo créé sur GitHub (privé)
-- [ ] `.gitignore` Next.js
-- [ ] `README.md` minimal
-- [ ] Branche `main` + `develop`
-- [ ] Branch protection activée sur `main`
+- [x] Repo créé sur GitHub (privé)
+- [x] `.gitignore` Next.js
+- [x] `README.md` minimal
+- [x] Branche `main` + `develop`
+- [x] Branch protection activée sur `main`
 
 ---
 
@@ -75,10 +75,10 @@ Then I have:
 ```
 
 **Checklist:**
-- [ ] Supabase : projet créé, credentials notées
-- [ ] Railway : projet créé, lié au repo GitHub
-- [ ] Resend : compte créé, API key générée
-- [ ] Toutes les clés stockées dans un `.env.example` (sans valeurs) et `.env.local` (avec valeurs, gitignored)
+- [x] Supabase : projet créé, credentials notées
+- [x] Railway : projet créé, lié au repo GitHub
+- [x] Resend : compte créé, API key générée
+- [x] Toutes les clés stockées dans un `.env.example` (sans valeurs) et `.env.local` (avec valeurs, gitignored)
 
 ---
 
@@ -169,12 +169,12 @@ Then je vois:
 ```
 
 **Checklist:**
-- [ ] `npx create-next-app@latest` avec App Router + TypeScript + Tailwind
-- [ ] `npx shadcn@latest init` (style: default, base color: slate)
-- [ ] Toutes les dépendances ci-dessus installées
-- [ ] Structure de dossiers créée
-- [ ] `npm run dev` fonctionne sans erreur
-- [ ] `npm run build` passe sans erreur
+- [x] `npx create-next-app@latest` avec App Router + TypeScript + Tailwind
+- [x] `npx shadcn@latest init` (style: default, base color: slate)
+- [x] Toutes les dépendances ci-dessus installées
+- [x] Structure de dossiers créée
+- [x] `npm run dev` fonctionne sans erreur
+- [x] `npm run build` passe sans erreur
 
 ---
 
@@ -223,11 +223,11 @@ export default defineConfig({
 ```
 
 **Checklist:**
-- [ ] `drizzle.config.ts` créé
-- [ ] `src/db/index.ts` avec connexion poolée (DATABASE_URL)
-- [ ] `npx drizzle-kit push` exécuté avec succès
-- [ ] Vérifier dans Supabase Dashboard → Table Editor que toutes les tables existent
-- [ ] Tester une requête simple (select from tenants) depuis l'app
+- [x] `drizzle.config.ts` créé
+- [x] `src/db/index.ts` avec connexion poolée (DATABASE_URL)
+- [x] `npx drizzle-kit push` exécuté avec succès
+- [x] Vérifier dans Supabase Dashboard → Table Editor que toutes les tables existent
+- [x] Tester une requête simple (select from tenants) depuis l'app
 
 ---
 
@@ -737,9 +737,9 @@ US-0.1  Repo GitHub
 
 | US | Titre | Priorité | Effort | Dépend de | Statut |
 |----|-------|----------|--------|-----------|--------|
-| US-0.1 | Repo GitHub | 🔴 Bloquant | 15 min | — | ⬜ |
-| US-0.2 | Comptes services externes | 🔴 Bloquant | 30 min | US-0.1 | ⬜ |
-| US-0.3 | Init projet Next.js + deps | 🔴 Bloquant | 30 min | US-0.1 | ⬜ |
+| US-0.1 | Repo GitHub | 🔴 Bloquant | 15 min | — | ✅ |
+| US-0.2 | Comptes services externes | 🔴 Bloquant | 30 min | US-0.1 | ✅ |
+| US-0.3 | Init projet Next.js + deps | 🔴 Bloquant | 30 min | US-0.1 | ✅ |
 | US-0.4 | Drizzle + Push Schema | 🔴 Bloquant | 30 min | US-0.2, US-0.3 | ⬜ |
 | US-0.5 | Better Auth + Seed Admin | 🔴 Bloquant | 1-2h | US-0.4 | ⬜ |
 | US-0.6 | ESLint + Prettier | 🔴 Bloquant | 20 min | US-0.3 | ⬜ |
