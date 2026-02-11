@@ -338,6 +338,41 @@
       "noRate": "—"
     }
   },
+  "maintenance": {
+    "create": {
+      "button": "New maintenance",
+      "title": "New maintenance",
+      "type": "Type",
+      "typePlaceholder": "Select type",
+      "types": {
+        "regular_service": "Regular service",
+        "repair": "Repair",
+        "technical_inspection": "Technical inspection",
+        "tires": "Tires",
+        "other": "Other"
+      },
+      "urgency": "Urgency",
+      "urgencies": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "description": "Description",
+      "descriptionPlaceholder": "Describe the work to be done...",
+      "startDate": "Start date",
+      "estimatedCost": "Estimated cost (CHF)",
+      "estimatedCostPlaceholder": "e.g. 350.00",
+      "mechanicName": "Mechanic name",
+      "mechanicNamePlaceholder": "e.g. John Smith",
+      "mechanicEmail": "Mechanic email",
+      "mechanicEmailPlaceholder": "e.g. mechanic@garage.ch",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional notes...",
+      "submitting": "Creating...",
+      "submitButton": "Create maintenance",
+      "success": "Maintenance created successfully"
+    }
+  },
   "rbac": {
     "accessDenied": "Access Denied",
     "accessDeniedDescription": "You do not have the necessary permissions to access this page.",
