@@ -148,6 +148,39 @@
       "invalidFileType": "Unsupported file type. Use JPEG, PNG or WebP.",
       "fileTooLarge": "File exceeds the maximum size of 10 MB"
     },
+    "statusChange": {
+      "button": "Change status",
+      "title": "Change vehicle status",
+      "currentStatus": "Current status",
+      "newStatus": "New status",
+      "newStatusPlaceholder": "Select a status",
+      "reason": "Reason (optional)",
+      "reasonPlaceholder": "Reason for status change...",
+      "rentedWarning": "This vehicle is currently rented. End the contract before changing the status.",
+      "createMaintenance": "Create a maintenance record",
+      "maintenanceDescription": "Maintenance description",
+      "maintenanceDescriptionPlaceholder": "Describe the work to be done...",
+      "maintenanceType": "Maintenance type",
+      "maintenanceTypePlaceholder": "Select type",
+      "maintenanceTypes": {
+        "regular_service": "Regular service",
+        "repair": "Repair",
+        "technical_inspection": "Technical inspection",
+        "tires": "Tires",
+        "other": "Other"
+      },
+      "submitting": "Changing...",
+      "submitButton": "Confirm change",
+      "success": "Vehicle status updated",
+      "error": "Error changing status"
+    },
+    "activityLog": {
+      "title": "Activity log",
+      "empty": "No activity",
+      "statusChange": "Status changed from {from} to {to}",
+      "reason": "Reason",
+      "by": "by"
+    },
     "form": {
       "createTitle": "New vehicle",
       "editTitle": "Edit vehicle",

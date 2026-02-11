@@ -148,6 +148,39 @@
       "invalidFileType": "Type de fichier non supporté. Utilisez JPEG, PNG ou WebP.",
       "fileTooLarge": "Le fichier dépasse la taille maximale de 10 Mo"
     },
+    "statusChange": {
+      "button": "Changer le statut",
+      "title": "Changer le statut du véhicule",
+      "currentStatus": "Statut actuel",
+      "newStatus": "Nouveau statut",
+      "newStatusPlaceholder": "Sélectionnez un statut",
+      "reason": "Raison (optionnel)",
+      "reasonPlaceholder": "Raison du changement de statut...",
+      "rentedWarning": "Ce véhicule est actuellement loué. Terminez le contrat avant de changer le statut.",
+      "createMaintenance": "Créer un dossier de maintenance",
+      "maintenanceDescription": "Description de la maintenance",
+      "maintenanceDescriptionPlaceholder": "Décrivez les travaux à effectuer...",
+      "maintenanceType": "Type de maintenance",
+      "maintenanceTypePlaceholder": "Sélectionnez le type",
+      "maintenanceTypes": {
+        "regular_service": "Entretien régulier",
+        "repair": "Réparation",
+        "technical_inspection": "Contrôle technique",
+        "tires": "Pneus",
+        "other": "Autre"
+      },
+      "submitting": "Changement en cours...",
+      "submitButton": "Confirmer le changement",
+      "success": "Statut du véhicule mis à jour",
+      "error": "Erreur lors du changement de statut"
+    },
+    "activityLog": {
+      "title": "Historique d'activité",
+      "empty": "Aucune activité",
+      "statusChange": "Statut changé de {from} à {to}",
+      "reason": "Raison",
+      "by": "par"
+    },
     "form": {
       "createTitle": "Nouveau véhicule",
       "editTitle": "Modifier le véhicule",
