@@ -169,6 +169,7 @@
         "finalCost": "Coût final",
         "status": "Statut",
         "mechanic": "Mécanicien",
+        "actions": "Actions",
         "statuses": {
           "open": "Ouvert",
           "in_progress": "En cours",
@@ -339,6 +340,18 @@
     }
   },
   "maintenance": {
+    "close": {
+      "button": "Clôturer",
+      "title": "Clôturer la maintenance",
+      "endDate": "Date de fin",
+      "finalCost": "Coût final (CHF)",
+      "finalCostPlaceholder": "ex. 450.00",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes de clôture...",
+      "submitting": "Clôture en cours...",
+      "submitButton": "Clôturer la maintenance",
+      "success": "Maintenance clôturée avec succès"
+    },
     "create": {
       "button": "Nouvelle maintenance",
       "title": "Nouvelle maintenance",
