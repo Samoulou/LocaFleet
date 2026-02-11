@@ -161,9 +161,11 @@ describe("Enums", () => {
     ]);
   });
 
-  it("contractStatusEnum has 4 values", () => {
+  it("contractStatusEnum has 6 values", () => {
     expect(contractStatusEnum.enumValues).toEqual([
       "draft",
+      "approved",
+      "pending_cg",
       "active",
       "completed",
       "cancelled",

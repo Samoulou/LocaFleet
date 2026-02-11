@@ -52,7 +52,25 @@
       "Bash(cat:*)",
       "Bash(git -C /c/LocaFleet log --oneline -20)",
       "Bash(git -C /c/LocaFleet status --short)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(gh pr create --base main --title \"feat\\(US-1.2\\): Database Schema — Core Tables\" --body \"$\\(cat <<''EOF''\n## Summary\n- Replaced hand-written `User`/`Tenant` interfaces in `src/types/index.ts` with Drizzle `$inferSelect`/`$inferInsert` types for all 8 core tables \\(tenants, users, vehicleCategories, vehicles, clients, rentalContracts, invoices, payments\\)\n- Added 79 structural tests validating multi-tenant support, timestamps, soft delete, enums, unique constraints, and required fields\n- Marked US-1.1 and US-1.2 as complete in the Epic 1 PRD\n\n## Test plan\n- [x] `npx vitest run src/__tests__/db/` — 79/79 tests pass\n- [x] `npx tsc --noEmit` — no type errors\n- [x] `npm run lint` — no lint errors\n- [x] `npm run build` — production build succeeds\n- [ ] Verify schema push with `npx drizzle-kit push` \\(requires DB credentials\\)\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\nEOF\n\\)\")",
+      "Bash(where:*)",
+      "Bash(git -C C:/LocaFleet diff --stat)",
+      "Bash(git -C C:/LocaFleet diff)",
+      "Bash(git -C C:/LocaFleet ls-files:*)",
+      "Bash(git -C C:LocaFleet status)",
+      "Bash(find:*)",
+      "Bash(cd:*)",
+      "Bash(findstr:*)",
+      "Bash(npx eslint:*)",
+      "Bash(git -C C:/LocaFleet status)",
+      "Bash(git -C C:/LocaFleet diff HEAD)",
+      "Bash(git -C C:/LocaFleet status --short)",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__evaluate_script",
+      "Bash(curl:*)",
+      "Bash(grep:*)"
     ]
   }
 }

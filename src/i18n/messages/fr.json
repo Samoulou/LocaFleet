@@ -150,6 +150,8 @@
         "status": "Statut",
         "statuses": {
           "draft": "Brouillon",
+          "approved": "Approuvé",
+          "pending_cg": "En attente CG",
           "active": "Actif",
           "completed": "Terminé",
           "cancelled": "Annulé"
@@ -403,6 +405,64 @@
       "submitting": "Traitement en cours...",
       "submitButton": "Confirmer le paiement",
       "success": "Paiement enregistré avec succès"
+    }
+  },
+  "contracts": {
+    "create": {
+      "button": "Nouveau contrat",
+      "title": "Nouveau contrat de location",
+      "description": "Créer un brouillon de contrat pour ce véhicule",
+      "vehicleInfo": "Véhicule",
+      "category": "Catégorie",
+      "dailyRate": "Tarif journalier",
+      "startDate": "Prise en charge",
+      "endDate": "Retour",
+      "startDatePlaceholder": "Date et heure",
+      "endDatePlaceholder": "Date et heure",
+      "totalDays": "{count} jour(s)",
+      "duration": "{hours}h \u2192 factur\u00e9 {days} jour(s)",
+      "confirmTime": "Confirmer",
+      "client": "Client",
+      "clientPlaceholder": "Sélectionnez un client",
+      "trustedClient": "Client connu",
+      "options": "Options",
+      "noOptions": "Aucune option disponible",
+      "perDay": "/jour",
+      "oneTime": "forfait",
+      "paymentMethod": "Moyen de paiement",
+      "paymentMethodPlaceholder": "Sélectionnez le moyen",
+      "paymentMethods": {
+        "cash": "Espèces",
+        "card": "Carte",
+        "bank_transfer": "Virement bancaire"
+      },
+      "advancedSettings": "Paramètres supplémentaires",
+      "includedKmPerDay": "Km inclus / jour",
+      "includedKmPerDayPlaceholder": "ex. 200",
+      "excessKmRate": "Tarif km excédentaire (CHF)",
+      "excessKmRatePlaceholder": "ex. 0.50",
+      "depositAmount": "Caution (CHF)",
+      "depositAmountPlaceholder": "ex. 1000.00",
+      "pickupLocation": "Lieu de retrait",
+      "pickupLocationPlaceholder": "ex. Agence Lausanne",
+      "returnLocation": "Lieu de retour",
+      "returnLocationPlaceholder": "ex. Agence Genève",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes internes sur le contrat...",
+      "summary": {
+        "title": "Récapitulatif",
+        "baseAmount": "Location de base",
+        "options": "Options",
+        "total": "Total",
+        "selectDates": "Sélectionnez les dates et heures pour voir le récapitulatif",
+        "baseAmountWithHours": "Location ({hours}h \u2192 {days}j) \u00d7 {rate}"
+      },
+      "submitting": "Création en cours...",
+      "submitButton": "Créer brouillon",
+      "success": "Contrat {contractNumber} créé avec succès",
+      "noDailyRate": "Aucun tarif journalier configuré pour ce véhicule",
+      "loadingClients": "Chargement des clients...",
+      "loadingOptions": "Chargement des options..."
     }
   },
   "rbac": {

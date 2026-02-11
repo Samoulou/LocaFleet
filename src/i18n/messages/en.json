@@ -150,6 +150,8 @@
         "status": "Status",
         "statuses": {
           "draft": "Draft",
+          "approved": "Approved",
+          "pending_cg": "Pending CG",
           "active": "Active",
           "completed": "Completed",
           "cancelled": "Cancelled"
@@ -403,6 +405,64 @@
       "submitting": "Processing...",
       "submitButton": "Confirm Payment",
       "success": "Payment recorded successfully"
+    }
+  },
+  "contracts": {
+    "create": {
+      "button": "New contract",
+      "title": "New rental contract",
+      "description": "Create a draft contract for this vehicle",
+      "vehicleInfo": "Vehicle",
+      "category": "Category",
+      "dailyRate": "Daily rate",
+      "startDate": "Pickup",
+      "endDate": "Return",
+      "startDatePlaceholder": "Date and time",
+      "endDatePlaceholder": "Date and time",
+      "totalDays": "{count} day(s)",
+      "duration": "{hours}h \u2192 billed {days} day(s)",
+      "confirmTime": "Confirm",
+      "client": "Client",
+      "clientPlaceholder": "Select a client",
+      "trustedClient": "Trusted client",
+      "options": "Options",
+      "noOptions": "No options available",
+      "perDay": "/day",
+      "oneTime": "one-time",
+      "paymentMethod": "Payment method",
+      "paymentMethodPlaceholder": "Select method",
+      "paymentMethods": {
+        "cash": "Cash",
+        "card": "Card",
+        "bank_transfer": "Bank transfer"
+      },
+      "advancedSettings": "Additional settings",
+      "includedKmPerDay": "Included km / day",
+      "includedKmPerDayPlaceholder": "e.g. 200",
+      "excessKmRate": "Excess km rate (CHF)",
+      "excessKmRatePlaceholder": "e.g. 0.50",
+      "depositAmount": "Deposit (CHF)",
+      "depositAmountPlaceholder": "e.g. 1000.00",
+      "pickupLocation": "Pickup location",
+      "pickupLocationPlaceholder": "e.g. Lausanne office",
+      "returnLocation": "Return location",
+      "returnLocationPlaceholder": "e.g. Geneva office",
+      "notes": "Notes",
+      "notesPlaceholder": "Internal notes about the contract...",
+      "summary": {
+        "title": "Summary",
+        "baseAmount": "Base rental",
+        "options": "Options",
+        "total": "Total",
+        "selectDates": "Select dates and times to see the summary",
+        "baseAmountWithHours": "Rental ({hours}h \u2192 {days}d) \u00d7 {rate}"
+      },
+      "submitting": "Creating...",
+      "submitButton": "Create draft",
+      "success": "Contract {contractNumber} created successfully",
+      "noDailyRate": "No daily rate configured for this vehicle",
+      "loadingClients": "Loading clients...",
+      "loadingOptions": "Loading options..."
     }
   },
   "rbac": {

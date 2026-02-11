@@ -1,4 +1,5 @@
 Read the user story $ARGUMENTS from docs/prd/.
+Read the MVP workflow from docs/prd/23-mvp-workflow.md — this is the **primary reference** for Sprint 3-4 user stories (US-MVP-*). It supersedes Epics 3, 4, 5, 6 for the MVP phase. Always cross-check your implementation against this document for contract statuses, schema changes, business rules, and the overall rental flow.
 Read the schema from src/db/schema.ts.
 Read the UI specs from docs/prd/3-user-interface-design-goals.md.
 

@@ -44,6 +44,7 @@ export type InsertPayment = typeof payments.$inferInsert;
 
 export type UserRole = SelectUser["role"];
 export type VehicleStatus = SelectVehicle["status"];
+export type ContractStatus = SelectRentalContract["status"];
 export type InvoiceStatus = SelectInvoice["status"];
 
 // ============================================================================

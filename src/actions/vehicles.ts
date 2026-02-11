@@ -485,6 +485,7 @@ export type VehicleDetailFull = {
   mileage: number;
   categoryId: string | null;
   categoryName: string | null;
+  categoryDailyRate: string | null;
   fuelType: "gasoline" | "diesel" | "electric" | "hybrid" | null;
   transmission: "manual" | "automatic" | null;
   seats: number | null;
@@ -527,6 +528,7 @@ export async function getVehicleWithPhotos(
         mileage: vehicles.mileage,
         categoryId: vehicles.categoryId,
         categoryName: vehicleCategories.name,
+        categoryDailyRate: vehicleCategories.dailyRate,
         fuelType: vehicles.fuelType,
         transmission: vehicles.transmission,
         seats: vehicles.seats,
@@ -573,6 +575,7 @@ export async function getVehicleWithPhotos(
       data: {
         ...vehicle,
         categoryName: vehicle.categoryName ?? null,
+        categoryDailyRate: vehicle.categoryDailyRate ?? null,
         photos,
       },
     };
@@ -604,7 +607,13 @@ export type VehicleRentalHistoryItem = {
   endDate: Date;
   actualReturnDate: Date | null;
   totalAmount: string;
-  status: "draft" | "active" | "completed" | "cancelled";
+  status:
+    | "draft"
+    | "approved"
+    | "pending_cg"
+    | "active"
+    | "completed"
+    | "cancelled";
 };
 
 export async function getVehicleRentalHistory(
