@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect authenticated users away from login
   if (isPublicRoute && isAuthenticated) {
-    return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url));
+    return NextResponse.redirect(new URL(`/${locale}/vehicles`, request.url));
   }
 
   return response;

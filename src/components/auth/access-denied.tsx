@@ -15,7 +15,7 @@ export function AccessDenied() {
         {t("accessDeniedDescription")}
       </p>
       <Button asChild variant="outline" className="mt-4">
-        <Link href={`/${locale}/dashboard`}>{t("backToDashboard")}</Link>
+        <Link href={`/${locale}/vehicles`}>{t("backToHome")}</Link>
       </Button>
     </div>
   );

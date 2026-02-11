@@ -79,31 +79,26 @@ Pour chaque Sprint (= 1 Epic ou sous-ensemble d'Epic) :
         (Flywheel compound engineering)
 ```
 
-### Ordre des Epics
+### Ordre des Sprints
 
 ```
-Sprint 0  Setup & Pré-requis .............. ~5h
-Sprint 1  Epic 1 — Foundation & Auth ...... ~3-4 jours
-          + US-SEC-1 (rate limiting)
-          + US-SEC-2 (security headers)
-          + US-SEC-3 (RLS policies)
-          + US-OPS-1 (logging pino)
-          + US-OPS-2 (health check)
-          + US-PERF-3 (Error Boundaries)
-Sprint 2  Epic 2 — Fleet Management ....... ~3-4 jours
-          + US-PERF-2 (image upload compression)
-Sprint 3  Epic 3 — Clients & Contracts .... ~4-5 jours
-          + US-SEC-6 (nLPD compliance)
-          + US-PERF-1 (pagination helper)
-Sprint 4  Epic 4 — Inspections & Planning . ~4-5 jours
-Sprint 5  Epic 5 — Billing & Dashboard .... ~4-5 jours
-          + US-OPS-5 (business metrics)
-          + US-PERF-4 (dashboard cache)
-Sprint 6  Epic 6 — Notifications & Email .. ~2-3 jours
-          + US-SEC-5 (migrations versionnées)
-          + US-OPS-3 (export Excel)
+Sprint 0  Setup & Pré-requis .............. ~5h     ✅ DONE
+Sprint 1  Epic 1 — Foundation & Auth ...... ~3-4j   ✅ DONE
+          + US-SEC-1/2/3, US-OPS-1/2, US-PERF-3
+Sprint 2  Epic 2 — Fleet Management ....... ~3-4j   ✅ DONE
+          + US-PERF-2 (image upload)
+Sprint 3  MVP — Contrat & Facturation ..... ~4-5j   ← NEXT
+          US-MVP-1 à MVP-5 (doc 23)
+          Migration schema (isTrusted, CG, digicode)
+Sprint 4  MVP — Inspections & Archivage ... ~3-4j
+          US-MVP-6 à MVP-8 (doc 23)
+Sprint 5  Polish & Post-MVP ............... ~5-7j
+          US-MVP-9 (CRUD clients)
+          Planning planby
+          Dashboard KPIs
+          Export Excel
 
-Total estimé : 25-30 jours de dev
+Total estimé restant : 12-16 jours de dev
 ```
 
 ---
@@ -148,10 +143,8 @@ Docs pour Claude (chargés sélectivement par l'orchestrateur) :
   3  UI/UX Design Goals        → quand tâche UI
   6  Epic 1 Foundation         → quand US-1.x
   7  Epic 2 Fleet              → quand US-2.x
-  8  Epic 3 Clients/Contracts  → quand US-3.x
-  9  Epic 4 Inspections        → quand US-4.x
-  10 Epic 5 Billing            → quand US-5.x
-  11 Epic 6 Notifications      → quand US-6.x
+  23 ⭐ MVP Workflow           → quand US-MVP-* (REMPLACE docs 8-11 pour le MVP)
+  8-11 Anciens Epics 3-6       → référence post-MVP uniquement
   15 Testing Strategy          → quand phase tests
   18 Sécurité                  → quand CRUD, upload, review
   19 Performance               → quand listes, upload, dashboard

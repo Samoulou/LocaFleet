@@ -38,13 +38,10 @@
     "hidePassword": "Masquer le mot de passe"
   },
   "navigation": {
-    "dashboard": "Tableau de bord",
     "vehicles": "Véhicules",
     "clients": "Clients",
     "contracts": "Contrats",
     "inspections": "États des lieux",
-    "planning": "Planning",
-    "dossiers": "Dossiers",
     "maintenance": "Maintenance",
     "invoices": "Factures",
     "settings": "Paramètres"
@@ -411,7 +408,7 @@
   "rbac": {
     "accessDenied": "Accès refusé",
     "accessDeniedDescription": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",
-    "backToDashboard": "Retour au tableau de bord",
+    "backToHome": "Retour à l'accueil",
     "roles": {
       "admin": "Administrateur",
       "agent": "Agent",
