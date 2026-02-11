@@ -98,6 +98,56 @@
       "next": "Suivant"
     },
     "error": "Une erreur est survenue lors du chargement des véhicules",
+    "detail": {
+      "back": "Véhicules",
+      "edit": "Modifier",
+      "category": "Catégorie",
+      "year": "Année",
+      "color": "Couleur",
+      "fuelType": "Carburant",
+      "transmission": "Transmission",
+      "seats": "Places",
+      "mileage": "Kilométrage",
+      "vin": "VIN",
+      "dailyRate": "Tarif journalier",
+      "weeklyRate": "Tarif hebdomadaire",
+      "notes": "Notes",
+      "createdAt": "Créé le",
+      "updatedAt": "Modifié le",
+      "notSpecified": "Non spécifié",
+      "vehicleInfo": "Informations",
+      "fuelTypes": {
+        "gasoline": "Essence",
+        "diesel": "Diesel",
+        "electric": "Électrique",
+        "hybrid": "Hybride"
+      },
+      "transmissions": {
+        "manual": "Manuelle",
+        "automatic": "Automatique"
+      }
+    },
+    "photos": {
+      "title": "Photos",
+      "addPhotos": "Ajouter des photos",
+      "dropzone": "Glissez des photos ici ou cliquez pour parcourir",
+      "dropzoneFormats": "JPEG, PNG ou WebP — max. 10 Mo par fichier",
+      "uploading": "Téléchargement en cours...",
+      "setCover": "Définir comme couverture",
+      "delete": "Supprimer",
+      "deleteConfirmTitle": "Supprimer cette photo ?",
+      "deleteConfirmDescription": "Cette action est irréversible. La photo sera définitivement supprimée.",
+      "deleteConfirmButton": "Supprimer",
+      "cover": "Couverture",
+      "noPhotos": "Aucune photo",
+      "noPhotosDescription": "Ajoutez des photos pour illustrer ce véhicule",
+      "uploadError": "Erreur lors du téléchargement",
+      "uploadSuccess": "Photo ajoutée avec succès",
+      "deleteSuccess": "Photo supprimée avec succès",
+      "coverSuccess": "Photo de couverture mise à jour",
+      "invalidFileType": "Type de fichier non supporté. Utilisez JPEG, PNG ou WebP.",
+      "fileTooLarge": "Le fichier dépasse la taille maximale de 10 Mo"
+    },
     "form": {
       "createTitle": "Nouveau véhicule",
       "editTitle": "Modifier le véhicule",

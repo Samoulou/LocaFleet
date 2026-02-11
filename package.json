@@ -29,6 +29,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@react-email/components": "^0.0.31",
     "@react-pdf/renderer": "^4.0.0",
+    "@supabase/supabase-js": "^2.95.3",
     "@tanstack/react-table": "^8.21.3",
     "better-auth": "^1.2.0",
     "browser-image-compression": "^2.0.2",
