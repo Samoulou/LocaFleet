@@ -41,8 +41,22 @@
     "contracts": "Contracts",
     "inspections": "Inspections",
     "planning": "Planning",
+    "dossiers": "Dossiers",
+    "maintenance": "Maintenance",
     "invoices": "Invoices",
     "settings": "Settings"
+  },
+  "sidebar": {
+    "collapse": "Collapse menu",
+    "expand": "Expand menu",
+    "profile": "Profile",
+    "openMenu": "Open menu"
+  },
+  "topbar": {
+    "searchPlaceholder": "Search...",
+    "notifications": "Notifications",
+    "noNotifications": "No notifications",
+    "searchEmpty": "No results"
   },
   "rbac": {
     "accessDenied": "Access Denied",
