@@ -82,8 +82,6 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     return null;
   }
 
-  if (!isActive) return null;
-
   return {
     id: user.id,
     tenantId,
