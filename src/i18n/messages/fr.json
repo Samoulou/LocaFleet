@@ -409,6 +409,19 @@
     }
   },
   "contracts": {
+    "list": {
+      "title": "Contrats",
+      "subtitle": "Consultez et gérez les contrats de location",
+      "contractNumber": "N° contrat",
+      "client": "Client",
+      "vehicle": "Véhicule",
+      "period": "Période",
+      "amount": "Montant",
+      "status": "Statut",
+      "empty": "Aucun contrat",
+      "emptyDescription": "Créez un contrat depuis la fiche d'un véhicule",
+      "showing": "{from}–{to} sur {total}"
+    },
     "create": {
       "button": "Nouveau contrat",
       "title": "Nouveau contrat de location",
@@ -482,6 +495,73 @@
       "noDailyRate": "Aucun tarif journalier configuré pour ce véhicule",
       "loadingClients": "Chargement des clients...",
       "loadingOptions": "Chargement des options..."
+    },
+    "detail": {
+      "title": "Contrat {contractNumber}",
+      "createdAt": "Créé le {date}",
+      "clientCard": "Client",
+      "vehicleCard": "Véhicule",
+      "datesCard": "Dates & lieux",
+      "phone": "Tél",
+      "email": "Email",
+      "trustedClient": "Client de confiance",
+      "plate": "Plaque",
+      "category": "Catégorie",
+      "dailyRate": "Tarif/jour",
+      "start": "Départ",
+      "end": "Retour",
+      "totalDays": "Durée",
+      "days": "{count} jour(s)",
+      "pickup": "Lieu départ",
+      "return": "Lieu retour",
+      "notSpecified": "Non spécifié",
+      "pricingTitle": "Détail de la facturation",
+      "description": "Description",
+      "quantity": "Qté",
+      "unitPrice": "Prix unit.",
+      "total": "Total",
+      "baseRental": "Location véhicule",
+      "subtotal": "Sous-total",
+      "tax": "TVA",
+      "totalAmount": "Total TTC",
+      "paymentTitle": "Paiement",
+      "paymentMethod": "Moyen de paiement",
+      "paymentMethods": {
+        "cash_departure": "Espèce au départ",
+        "cash_return": "Espèce au retour",
+        "invoice": "Facture",
+        "card": "Carte"
+      },
+      "deposit": "Caution",
+      "noDeposit": "Aucune caution",
+      "approveButton": "Approuver le contrat",
+      "approving": "Approbation...",
+      "approveSuccess": "Contrat approuvé — Facture {invoiceNumber} générée",
+      "invoiceTitle": "Facture associée",
+      "invoiceNumber": "N° facture",
+      "invoiceStatus": "Statut",
+      "invoiceAmount": "Montant",
+      "invoiceDate": "Date d'émission",
+      "notFound": "Contrat introuvable",
+      "notFoundDescription": "Ce contrat n'existe pas ou vous n'y avez pas accès.",
+      "backToContracts": "Retour aux contrats",
+      "notes": "Notes"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "approved": "Approuvé",
+      "pending_cg": "En attente CG",
+      "active": "Actif",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "invoiceStatus": {
+      "pending": "En attente",
+      "invoiced": "Facturé",
+      "verification": "Vérification",
+      "paid": "Payé",
+      "conflict": "Litige",
+      "cancelled": "Annulé"
     }
   },
   "rbac": {

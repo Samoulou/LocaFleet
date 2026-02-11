@@ -1,6 +1,19 @@
 "use server";
 
-import { eq, and, isNull, or, sql, asc, lt, gt, inArray } from "drizzle-orm";
+import {
+  eq,
+  and,
+  isNull,
+  or,
+  sql,
+  asc,
+  desc,
+  lt,
+  gt,
+  count,
+  ilike,
+  inArray,
+} from "drizzle-orm";
 import { db } from "@/db";
 import {
   vehicles,
@@ -14,7 +27,7 @@ import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { createContractSchema } from "@/lib/validations/contracts";
 import { computeRentalDays } from "@/lib/utils";
 import { createAuditLog } from "@/actions/audit-logs";
-import type { ActionResult } from "@/types";
+import type { ActionResult, ContractStatus } from "@/types";
 
 // ============================================================================
 // Types
@@ -449,6 +462,185 @@ export async function createDraftContract(
     return {
       success: false,
       error: "Une erreur est survenue lors de la création du contrat",
+    };
+  }
+}
+
+// ============================================================================
+// Contract List Types
+// ============================================================================
+
+export type ContractListItem = {
+  id: string;
+  contractNumber: string;
+  status: ContractStatus;
+  startDate: Date;
+  endDate: Date;
+  totalDays: number;
+  totalAmount: string;
+  createdAt: Date;
+  clientFirstName: string;
+  clientLastName: string;
+  vehicleBrand: string;
+  vehicleModel: string;
+  vehiclePlateNumber: string;
+};
+
+export type ContractListResult = {
+  contracts: ContractListItem[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
+
+// ============================================================================
+// listContracts
+// ============================================================================
+
+export async function listContracts(input: {
+  page?: string | string[];
+  pageSize?: string | string[];
+  status?: string | string[];
+  search?: string | string[];
+}): Promise<ActionResult<ContractListResult>> {
+  try {
+    const currentUser = await requirePermission("contracts", "read");
+
+    const page = Math.max(1, parseInt(String(input.page ?? "1"), 10) || 1);
+    const pageSize = Math.min(
+      100,
+      Math.max(1, parseInt(String(input.pageSize ?? "20"), 10) || 20)
+    );
+    const offset = (page - 1) * pageSize;
+    const status = input.status ? String(input.status) : undefined;
+    const search = input.search ? String(input.search) : undefined;
+
+    const conditions = [eq(rentalContracts.tenantId, currentUser.tenantId)];
+
+    if (
+      status &&
+      [
+        "draft",
+        "approved",
+        "pending_cg",
+        "active",
+        "completed",
+        "cancelled",
+      ].includes(status)
+    ) {
+      conditions.push(eq(rentalContracts.status, status as ContractStatus));
+    }
+
+    if (search) {
+      const escaped = search.replace(/[%_\\]/g, "\\$&");
+      const pattern = `%${escaped}%`;
+      conditions.push(
+        or(
+          ilike(rentalContracts.contractNumber, pattern),
+          ilike(clients.firstName, pattern),
+          ilike(clients.lastName, pattern),
+          ilike(vehicles.plateNumber, pattern)
+        )!
+      );
+    }
+
+    const whereClause = and(...conditions);
+
+    const [data, countResult] = await Promise.all([
+      db
+        .select({
+          id: rentalContracts.id,
+          contractNumber: rentalContracts.contractNumber,
+          status: rentalContracts.status,
+          startDate: rentalContracts.startDate,
+          endDate: rentalContracts.endDate,
+          totalDays: rentalContracts.totalDays,
+          totalAmount: rentalContracts.totalAmount,
+          createdAt: rentalContracts.createdAt,
+          clientFirstName: clients.firstName,
+          clientLastName: clients.lastName,
+          vehicleBrand: vehicles.brand,
+          vehicleModel: vehicles.model,
+          vehiclePlateNumber: vehicles.plateNumber,
+        })
+        .from(rentalContracts)
+        .leftJoin(
+          clients,
+          and(
+            eq(rentalContracts.clientId, clients.id),
+            eq(clients.tenantId, currentUser.tenantId)
+          )
+        )
+        .leftJoin(
+          vehicles,
+          and(
+            eq(rentalContracts.vehicleId, vehicles.id),
+            eq(vehicles.tenantId, currentUser.tenantId)
+          )
+        )
+        .where(whereClause)
+        .orderBy(desc(rentalContracts.createdAt))
+        .limit(pageSize)
+        .offset(offset),
+      db
+        .select({ value: count() })
+        .from(rentalContracts)
+        .leftJoin(
+          clients,
+          and(
+            eq(rentalContracts.clientId, clients.id),
+            eq(clients.tenantId, currentUser.tenantId)
+          )
+        )
+        .leftJoin(
+          vehicles,
+          and(
+            eq(rentalContracts.vehicleId, vehicles.id),
+            eq(vehicles.tenantId, currentUser.tenantId)
+          )
+        )
+        .where(whereClause),
+    ]);
+
+    const totalCount = countResult[0]?.value ?? 0;
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    return {
+      success: true,
+      data: {
+        contracts: data.map((row) => ({
+          id: row.id,
+          contractNumber: row.contractNumber,
+          status: row.status,
+          startDate: row.startDate,
+          endDate: row.endDate,
+          totalDays: row.totalDays,
+          totalAmount: row.totalAmount,
+          createdAt: row.createdAt,
+          clientFirstName: row.clientFirstName ?? "",
+          clientLastName: row.clientLastName ?? "",
+          vehicleBrand: row.vehicleBrand ?? "",
+          vehicleModel: row.vehicleModel ?? "",
+          vehiclePlateNumber: row.vehiclePlateNumber ?? "",
+        })),
+        totalCount,
+        page,
+        pageSize,
+        totalPages,
+      },
+    };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "listContracts error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error: "Une erreur est survenue lors du chargement des contrats",
     };
   }
 }

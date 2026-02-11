@@ -188,7 +188,7 @@ export function NewContractSheet({
         t("success", { contractNumber: result.data.contractNumber })
       );
       handleOpenChange(false);
-      router.refresh();
+      router.push(`/contracts/${result.data.id}`);
     } else {
       toast.error(result.error);
     }
