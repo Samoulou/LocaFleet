@@ -63,6 +63,42 @@
     "searchNoResults": "No results for \"{query}\"",
     "searchMinChars": "Type at least 2 characters"
   },
+  "vehicles": {
+    "title": "Vehicles",
+    "subtitle": "Manage your vehicle fleet",
+    "newVehicle": "New vehicle",
+    "searchPlaceholder": "Search by brand, model or plate...",
+    "allStatuses": "All statuses",
+    "allCategories": "All categories",
+    "columns": {
+      "photo": "Photo",
+      "brandModel": "Brand / Model",
+      "plateNumber": "License Plate",
+      "category": "Category",
+      "mileage": "Km",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "available": "Available",
+      "rented": "Rented",
+      "maintenance": "Maintenance",
+      "out_of_service": "Out of service"
+    },
+    "viewDetails": "View details",
+    "emptyState": {
+      "title": "No vehicles",
+      "description": "Add your first vehicle to get started",
+      "cta": "Add your first vehicle"
+    },
+    "noResults": "No vehicles match the filters",
+    "pagination": {
+      "showing": "Showing {start} to {end} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "error": "An error occurred while loading vehicles"
+  },
   "rbac": {
     "accessDenied": "Access Denied",
     "accessDeniedDescription": "You do not have the necessary permissions to access this page.",
