@@ -5,23 +5,22 @@ const authFile = path.join(__dirname, ".auth/user.json");
 
 setup("authenticate", async ({ page }) => {
   // Navigate to login page
-  await page.goto("/login");
+  await page.goto("/fr/login");
 
   // Fill in credentials
-  await page.fill('input[name="email"]', "admin@locafleet.ch");
-  await page.fill(
-    'input[name="password"]',
-    process.env.TEST_ADMIN_PASSWORD || "123456*"
-  );
+  await page.getByLabel("Email").fill("admin@locafleet.ch");
+  await page
+    .getByLabel("Mot de passe", { exact: true })
+    .fill(process.env.SEED_ADMIN_PASSWORD || "123456*");
 
   // Click login button
-  await page.click('button[type="submit"]');
+  await page.getByRole("button", { name: "Se connecter" }).click();
 
   // Wait for redirect to dashboard
-  await page.waitForURL("/dashboard");
+  await page.waitForURL(/\/dashboard/);
 
   // Verify we're logged in
-  await expect(page).toHaveURL(/.*dashboard/);
+  await expect(page).toHaveURL(/\/dashboard/);
 
   // Save authentication state
   await page.context().storageState({ path: authFile });

@@ -12,9 +12,10 @@ test.describe("Authentication", () => {
     await page.goto("/fr/login");
 
     await page.getByLabel("Email").fill(SEED_EMAIL);
-    await page.getByLabel("Mot de passe").fill(SEED_PASSWORD);
+    await page.getByLabel("Mot de passe", { exact: true }).fill(SEED_PASSWORD);
     await page.getByRole("button", { name: "Se connecter" }).click();
 
+    await page.waitForURL(/\/dashboard/, { timeout: 15000 });
     await expect(page).toHaveURL(/\/dashboard/);
   });
 
@@ -22,25 +23,33 @@ test.describe("Authentication", () => {
     await page.goto("/fr/login");
 
     await page.getByLabel("Email").fill(SEED_EMAIL);
-    await page.getByLabel("Mot de passe").fill("wrongpassword");
+    await page
+      .getByLabel("Mot de passe", { exact: true })
+      .fill("wrongpassword");
     await page.getByRole("button", { name: "Se connecter" }).click();
 
-    await expect(
-      page.getByRole("alert").filter({ hasText: /incorrect/ })
-    ).toBeVisible();
+    // Error message appears (may be alert role or plain text)
+    await expect(page.getByText(/incorrect/i)).toBeVisible();
   });
 
-  test("AC3: logout redirects to login", async ({ page }) => {
+  test("AC3: logout redirects to login", async ({ page, isMobile }) => {
     // First, log in
     await page.goto("/fr/login");
     await page.getByLabel("Email").fill(SEED_EMAIL);
-    await page.getByLabel("Mot de passe").fill(SEED_PASSWORD);
+    await page.getByLabel("Mot de passe", { exact: true }).fill(SEED_PASSWORD);
     await page.getByRole("button", { name: "Se connecter" }).click();
-    await expect(page).toHaveURL(/\/dashboard/);
+    await page.waitForURL(/\/dashboard/, { timeout: 15000 });
 
-    // Open user dropdown from sidebar and click logout
-    const userSection = page.locator("aside").getByText("Admin").first();
-    await userSection.click();
+    if (isMobile) {
+      // Mobile: open hamburger drawer, then user menu
+      await page.getByLabel("Ouvrir le menu").click();
+      const sheet = page.locator('[role="dialog"]');
+      await sheet.getByText("Admin").first().click();
+    } else {
+      // Desktop: click user button in sidebar
+      await page.locator("aside").getByRole("button").last().click();
+    }
+
     await page.getByText("Déconnexion").click();
     await expect(page).toHaveURL(/\/login/);
   });

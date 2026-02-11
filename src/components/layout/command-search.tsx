@@ -1,19 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
-import { Search, Car, Users, FileText } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { Search, Car, Users, FileText, Loader2 } from "lucide-react";
 import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
+  CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { globalSearch, type SearchResults } from "@/actions/search";
 
 export function CommandSearch() {
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchResults | null>(null);
+  const [loading, setLoading] = useState(false);
   const t = useTranslations();
+  const router = useRouter();
+  const locale = useLocale();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const seqRef = useRef(0);
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -25,6 +35,56 @@ export function CommandSearch() {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  const handleOpenChange = useCallback((nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (!nextOpen) {
+      setQuery("");
+      setResults(null);
+      setLoading(false);
+    }
+  }, []);
+
+  const handleQueryChange = useCallback((value: string) => {
+    setQuery(value);
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    if (value.length < 2) {
+      setResults(null);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    const seq = ++seqRef.current;
+    debounceRef.current = setTimeout(async () => {
+      const result = await globalSearch({ query: value });
+      if (seq !== seqRef.current) return;
+      const emptyResults = { vehicles: [], clients: [], contracts: [] };
+      setResults(result.success ? result.data : emptyResults);
+      setLoading(false);
+    }, 300);
+  }, []);
+
+  const handleSelect = useCallback(
+    (href: string) => {
+      setOpen(false);
+      router.push(`/${locale}${href}`);
+    },
+    [router, locale]
+  );
+
+  const hasResults =
+    results &&
+    (results.vehicles.length > 0 ||
+      results.clients.length > 0 ||
+      results.contracts.length > 0);
+
+  const showMinChars = query.length > 0 && query.length < 2;
+  const showNoResults = query.length >= 2 && !loading && results && !hasResults;
 
   return (
     <>
@@ -41,28 +101,94 @@ export function CommandSearch() {
         </kbd>
       </button>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder={t("topbar.searchPlaceholder")} />
+      <CommandDialog open={open} onOpenChange={handleOpenChange}>
+        <CommandInput
+          placeholder={t("topbar.searchPlaceholder")}
+          value={query}
+          onValueChange={handleQueryChange}
+        />
         <CommandList>
-          <CommandEmpty>{t("topbar.searchEmpty")}</CommandEmpty>
-          <CommandGroup heading={t("navigation.vehicles")}>
-            <div className="px-2 py-3 text-center text-xs text-slate-400">
-              <Car className="mx-auto mb-1 size-4" />
-              {t("topbar.searchEmpty")}
+          {loading && (
+            <div className="flex items-center justify-center py-6">
+              <Loader2 className="size-4 animate-spin text-slate-400" />
             </div>
-          </CommandGroup>
-          <CommandGroup heading={t("navigation.clients")}>
-            <div className="px-2 py-3 text-center text-xs text-slate-400">
-              <Users className="mx-auto mb-1 size-4" />
-              {t("topbar.searchEmpty")}
+          )}
+
+          {showMinChars && (
+            <div className="py-6 text-center text-sm text-slate-400">
+              {t("topbar.searchMinChars")}
             </div>
-          </CommandGroup>
-          <CommandGroup heading={t("navigation.contracts")}>
-            <div className="px-2 py-3 text-center text-xs text-slate-400">
-              <FileText className="mx-auto mb-1 size-4" />
-              {t("topbar.searchEmpty")}
-            </div>
-          </CommandGroup>
+          )}
+
+          {showNoResults && (
+            <CommandEmpty>
+              {t("topbar.searchNoResults", { query })}
+            </CommandEmpty>
+          )}
+
+          {!loading && hasResults && (
+            <>
+              {results.vehicles.length > 0 && (
+                <CommandGroup heading={t("navigation.vehicles")}>
+                  {results.vehicles.map((item) => (
+                    <CommandItem
+                      key={item.id}
+                      value={`${item.title} ${item.subtitle}`}
+                      onSelect={() => handleSelect(item.href)}
+                    >
+                      <Car className="mr-2 size-4 shrink-0" />
+                      <div className="flex flex-col">
+                        <span>{item.title}</span>
+                        <span className="text-xs text-slate-400">
+                          {item.subtitle}
+                        </span>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+
+              {results.clients.length > 0 && (
+                <CommandGroup heading={t("navigation.clients")}>
+                  {results.clients.map((item) => (
+                    <CommandItem
+                      key={item.id}
+                      value={`${item.title} ${item.subtitle}`}
+                      onSelect={() => handleSelect(item.href)}
+                    >
+                      <Users className="mr-2 size-4 shrink-0" />
+                      <div className="flex flex-col">
+                        <span>{item.title}</span>
+                        <span className="text-xs text-slate-400">
+                          {item.subtitle}
+                        </span>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+
+              {results.contracts.length > 0 && (
+                <CommandGroup heading={t("navigation.contracts")}>
+                  {results.contracts.map((item) => (
+                    <CommandItem
+                      key={item.id}
+                      value={`${item.title} ${item.subtitle}`}
+                      onSelect={() => handleSelect(item.href)}
+                    >
+                      <FileText className="mr-2 size-4 shrink-0" />
+                      <div className="flex flex-col">
+                        <span>{item.title}</span>
+                        <span className="text-xs text-slate-400">
+                          {item.subtitle}
+                        </span>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+            </>
+          )}
         </CommandList>
       </CommandDialog>
     </>

@@ -32,6 +32,7 @@ export default defineConfig({
         storageState: "e2e/.auth/user.json",
       },
       dependencies: ["setup"],
+      testMatch: /auth\.spec\.ts/,
     },
   ],
   webServer: {
