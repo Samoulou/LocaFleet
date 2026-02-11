@@ -386,6 +386,28 @@
       "success": "Maintenance créée avec succès"
     }
   },
+  "payments": {
+    "process": {
+      "button": "Quittancer",
+      "title": "Quittancer la facture",
+      "amount": "Montant (CHF)",
+      "method": "Moyen de paiement",
+      "methodPlaceholder": "Sélectionnez le moyen",
+      "methods": {
+        "cash": "Espèces",
+        "card": "Carte",
+        "bank_transfer": "Virement"
+      },
+      "paidAt": "Date du paiement",
+      "reference": "Référence de paiement",
+      "referencePlaceholder": "ex. VIR-2026-001",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes optionnelles...",
+      "submitting": "Traitement en cours...",
+      "submitButton": "Confirmer le paiement",
+      "success": "Paiement enregistré avec succès"
+    }
+  },
   "rbac": {
     "accessDenied": "Accès refusé",
     "accessDeniedDescription": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",

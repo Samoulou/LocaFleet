@@ -27,6 +27,7 @@ vi.mock("@/db", () => {
     insert: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+    execute: vi.fn(),
     query: {},
   };
   mockDb.transaction = vi

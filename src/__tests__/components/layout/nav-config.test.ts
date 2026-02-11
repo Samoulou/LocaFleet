@@ -32,20 +32,20 @@ describe("nav-config", () => {
     expect(settings!.adminOnly).toBe(true);
   });
 
-  it("getVisibleNavItems('admin') returns all 8 items", () => {
+  it("getVisibleNavItems('admin') returns all 9 items", () => {
     const items = getVisibleNavItems("admin");
-    expect(items).toHaveLength(8);
+    expect(items).toHaveLength(9);
   });
 
-  it("getVisibleNavItems('agent') returns 7 items (no settings)", () => {
+  it("getVisibleNavItems('agent') returns 8 items (no settings)", () => {
     const items = getVisibleNavItems("agent");
-    expect(items).toHaveLength(7);
+    expect(items).toHaveLength(8);
     expect(items.find((i) => i.key === "settings")).toBeUndefined();
   });
 
-  it("getVisibleNavItems('viewer') returns 7 items (no settings)", () => {
+  it("getVisibleNavItems('viewer') returns 8 items (no settings)", () => {
     const items = getVisibleNavItems("viewer");
-    expect(items).toHaveLength(7);
+    expect(items).toHaveLength(8);
     expect(items.find((i) => i.key === "settings")).toBeUndefined();
   });
 });

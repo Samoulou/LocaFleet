@@ -386,6 +386,28 @@
       "success": "Maintenance created successfully"
     }
   },
+  "payments": {
+    "process": {
+      "button": "Mark as Paid",
+      "title": "Record Payment",
+      "amount": "Amount (CHF)",
+      "method": "Payment Method",
+      "methodPlaceholder": "Select method",
+      "methods": {
+        "cash": "Cash",
+        "card": "Card",
+        "bank_transfer": "Bank Transfer"
+      },
+      "paidAt": "Payment Date",
+      "reference": "Payment Reference",
+      "referencePlaceholder": "e.g. TRF-2026-001",
+      "notes": "Notes",
+      "notesPlaceholder": "Optional notes...",
+      "submitting": "Processing...",
+      "submitButton": "Confirm Payment",
+      "success": "Payment recorded successfully"
+    }
+  },
   "rbac": {
     "accessDenied": "Access Denied",
     "accessDeniedDescription": "You do not have the necessary permissions to access this page.",
