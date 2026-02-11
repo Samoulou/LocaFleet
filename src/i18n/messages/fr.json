@@ -59,7 +59,9 @@
     "searchPlaceholder": "Rechercher...",
     "notifications": "Notifications",
     "noNotifications": "Aucune notification",
-    "searchEmpty": "Aucun résultat"
+    "searchEmpty": "Aucun résultat",
+    "searchNoResults": "Aucun résultat pour \"{query}\"",
+    "searchMinChars": "Tapez au moins 2 caractères"
   },
   "rbac": {
     "accessDenied": "Accès refusé",
