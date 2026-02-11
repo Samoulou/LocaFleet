@@ -1,6 +1,17 @@
 "use server";
 
-import { eq, and, or, ilike, isNull, ne, count, asc, desc } from "drizzle-orm";
+import {
+  eq,
+  and,
+  or,
+  ilike,
+  isNull,
+  ne,
+  count,
+  asc,
+  desc,
+  sql,
+} from "drizzle-orm";
 import { db } from "@/db";
 import {
   vehicles,
@@ -716,6 +727,69 @@ export async function getVehicleMaintenanceHistory(
       success: false,
       error:
         "Une erreur est survenue lors du chargement de l'historique de maintenance",
+    };
+  }
+}
+
+// ============================================================================
+// getVehicleKPIs — fleet overview counts
+// ============================================================================
+
+export type VehicleKPIs = {
+  total: number;
+  available: number;
+  rented: number;
+  maintenance: number;
+};
+
+export async function getVehicleKPIs(): Promise<ActionResult<VehicleKPIs>> {
+  try {
+    const currentUser = await requirePermission("vehicles", "read");
+
+    const [result] = await db
+      .select({
+        total: count(),
+        available:
+          sql<number>`count(*) filter (where ${vehicles.status} = 'available')`.mapWith(
+            Number
+          ),
+        rented:
+          sql<number>`count(*) filter (where ${vehicles.status} = 'rented')`.mapWith(
+            Number
+          ),
+        maintenance:
+          sql<number>`count(*) filter (where ${vehicles.status} = 'maintenance')`.mapWith(
+            Number
+          ),
+      })
+      .from(vehicles)
+      .where(
+        and(
+          eq(vehicles.tenantId, currentUser.tenantId),
+          isNull(vehicles.deletedAt)
+        )
+      );
+
+    return {
+      success: true,
+      data: {
+        total: result?.total ?? 0,
+        available: result?.available ?? 0,
+        rented: result?.rented ?? 0,
+        maintenance: result?.maintenance ?? 0,
+      },
+    };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "getVehicleKPIs error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error: "Une erreur est survenue lors du chargement des indicateurs",
     };
   }
 }
