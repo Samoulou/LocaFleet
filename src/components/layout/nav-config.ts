@@ -5,6 +5,7 @@ import {
   FileText,
   CalendarDays,
   FolderOpen,
+  Receipt,
   Wrench,
   Settings,
   type LucideIcon,
@@ -53,6 +54,12 @@ export const NAV_SECTIONS: NavSection[] = [
         key: "dossiers",
         href: "/dossiers",
         icon: FolderOpen,
+        resource: "invoices",
+      },
+      {
+        key: "invoices",
+        href: "/invoices",
+        icon: Receipt,
         resource: "invoices",
       },
       {
