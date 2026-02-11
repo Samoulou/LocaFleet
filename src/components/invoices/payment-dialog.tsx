@@ -138,11 +138,14 @@ export function PaymentDialog({
                 <SelectValue placeholder={t("methodPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="cash">{t("methods.cash")}</SelectItem>
-                <SelectItem value="card">{t("methods.card")}</SelectItem>
-                <SelectItem value="bank_transfer">
-                  {t("methods.bank_transfer")}
+                <SelectItem value="cash_departure">
+                  {t("methods.cash_departure")}
                 </SelectItem>
+                <SelectItem value="cash_return">
+                  {t("methods.cash_return")}
+                </SelectItem>
+                <SelectItem value="invoice">{t("methods.invoice")}</SelectItem>
+                <SelectItem value="card">{t("methods.card")}</SelectItem>
               </SelectContent>
             </Select>
           </div>

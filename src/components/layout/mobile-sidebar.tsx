@@ -30,9 +30,6 @@ export function MobileSidebar({ user }: MobileSidebarProps) {
   const strippedPath = pathname.replace(`/${locale}`, "") || "/";
 
   function isActive(href: string): boolean {
-    if (href === "/dashboard") {
-      return strippedPath === "/dashboard" || strippedPath === "/";
-    }
     return strippedPath.startsWith(href);
   }
 

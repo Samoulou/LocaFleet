@@ -7,6 +7,7 @@ import { VehicleStatusBadge } from "@/components/vehicles/vehicle-status-badge";
 import { VehicleSummaryCards } from "@/components/vehicles/vehicle-summary-cards";
 import { VehicleDetailTabs } from "@/components/vehicles/vehicle-detail-tabs";
 import { ChangeStatusDialog } from "@/components/vehicles/change-status-dialog";
+import { NewContractSheet } from "@/components/contracts/new-contract-sheet";
 import {
   getVehicleWithPhotos,
   getVehicleRentalHistory,
@@ -37,6 +38,13 @@ export default async function VehicleDetailPage({
   const vehicle = vehicleResult.data;
   const canEdit =
     !!currentUser && hasPermission(currentUser.role, "vehicles", "update");
+  const canCreateContract =
+    !!currentUser &&
+    hasPermission(currentUser.role, "contracts", "create") &&
+    vehicle.status !== "out_of_service";
+
+  const effectiveDailyRate =
+    vehicle.dailyRateOverride ?? vehicle.categoryDailyRate;
 
   // Fetch rental and maintenance history in parallel
   const [rentalResult, maintenanceResult] = await Promise.all([
@@ -73,20 +81,35 @@ export default async function VehicleDetailPage({
           </div>
           <p className="mt-1 text-sm text-slate-500">{vehicle.plateNumber}</p>
         </div>
-        {canEdit && (
-          <div className="flex items-center gap-2">
-            <ChangeStatusDialog
+        <div className="flex items-center gap-2">
+          {canCreateContract && (
+            <NewContractSheet
               vehicleId={vehicle.id}
-              currentStatus={vehicle.status}
+              vehicleBrand={vehicle.brand}
+              vehicleModel={vehicle.model}
+              vehiclePlateNumber={vehicle.plateNumber}
+              vehicleStatus={vehicle.status}
+              dailyRate={
+                effectiveDailyRate ? parseFloat(effectiveDailyRate) : 0
+              }
+              categoryName={vehicle.categoryName}
             />
-            <Button asChild>
-              <Link href={`/vehicles/${vehicle.id}/edit`}>
-                <Pencil className="mr-2 size-4" />
-                {t("detail.edit")}
-              </Link>
-            </Button>
-          </div>
-        )}
+          )}
+          {canEdit && (
+            <>
+              <ChangeStatusDialog
+                vehicleId={vehicle.id}
+                currentStatus={vehicle.status}
+              />
+              <Button asChild>
+                <Link href={`/vehicles/${vehicle.id}/edit`}>
+                  <Pencil className="mr-2 size-4" />
+                  {t("detail.edit")}
+                </Link>
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Summary Cards */}

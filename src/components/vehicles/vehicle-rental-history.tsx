@@ -10,6 +10,8 @@ type VehicleRentalHistoryProps = {
 const contractStatusStyles: Record<VehicleRentalHistoryItem["status"], string> =
   {
     draft: "bg-slate-100 text-slate-600",
+    approved: "bg-blue-50 text-blue-700",
+    pending_cg: "bg-amber-50 text-amber-700",
     active: "bg-green-50 text-green-700",
     completed: "bg-slate-100 text-slate-600",
     cancelled: "bg-red-50 text-red-700",

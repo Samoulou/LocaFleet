@@ -54,7 +54,7 @@ export function LoginForm() {
             setGeneralError(t("loginError"));
           },
           onSuccess: () => {
-            router.push("/dashboard");
+            router.push("/vehicles");
           },
         }
       );

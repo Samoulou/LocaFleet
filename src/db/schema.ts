@@ -66,6 +66,8 @@ export const maintenanceUrgencyEnum = pgEnum("maintenance_urgency", [
 
 export const contractStatusEnum = pgEnum("contract_status", [
   "draft",
+  "approved",
+  "pending_cg",
   "active",
   "completed",
   "cancelled",
@@ -143,9 +145,10 @@ export const depositStatusEnum = pgEnum("deposit_status", [
 ]);
 
 export const paymentMethodEnum = pgEnum("payment_method", [
-  "cash",
+  "cash_departure",
+  "cash_return",
+  "invoice",
   "card",
-  "bank_transfer",
 ]);
 
 export const clientDocumentTypeEnum = pgEnum("client_document_type", [
@@ -427,6 +430,7 @@ export const clients = pgTable(
     identityDocNumber: varchar("identity_doc_number", { length: 50 }),
     companyName: varchar("company_name", { length: 255 }),
     notes: text("notes"),
+    isTrusted: boolean("is_trusted").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
     deletedAt: timestamp("deleted_at"),
@@ -537,6 +541,12 @@ export const rentalContracts = pgTable(
     termsAccepted: boolean("terms_accepted").default(false),
     notes: text("notes"),
     contractPdfUrl: text("contract_pdf_url"),
+    paymentMethod: paymentMethodEnum("payment_method"),
+    cgApprovalToken: varchar("cg_approval_token", { length: 255 }),
+    cgApprovedAt: timestamp("cg_approved_at"),
+    digicode: varchar("digicode", { length: 20 }),
+    digicodeExpiresAt: timestamp("digicode_expires_at"),
+    archivedAt: timestamp("archived_at"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -545,8 +555,10 @@ export const rentalContracts = pgTable(
     index("contracts_client_idx").on(table.clientId),
     index("contracts_vehicle_idx").on(table.vehicleId),
     index("contracts_status_idx").on(table.tenantId, table.status),
-    index("contracts_dates_idx").on(
+    index("contracts_overlap_idx").on(
+      table.tenantId,
       table.vehicleId,
+      table.status,
       table.startDate,
       table.endDate
     ),
@@ -554,6 +566,7 @@ export const rentalContracts = pgTable(
       table.contractNumber,
       table.tenantId
     ),
+    index("contracts_cg_token_idx").on(table.cgApprovalToken),
   ]
 );
 
