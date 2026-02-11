@@ -46,7 +46,7 @@ const VALID_INPUT = {
   clientId: CLIENT_ID,
   startDate: "2026-04-01T09:00:00",
   endDate: "2026-04-04T09:00:00",
-  paymentMethod: "cash" as const,
+  paymentMethod: "cash_departure" as const,
   selectedOptionIds: [] as string[],
 };
 

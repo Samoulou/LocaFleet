@@ -145,9 +145,10 @@ export const depositStatusEnum = pgEnum("deposit_status", [
 ]);
 
 export const paymentMethodEnum = pgEnum("payment_method", [
-  "cash",
+  "cash_departure",
+  "cash_return",
+  "invoice",
   "card",
-  "bank_transfer",
 ]);
 
 export const clientDocumentTypeEnum = pgEnum("client_document_type", [

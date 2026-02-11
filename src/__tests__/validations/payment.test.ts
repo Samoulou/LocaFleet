@@ -6,7 +6,7 @@ const VALID_UUID = "550e8400-e29b-41d4-a716-446655440000";
 const VALID_FULL = {
   invoiceId: VALID_UUID,
   amount: 1250.5,
-  method: "bank_transfer" as const,
+  method: "invoice" as const,
   paidAt: "2026-02-10",
   reference: "VIR-2026-001",
   notes: "Paiement reçu par virement",
@@ -15,7 +15,7 @@ const VALID_FULL = {
 const VALID_MINIMAL = {
   invoiceId: VALID_UUID,
   amount: 100,
-  method: "cash" as const,
+  method: "cash_departure" as const,
   paidAt: "2026-02-10",
 };
 
@@ -26,7 +26,7 @@ describe("processPaymentSchema", () => {
     if (result.success) {
       expect(result.data.invoiceId).toBe(VALID_UUID);
       expect(result.data.amount).toBe(1250.5);
-      expect(result.data.method).toBe("bank_transfer");
+      expect(result.data.method).toBe("invoice");
       expect(result.data.paidAt).toBeInstanceOf(Date);
       expect(result.data.reference).toBe("VIR-2026-001");
       expect(result.data.notes).toBe("Paiement reçu par virement");
@@ -39,7 +39,7 @@ describe("processPaymentSchema", () => {
     if (result.success) {
       expect(result.data.invoiceId).toBe(VALID_UUID);
       expect(result.data.amount).toBe(100);
-      expect(result.data.method).toBe("cash");
+      expect(result.data.method).toBe("cash_departure");
       expect(result.data.paidAt).toBeInstanceOf(Date);
       expect(result.data.reference).toBeUndefined();
       expect(result.data.notes).toBeUndefined();

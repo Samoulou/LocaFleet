@@ -10,9 +10,12 @@ export const createContractSchema = z
     endDate: z.coerce.date({
       errorMap: () => ({ message: "La date de fin est invalide" }),
     }),
-    paymentMethod: z.enum(["cash", "card", "bank_transfer"], {
-      errorMap: () => ({ message: "Le moyen de paiement est invalide" }),
-    }),
+    paymentMethod: z.enum(
+      ["cash_departure", "cash_return", "invoice", "card"],
+      {
+        errorMap: () => ({ message: "Le moyen de paiement est invalide" }),
+      }
+    ),
     selectedOptionIds: z.array(z.string().uuid()).default([]),
     includedKmPerDay: z
       .union([

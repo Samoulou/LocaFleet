@@ -10,7 +10,7 @@ const VALID_FULL = {
   clientId: VALID_UUID_2,
   startDate: "2026-03-01",
   endDate: "2026-03-05",
-  paymentMethod: "cash" as const,
+  paymentMethod: "cash_departure" as const,
   selectedOptionIds: [OPTION_UUID],
   includedKmPerDay: 200,
   excessKmRate: 0.5,
@@ -41,7 +41,7 @@ describe("createContractSchema", () => {
       expect(result.data.clientId).toBe(VALID_UUID_2);
       expect(result.data.startDate).toBeInstanceOf(Date);
       expect(result.data.endDate).toBeInstanceOf(Date);
-      expect(result.data.paymentMethod).toBe("cash");
+      expect(result.data.paymentMethod).toBe("cash_departure");
       expect(result.data.selectedOptionIds).toEqual([OPTION_UUID]);
       expect(result.data.includedKmPerDay).toBe(200);
       expect(result.data.excessKmRate).toBe(0.5);
@@ -69,14 +69,25 @@ describe("createContractSchema", () => {
     }
   });
 
-  it("accepts bank_transfer as payment method", () => {
+  it("accepts cash_return as payment method", () => {
     const result = createContractSchema.safeParse({
       ...VALID_MINIMAL,
-      paymentMethod: "bank_transfer",
+      paymentMethod: "cash_return",
     });
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.paymentMethod).toBe("bank_transfer");
+      expect(result.data.paymentMethod).toBe("cash_return");
+    }
+  });
+
+  it("accepts invoice as payment method", () => {
+    const result = createContractSchema.safeParse({
+      ...VALID_MINIMAL,
+      paymentMethod: "invoice",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.paymentMethod).toBe("invoice");
     }
   });
 
@@ -327,7 +338,7 @@ describe("createContractSchema", () => {
       clientId: VALID_UUID_2,
       startDate: "2026-03-01",
       endDate: "2026-03-05",
-      paymentMethod: "cash",
+      paymentMethod: "cash_departure",
     });
     expect(result.success).toBe(true);
     if (result.success) {

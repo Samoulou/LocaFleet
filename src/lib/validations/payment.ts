@@ -7,7 +7,7 @@ export const processPaymentSchema = z.object({
       invalid_type_error: "Le montant doit être un nombre",
     })
     .positive("Le montant doit être supérieur à zéro"),
-  method: z.enum(["cash", "card", "bank_transfer"], {
+  method: z.enum(["cash_departure", "cash_return", "invoice", "card"], {
     errorMap: () => ({ message: "Le moyen de paiement est invalide" }),
   }),
   paidAt: z.coerce.date({
