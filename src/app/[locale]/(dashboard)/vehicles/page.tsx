@@ -3,7 +3,12 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { VehicleFilters } from "@/components/vehicles/vehicle-filters";
 import { VehiclesDataTable } from "@/components/vehicles/vehicles-data-table";
-import { listVehicles, listVehicleCategories } from "@/actions/vehicles";
+import { VehicleKpiCards } from "@/components/vehicles/vehicle-kpi-cards";
+import {
+  listVehicles,
+  listVehicleCategories,
+  getVehicleKPIs,
+} from "@/actions/vehicles";
 
 type VehiclesPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -23,12 +28,14 @@ export default async function VehiclesPage({
     search: params.search,
   };
 
-  const [vehiclesResult, categoriesResult] = await Promise.all([
+  const [vehiclesResult, categoriesResult, kpisResult] = await Promise.all([
     listVehicles(input),
     listVehicleCategories(),
+    getVehicleKPIs(),
   ]);
 
   const categories = categoriesResult.success ? categoriesResult.data : [];
+  const kpis = kpisResult.success ? kpisResult.data : null;
 
   return (
     <div className="space-y-6">
@@ -47,6 +54,9 @@ export default async function VehiclesPage({
           </Link>
         </Button>
       </div>
+
+      {/* KPI Cards */}
+      {kpis && kpis.total > 0 && <VehicleKpiCards kpis={kpis} />}
 
       {/* Filters */}
       <VehicleFilters categories={categories} />
