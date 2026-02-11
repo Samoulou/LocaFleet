@@ -43,5 +43,35 @@
     "planning": "Planning",
     "invoices": "Invoices",
     "settings": "Settings"
+  },
+  "rbac": {
+    "accessDenied": "Access Denied",
+    "accessDeniedDescription": "You do not have the necessary permissions to access this page.",
+    "backToDashboard": "Back to Dashboard",
+    "roles": {
+      "admin": "Administrator",
+      "agent": "Agent",
+      "viewer": "Viewer"
+    },
+    "errors": {
+      "notAuthenticated": "You must be logged in",
+      "accountInactive": "Your account is disabled",
+      "accessDenied": "Insufficient permissions",
+      "cannotChangeOwnRole": "You cannot change your own role",
+      "cannotDeactivateSelf": "You cannot change your own status",
+      "userNotFound": "User not found",
+      "invalidInput": "Invalid data"
+    },
+    "users": {
+      "title": "User Management",
+      "role": "Role",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "changeRole": "Change role",
+      "toggleActive": "Enable/Disable",
+      "roleUpdated": "Role updated successfully",
+      "statusUpdated": "Status updated successfully"
+    }
   }
 }
