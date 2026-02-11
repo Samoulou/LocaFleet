@@ -2,7 +2,7 @@
 
 import { eq, and, or, ilike, isNull, ne, count, asc } from "drizzle-orm";
 import { db } from "@/db";
-import { vehicles, vehicleCategories } from "@/db/schema";
+import { vehicles, vehicleCategories, vehiclePhotos } from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { vehicleListParamsSchema } from "@/lib/validations/vehicles";
 import {
@@ -448,6 +448,127 @@ export async function updateVehicle(
     return {
       success: false,
       error: "Une erreur est survenue lors de la modification du véhicule",
+    };
+  }
+}
+
+// ============================================================================
+// getVehicleWithPhotos — full detail for the vehicle detail page
+// ============================================================================
+
+export type VehicleDetailFull = {
+  id: string;
+  brand: string;
+  model: string;
+  plateNumber: string;
+  year: number | null;
+  color: string | null;
+  vin: string | null;
+  mileage: number;
+  categoryId: string | null;
+  categoryName: string | null;
+  fuelType: "gasoline" | "diesel" | "electric" | "hybrid" | null;
+  transmission: "manual" | "automatic" | null;
+  seats: number | null;
+  notes: string | null;
+  status: VehicleStatus;
+  coverPhotoUrl: string | null;
+  dailyRateOverride: string | null;
+  weeklyRateOverride: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  photos: Array<{
+    id: string;
+    url: string;
+    fileName: string | null;
+    isCover: boolean | null;
+    sortOrder: number | null;
+    createdAt: Date;
+  }>;
+};
+
+export async function getVehicleWithPhotos(
+  id: string
+): Promise<ActionResult<VehicleDetailFull>> {
+  try {
+    const currentUser = await requirePermission("vehicles", "read");
+
+    if (!uuidSchema.safeParse(id).success) {
+      return { success: false, error: "Ce véhicule n'existe pas" };
+    }
+
+    const [vehicle] = await db
+      .select({
+        id: vehicles.id,
+        brand: vehicles.brand,
+        model: vehicles.model,
+        plateNumber: vehicles.plateNumber,
+        year: vehicles.year,
+        color: vehicles.color,
+        vin: vehicles.vin,
+        mileage: vehicles.mileage,
+        categoryId: vehicles.categoryId,
+        categoryName: vehicleCategories.name,
+        fuelType: vehicles.fuelType,
+        transmission: vehicles.transmission,
+        seats: vehicles.seats,
+        notes: vehicles.notes,
+        status: vehicles.status,
+        coverPhotoUrl: vehicles.coverPhotoUrl,
+        dailyRateOverride: vehicles.dailyRateOverride,
+        weeklyRateOverride: vehicles.weeklyRateOverride,
+        createdAt: vehicles.createdAt,
+        updatedAt: vehicles.updatedAt,
+      })
+      .from(vehicles)
+      .leftJoin(
+        vehicleCategories,
+        eq(vehicles.categoryId, vehicleCategories.id)
+      )
+      .where(
+        and(
+          eq(vehicles.id, id),
+          eq(vehicles.tenantId, currentUser.tenantId),
+          isNull(vehicles.deletedAt)
+        )
+      );
+
+    if (!vehicle) {
+      return { success: false, error: "Ce véhicule n'existe pas" };
+    }
+
+    const photos = await db
+      .select({
+        id: vehiclePhotos.id,
+        url: vehiclePhotos.url,
+        fileName: vehiclePhotos.fileName,
+        isCover: vehiclePhotos.isCover,
+        sortOrder: vehiclePhotos.sortOrder,
+        createdAt: vehiclePhotos.createdAt,
+      })
+      .from(vehiclePhotos)
+      .where(eq(vehiclePhotos.vehicleId, id))
+      .orderBy(asc(vehiclePhotos.sortOrder), asc(vehiclePhotos.createdAt));
+
+    return {
+      success: true,
+      data: {
+        ...vehicle,
+        categoryName: vehicle.categoryName ?? null,
+        photos,
+      },
+    };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "getVehicleWithPhotos error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error: "Une erreur est survenue lors du chargement du véhicule",
     };
   }
 }

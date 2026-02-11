@@ -98,6 +98,56 @@
       "next": "Suivant"
     },
     "error": "Une erreur est survenue lors du chargement des véhicules",
+    "detail": {
+      "back": "Véhicules",
+      "edit": "Modifier",
+      "category": "Catégorie",
+      "year": "Année",
+      "color": "Couleur",
+      "fuelType": "Carburant",
+      "transmission": "Transmission",
+      "seats": "Places",
+      "mileage": "Kilométrage",
+      "vin": "VIN",
+      "dailyRate": "Tarif journalier",
+      "weeklyRate": "Tarif hebdomadaire",
+      "notes": "Notes",
+      "createdAt": "Créé le",
+      "updatedAt": "Modifié le",
+      "notSpecified": "Non spécifié",
+      "vehicleInfo": "Informations",
+      "fuelTypes": {
+        "gasoline": "Essence",
+        "diesel": "Diesel",
+        "electric": "Électrique",
+        "hybrid": "Hybride"
+      },
+      "transmissions": {
+        "manual": "Manuelle",
+        "automatic": "Automatique"
+      }
+    },
+    "photos": {
+      "title": "Photos",
+      "addPhotos": "Ajouter des photos",
+      "dropzone": "Glissez des photos ici ou cliquez pour parcourir",
+      "dropzoneFormats": "JPEG, PNG ou WebP — max. 10 Mo par fichier",
+      "uploading": "Téléchargement en cours...",
+      "setCover": "Définir comme couverture",
+      "delete": "Supprimer",
+      "deleteConfirmTitle": "Supprimer cette photo ?",
+      "deleteConfirmDescription": "Cette action est irréversible. La photo sera définitivement supprimée.",
+      "deleteConfirmButton": "Supprimer",
+      "cover": "Couverture",
+      "noPhotos": "Aucune photo",
+      "noPhotosDescription": "Ajoutez des photos pour illustrer ce véhicule",
+      "uploadError": "Erreur lors du téléchargement",
+      "uploadSuccess": "Photo ajoutée avec succès",
+      "deleteSuccess": "Photo supprimée avec succès",
+      "coverSuccess": "Photo de couverture mise à jour",
+      "invalidFileType": "Type de fichier non supporté. Utilisez JPEG, PNG ou WebP.",
+      "fileTooLarge": "Le fichier dépasse la taille maximale de 10 Mo"
+    },
     "form": {
       "createTitle": "Nouveau véhicule",
       "editTitle": "Modifier le véhicule",
@@ -148,6 +198,55 @@
       "createSuccess": "Véhicule créé avec succès",
       "updateSuccess": "Véhicule modifié avec succès",
       "loadError": "Impossible de charger le véhicule"
+    }
+  },
+  "settings": {
+    "categories": {
+      "title": "Catégories de véhicules",
+      "subtitle": "Gérez les catégories de votre flotte",
+      "newCategory": "Nouvelle catégorie",
+      "columns": {
+        "name": "Nom",
+        "description": "Description",
+        "dailyRate": "Tarif journalier",
+        "weeklyRate": "Tarif hebdomadaire",
+        "vehicles": "Véhicules",
+        "actions": "Actions"
+      },
+      "emptyState": {
+        "title": "Aucune catégorie",
+        "description": "Créez votre première catégorie de véhicules"
+      },
+      "form": {
+        "createTitle": "Nouvelle catégorie",
+        "editTitle": "Modifier la catégorie",
+        "name": "Nom",
+        "namePlaceholder": "ex. Citadine, Berline, SUV...",
+        "description": "Description",
+        "descriptionPlaceholder": "Description de la catégorie...",
+        "dailyRate": "Tarif journalier (CHF)",
+        "dailyRatePlaceholder": "ex. 85.00",
+        "weeklyRate": "Tarif hebdomadaire (CHF)",
+        "weeklyRatePlaceholder": "ex. 450.00",
+        "sortOrder": "Ordre de tri",
+        "sortOrderPlaceholder": "ex. 0",
+        "creating": "Création en cours...",
+        "updating": "Modification en cours...",
+        "createButton": "Créer la catégorie",
+        "updateButton": "Enregistrer les modifications",
+        "createSuccess": "Catégorie créée avec succès",
+        "updateSuccess": "Catégorie modifiée avec succès"
+      },
+      "delete": {
+        "title": "Supprimer la catégorie",
+        "description": "Êtes-vous sûr de vouloir supprimer la catégorie \"{name}\" ?",
+        "warning": "{count} véhicule(s) utilise(nt) cette catégorie. Réassignez-les avant de supprimer.",
+        "confirm": "Supprimer",
+        "success": "Catégorie supprimée avec succès",
+        "deleting": "Suppression en cours..."
+      },
+      "error": "Une erreur est survenue lors du chargement des catégories",
+      "noRate": "—"
     }
   },
   "rbac": {

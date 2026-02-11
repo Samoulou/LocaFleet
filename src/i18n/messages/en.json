@@ -98,6 +98,56 @@
       "next": "Next"
     },
     "error": "An error occurred while loading vehicles",
+    "detail": {
+      "back": "Vehicles",
+      "edit": "Edit",
+      "category": "Category",
+      "year": "Year",
+      "color": "Color",
+      "fuelType": "Fuel Type",
+      "transmission": "Transmission",
+      "seats": "Seats",
+      "mileage": "Mileage",
+      "vin": "VIN",
+      "dailyRate": "Daily Rate",
+      "weeklyRate": "Weekly Rate",
+      "notes": "Notes",
+      "createdAt": "Created",
+      "updatedAt": "Updated",
+      "notSpecified": "Not specified",
+      "vehicleInfo": "Information",
+      "fuelTypes": {
+        "gasoline": "Gasoline",
+        "diesel": "Diesel",
+        "electric": "Electric",
+        "hybrid": "Hybrid"
+      },
+      "transmissions": {
+        "manual": "Manual",
+        "automatic": "Automatic"
+      }
+    },
+    "photos": {
+      "title": "Photos",
+      "addPhotos": "Add photos",
+      "dropzone": "Drag photos here or click to browse",
+      "dropzoneFormats": "JPEG, PNG or WebP — max. 10 MB per file",
+      "uploading": "Uploading...",
+      "setCover": "Set as cover",
+      "delete": "Delete",
+      "deleteConfirmTitle": "Delete this photo?",
+      "deleteConfirmDescription": "This action cannot be undone. The photo will be permanently deleted.",
+      "deleteConfirmButton": "Delete",
+      "cover": "Cover",
+      "noPhotos": "No photos",
+      "noPhotosDescription": "Add photos to illustrate this vehicle",
+      "uploadError": "Upload error",
+      "uploadSuccess": "Photo added successfully",
+      "deleteSuccess": "Photo deleted successfully",
+      "coverSuccess": "Cover photo updated",
+      "invalidFileType": "Unsupported file type. Use JPEG, PNG or WebP.",
+      "fileTooLarge": "File exceeds the maximum size of 10 MB"
+    },
     "form": {
       "createTitle": "New vehicle",
       "editTitle": "Edit vehicle",
@@ -148,6 +198,55 @@
       "createSuccess": "Vehicle created successfully",
       "updateSuccess": "Vehicle updated successfully",
       "loadError": "Unable to load vehicle"
+    }
+  },
+  "settings": {
+    "categories": {
+      "title": "Vehicle Categories",
+      "subtitle": "Manage your fleet categories",
+      "newCategory": "New category",
+      "columns": {
+        "name": "Name",
+        "description": "Description",
+        "dailyRate": "Daily Rate",
+        "weeklyRate": "Weekly Rate",
+        "vehicles": "Vehicles",
+        "actions": "Actions"
+      },
+      "emptyState": {
+        "title": "No categories",
+        "description": "Create your first vehicle category"
+      },
+      "form": {
+        "createTitle": "New category",
+        "editTitle": "Edit category",
+        "name": "Name",
+        "namePlaceholder": "e.g. City car, Sedan, SUV...",
+        "description": "Description",
+        "descriptionPlaceholder": "Category description...",
+        "dailyRate": "Daily Rate (CHF)",
+        "dailyRatePlaceholder": "e.g. 85.00",
+        "weeklyRate": "Weekly Rate (CHF)",
+        "weeklyRatePlaceholder": "e.g. 450.00",
+        "sortOrder": "Sort Order",
+        "sortOrderPlaceholder": "e.g. 0",
+        "creating": "Creating...",
+        "updating": "Updating...",
+        "createButton": "Create category",
+        "updateButton": "Save changes",
+        "createSuccess": "Category created successfully",
+        "updateSuccess": "Category updated successfully"
+      },
+      "delete": {
+        "title": "Delete category",
+        "description": "Are you sure you want to delete the category \"{name}\"?",
+        "warning": "{count} vehicle(s) use this category. Reassign them before deleting.",
+        "confirm": "Delete",
+        "success": "Category deleted successfully",
+        "deleting": "Deleting..."
+      },
+      "error": "An error occurred while loading categories",
+      "noRate": "—"
     }
   },
   "rbac": {
