@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Bell } from "lucide-react";
 import { CommandSearch } from "@/components/layout/command-search";
+import { LocaleSwitcher } from "@/components/layout/locale-switcher";
 import { MobileSidebar } from "@/components/layout/mobile-sidebar";
 import { UserAvatar } from "@/components/layout/user-avatar";
 import { UserMenu } from "@/components/layout/user-menu";
@@ -26,8 +27,10 @@ export function AppTopbar({ user }: AppTopbarProps) {
         <CommandSearch />
       </div>
 
-      {/* Right side: notifications + user */}
+      {/* Right side: locale + notifications + user */}
       <div className="flex items-center gap-1">
+        <LocaleSwitcher />
+
         <Button
           variant="ghost"
           size="icon"

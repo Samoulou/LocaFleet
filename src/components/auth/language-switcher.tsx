@@ -1,28 +1,23 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
-
-const locales = ["fr", "en"] as const;
 
 export function LanguageSwitcher() {
   const currentLocale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
 
-  function switchLocale(newLocale: (typeof locales)[number]) {
+  function switchLocale(newLocale: string) {
     if (newLocale === currentLocale) return;
-    const newPath = pathname.replace(
-      new RegExp(`^/${currentLocale}`),
-      `/${newLocale}`
-    );
-    router.push(newPath);
+    router.replace(pathname, { locale: newLocale });
   }
 
   return (
     <div className="inline-flex overflow-hidden rounded-full border border-slate-200 bg-white text-sm">
-      {locales.map((locale) => (
+      {routing.locales.map((locale) => (
         <button
           key={locale}
           onClick={() => switchLocale(locale)}

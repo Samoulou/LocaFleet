@@ -17,10 +17,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "LocaFleet - Gestion de Flotte",
-  description: "Application de gestion de location de véhicules",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title:
+      locale === "fr"
+        ? "LocaFleet - Gestion de Flotte"
+        : "LocaFleet - Fleet Management",
+    description:
+      locale === "fr"
+        ? "Application de gestion de location de véhicules"
+        : "Vehicle rental fleet management application",
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

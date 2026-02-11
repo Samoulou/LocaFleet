@@ -14,7 +14,10 @@
     "actions": "Actions",
     "yes": "Yes",
     "no": "No",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "language": "Language",
+    "languageFr": "Français",
+    "languageEn": "English"
   },
   "auth": {
     "login": "Login",
