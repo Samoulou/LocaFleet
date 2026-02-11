@@ -125,6 +125,62 @@
       "transmissions": {
         "manual": "Manuelle",
         "automatic": "Automatique"
+      },
+      "tabs": {
+        "informations": "Informations",
+        "photos": "Photos",
+        "locations": "Locations",
+        "maintenance": "Maintenance"
+      },
+      "summary": {
+        "category": "Catégorie",
+        "fuelType": "Carburant",
+        "transmission": "Transmission",
+        "mileage": "Kilométrage",
+        "year": "Année",
+        "seats": "Places",
+        "dailyRate": "Tarif journalier",
+        "weeklyRate": "Tarif hebdomadaire"
+      },
+      "rentalHistory": {
+        "title": "Historique des locations",
+        "empty": "Aucune location pour ce véhicule",
+        "contractNumber": "N° contrat",
+        "client": "Client",
+        "startDate": "Début",
+        "endDate": "Fin",
+        "amount": "Montant",
+        "status": "Statut",
+        "statuses": {
+          "draft": "Brouillon",
+          "active": "Actif",
+          "completed": "Terminé",
+          "cancelled": "Annulé"
+        }
+      },
+      "maintenanceHistory": {
+        "title": "Historique de maintenance",
+        "empty": "Aucun historique de maintenance",
+        "type": "Type",
+        "description": "Description",
+        "startDate": "Début",
+        "endDate": "Fin",
+        "estimatedCost": "Coût estimé",
+        "finalCost": "Coût final",
+        "status": "Statut",
+        "mechanic": "Mécanicien",
+        "statuses": {
+          "open": "Ouvert",
+          "in_progress": "En cours",
+          "completed": "Terminé"
+        },
+        "types": {
+          "regular_service": "Entretien régulier",
+          "repair": "Réparation",
+          "technical_inspection": "Contrôle technique",
+          "tires": "Pneus",
+          "other": "Autre"
+        }
       }
     },
     "photos": {

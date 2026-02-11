@@ -1,8 +1,15 @@
 "use server";
 
-import { eq, and, or, ilike, isNull, ne, count, asc } from "drizzle-orm";
+import { eq, and, or, ilike, isNull, ne, count, asc, desc } from "drizzle-orm";
 import { db } from "@/db";
-import { vehicles, vehicleCategories, vehiclePhotos } from "@/db/schema";
+import {
+  vehicles,
+  vehicleCategories,
+  vehiclePhotos,
+  rentalContracts,
+  clients,
+  maintenanceRecords,
+} from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { vehicleListParamsSchema } from "@/lib/validations/vehicles";
 import {
@@ -569,6 +576,146 @@ export async function getVehicleWithPhotos(
     return {
       success: false,
       error: "Une erreur est survenue lors du chargement du véhicule",
+    };
+  }
+}
+
+// ============================================================================
+// getVehicleRentalHistory
+// ============================================================================
+
+export type VehicleRentalHistoryItem = {
+  id: string;
+  contractNumber: string;
+  clientFirstName: string;
+  clientLastName: string;
+  startDate: Date;
+  endDate: Date;
+  actualReturnDate: Date | null;
+  totalAmount: string;
+  status: "draft" | "active" | "completed" | "cancelled";
+};
+
+export async function getVehicleRentalHistory(
+  vehicleId: string
+): Promise<ActionResult<VehicleRentalHistoryItem[]>> {
+  try {
+    const currentUser = await requirePermission("vehicles", "read");
+
+    if (!uuidSchema.safeParse(vehicleId).success) {
+      return { success: false, error: "Identifiant de véhicule invalide" };
+    }
+
+    const data = await db
+      .select({
+        id: rentalContracts.id,
+        contractNumber: rentalContracts.contractNumber,
+        clientFirstName: clients.firstName,
+        clientLastName: clients.lastName,
+        startDate: rentalContracts.startDate,
+        endDate: rentalContracts.endDate,
+        actualReturnDate: rentalContracts.actualReturnDate,
+        totalAmount: rentalContracts.totalAmount,
+        status: rentalContracts.status,
+      })
+      .from(rentalContracts)
+      .innerJoin(
+        clients,
+        and(
+          eq(rentalContracts.clientId, clients.id),
+          eq(clients.tenantId, currentUser.tenantId)
+        )
+      )
+      .where(
+        and(
+          eq(rentalContracts.vehicleId, vehicleId),
+          eq(rentalContracts.tenantId, currentUser.tenantId)
+        )
+      )
+      .orderBy(desc(rentalContracts.startDate));
+
+    return { success: true, data };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "getVehicleRentalHistory error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error:
+        "Une erreur est survenue lors du chargement de l'historique des locations",
+    };
+  }
+}
+
+// ============================================================================
+// getVehicleMaintenanceHistory
+// ============================================================================
+
+export type VehicleMaintenanceHistoryItem = {
+  id: string;
+  type:
+    | "regular_service"
+    | "repair"
+    | "technical_inspection"
+    | "tires"
+    | "other";
+  status: "open" | "in_progress" | "completed";
+  description: string;
+  estimatedCost: string | null;
+  finalCost: string | null;
+  startDate: Date;
+  endDate: Date | null;
+  mechanicName: string | null;
+};
+
+export async function getVehicleMaintenanceHistory(
+  vehicleId: string
+): Promise<ActionResult<VehicleMaintenanceHistoryItem[]>> {
+  try {
+    const currentUser = await requirePermission("vehicles", "read");
+
+    if (!uuidSchema.safeParse(vehicleId).success) {
+      return { success: false, error: "Identifiant de véhicule invalide" };
+    }
+
+    const data = await db
+      .select({
+        id: maintenanceRecords.id,
+        type: maintenanceRecords.type,
+        status: maintenanceRecords.status,
+        description: maintenanceRecords.description,
+        estimatedCost: maintenanceRecords.estimatedCost,
+        finalCost: maintenanceRecords.finalCost,
+        startDate: maintenanceRecords.startDate,
+        endDate: maintenanceRecords.endDate,
+        mechanicName: maintenanceRecords.mechanicName,
+      })
+      .from(maintenanceRecords)
+      .where(
+        and(
+          eq(maintenanceRecords.vehicleId, vehicleId),
+          eq(maintenanceRecords.tenantId, currentUser.tenantId)
+        )
+      )
+      .orderBy(desc(maintenanceRecords.startDate));
+
+    return { success: true, data };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "getVehicleMaintenanceHistory error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error:
+        "Une erreur est survenue lors du chargement de l'historique de maintenance",
     };
   }
 }
