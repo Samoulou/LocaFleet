@@ -338,6 +338,41 @@
       "noRate": "—"
     }
   },
+  "maintenance": {
+    "create": {
+      "button": "Nouvelle maintenance",
+      "title": "Nouvelle maintenance",
+      "type": "Type",
+      "typePlaceholder": "Sélectionnez le type",
+      "types": {
+        "regular_service": "Entretien régulier",
+        "repair": "Réparation",
+        "technical_inspection": "Contrôle technique",
+        "tires": "Pneus",
+        "other": "Autre"
+      },
+      "urgency": "Urgence",
+      "urgencies": {
+        "low": "Basse",
+        "medium": "Moyenne",
+        "high": "Haute"
+      },
+      "description": "Description",
+      "descriptionPlaceholder": "Décrivez les travaux à effectuer...",
+      "startDate": "Date de début",
+      "estimatedCost": "Coût estimé (CHF)",
+      "estimatedCostPlaceholder": "ex. 350.00",
+      "mechanicName": "Nom du mécanicien",
+      "mechanicNamePlaceholder": "ex. Jean Dupont",
+      "mechanicEmail": "Email du mécanicien",
+      "mechanicEmailPlaceholder": "ex. mecanicien@garage.ch",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes supplémentaires...",
+      "submitting": "Création en cours...",
+      "submitButton": "Créer la maintenance",
+      "success": "Maintenance créée avec succès"
+    }
+  },
   "rbac": {
     "accessDenied": "Accès refusé",
     "accessDeniedDescription": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",

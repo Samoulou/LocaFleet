@@ -7,6 +7,7 @@ import { VehiclePhotoGallery } from "@/components/vehicles/vehicle-photo-gallery
 import { VehicleActivityLog } from "@/components/vehicles/vehicle-activity-log";
 import { VehicleRentalHistory } from "@/components/vehicles/vehicle-rental-history";
 import { VehicleMaintenanceHistory } from "@/components/vehicles/vehicle-maintenance-history";
+import { CreateMaintenanceDialog } from "@/components/maintenance/create-maintenance-dialog";
 import type {
   VehicleDetailFull,
   VehicleRentalHistoryItem,
@@ -59,7 +60,12 @@ export function VehicleDetailTabs({
         </div>
       </TabsContent>
 
-      <TabsContent value="maintenance" className="mt-6">
+      <TabsContent value="maintenance" className="mt-6 space-y-4">
+        {canEdit && (
+          <div className="flex justify-end">
+            <CreateMaintenanceDialog vehicleId={vehicle.id} />
+          </div>
+        )}
         <div className="rounded-xl border border-slate-200 bg-white">
           <VehicleMaintenanceHistory records={maintenanceHistory} />
         </div>
