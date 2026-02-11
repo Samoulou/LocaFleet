@@ -4,7 +4,7 @@
 
 ## User Stories
 
-### US-1.1: Project Setup & Configuration
+### US-1.1: Project Setup & Configuration ✅
 
 **As a** developer
 **I want** a fully configured Next.js 14+ project with all core dependencies
@@ -34,7 +34,7 @@ Then it renders correctly with the design system
 
 ---
 
-### US-1.2: Database Schema — Core Tables
+### US-1.2: Database Schema — Core Tables ✅
 
 **As a** developer
 **I want** the core database tables created with tenant_id support

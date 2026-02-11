@@ -41,7 +41,18 @@
       "Bash(test:*)",
       "Bash(timeout 30 npm run dev:*)",
       "mcp__chrome-devtools__take_snapshot",
-      "mcp__chrome-devtools__navigate_page"
+      "mcp__chrome-devtools__navigate_page",
+      "Bash(git mv:*)",
+      "WebSearch",
+      "WebFetch(domain:next-intl.dev)",
+      "WebFetch(domain:ui.shadcn.com)",
+      "Bash(npx shadcn@latest init -y --style new-york --base-color slate --css-variables)",
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(cat:*)",
+      "Bash(git -C /c/LocaFleet log --oneline -20)",
+      "Bash(git -C /c/LocaFleet status --short)",
+      "Bash(xargs:*)"
     ]
   }
 }
