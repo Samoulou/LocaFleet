@@ -23,7 +23,16 @@
     "password": "Mot de passe",
     "forgotPassword": "Mot de passe oublié ?",
     "loginButton": "Se connecter",
-    "loginError": "Email ou mot de passe incorrect"
+    "loginError": "Email ou mot de passe incorrect",
+    "emailPlaceholder": "admin@locafleet.ch",
+    "loggingIn": "Connexion en cours…",
+    "rememberMe": "Se souvenir de moi",
+    "tagline": "Gestion de flotte simplifiée",
+    "supportText": "Besoin d'aide ?",
+    "supportLink": "Contacter le support",
+    "copyright": "© {year} LocaFleet. Tous droits réservés.",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe"
   },
   "navigation": {
     "dashboard": "Tableau de bord",
