@@ -38,8 +38,10 @@ test.describe("Authentication", () => {
     await page.getByRole("button", { name: "Se connecter" }).click();
     await expect(page).toHaveURL(/\/dashboard/);
 
-    // Then, log out
-    await page.getByRole("button", { name: /Déconnexion/ }).click();
+    // Open user dropdown from sidebar and click logout
+    const userSection = page.locator("aside").getByText("Admin").first();
+    await userSection.click();
+    await page.getByText("Déconnexion").click();
     await expect(page).toHaveURL(/\/login/);
   });
 });

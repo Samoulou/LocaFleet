@@ -3,7 +3,7 @@
 import { eq, and } from "drizzle-orm";
 import { db } from "@/db";
 import { users } from "@/db/schema";
-import { requirePermission, AuthorizationError } from "@/lib/rbac";
+import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import {
   updateUserRoleSchema,
   toggleUserActiveSchema,

@@ -2,15 +2,17 @@ import { describe, it, expect, vi } from "vitest";
 import {
   hasPermission,
   hasSpecialPermission,
-  requirePermission,
-  requireSpecialPermission,
-  AuthorizationError,
   ROLE_PERMISSIONS,
   SPECIAL_PERMISSIONS,
   type Role,
   type Resource,
   type Action,
 } from "@/lib/rbac";
+import {
+  requirePermission,
+  requireSpecialPermission,
+  AuthorizationError,
+} from "@/lib/rbac-guards";
 import { getCurrentUser } from "@/lib/auth";
 
 // ============================================================================
