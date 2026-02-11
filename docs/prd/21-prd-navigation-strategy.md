@@ -90,12 +90,10 @@ Next.js 15, Drizzle ORM, Supabase (PostgreSQL + Storage), Railway, Hono, Better 
 - Chaque Server Action log info en succès, warn en validation fail, error en erreur
 
 ## Carte des docs PRD (pour savoir où chercher)
+- ⭐ MVP Workflow : docs/prd/23-mvp-workflow.md (DOC PRINCIPAL Sprint 3-4)
 - Epic 1 (Foundation) : docs/prd/6-epic-1-foundation-auth.md
 - Epic 2 (Véhicules) : docs/prd/7-epic-2-fleet-management.md
-- Epic 3 (Clients/Contrats) : docs/prd/8-epic-3-clients-contracts.md
-- Epic 4 (Inspections) : docs/prd/9-epic-4-inspections-planning.md
-- Epic 5 (Facturation) : docs/prd/10-epic-5-billing-dashboard.md
-- Epic 6 (Notifications) : docs/prd/11-epic-6-notifications-email.md
+- Epics 3-6 (Clients/Contrats/Inspections/Billing/Notif) : SUPERSEDED → utiliser doc 23
 - Schema DB : docs/prd/schema.ts (ou src/db/schema.ts)
 - Sécurité : docs/prd/18-security-compliance.md
 - Performance : docs/prd/19-performance-scalability.md
@@ -126,6 +124,16 @@ description: Routes any LocaFleet development task to the correct PRD documents,
 When you receive a task, match it against the patterns below. Load ONLY the listed docs — never load all docs at once.
 
 ## Routing Rules
+
+### MVP Workflow (Sprint 3-4) — PRIORITAIRE
+READ FIRST:
+1. docs/prd/23-mvp-workflow.md (LE doc principal pour toute US-MVP-*)
+2. src/db/schema.ts (tables contracts, clients, inspections, invoices)
+3. docs/prd/18-security-compliance.md → Section 2.4 + Section 5
+APPLY:
+- Suivre le flux linéaire : véhicule → contrat → facture → CG → digicode → inspection → archivage
+- Respecter les statuts du contrat (draft → approved → pending_cg → active → completed)
+- Un seul contrat actif par véhicule à la fois
 
 ### CRUD / Server Actions (any entity)
 READ FIRST:

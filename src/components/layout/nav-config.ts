@@ -1,10 +1,7 @@
 import {
-  LayoutDashboard,
   Car,
   Users,
   FileText,
-  CalendarDays,
-  FolderOpen,
   Receipt,
   Wrench,
   Settings,
@@ -35,7 +32,6 @@ export type NavSection = {
 export const NAV_SECTIONS: NavSection[] = [
   {
     items: [
-      { key: "dashboard", href: "/dashboard", icon: LayoutDashboard },
       { key: "vehicles", href: "/vehicles", icon: Car, resource: "vehicles" },
       { key: "clients", href: "/clients", icon: Users, resource: "clients" },
       {
@@ -43,18 +39,6 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/contracts",
         icon: FileText,
         resource: "contracts",
-      },
-      {
-        key: "planning",
-        href: "/planning",
-        icon: CalendarDays,
-        resource: "contracts",
-      },
-      {
-        key: "dossiers",
-        href: "/dossiers",
-        icon: FolderOpen,
-        resource: "invoices",
       },
       {
         key: "invoices",
