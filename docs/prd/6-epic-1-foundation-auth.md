@@ -56,7 +56,7 @@ And every business table has a tenant_id column with an index
 
 ---
 
-### US-1.3: Authentication — Login / Logout
+### US-1.3: Authentication — Login / Logout ✅
 
 **As a** user
 **I want** to log in with my email and password
@@ -85,7 +85,7 @@ Then I am logged out and redirected to the login page
 
 ---
 
-### US-1.4: Role-Based Access Control (RBAC)
+### US-1.4: Role-Based Access Control (RBAC) ✅
 
 **As an** admin
 **I want** to assign roles to users (Admin, Agent, Viewer)
@@ -114,7 +114,7 @@ Then I see an "Accès refusé" message
 
 ---
 
-### US-1.5: Application Layout — Sidebar Navigation + Top Bar
+### US-1.5: Application Layout — Sidebar Navigation + Top Bar ✅
 
 **As a** user
 **I want** a consistent navigation layout with a sidebar and a minimal top bar
@@ -141,7 +141,7 @@ Then the sidebar shows icons only and the content area expands
 
 ---
 
-### US-1.6: Internationalization (i18n) — FR / EN
+### US-1.6: Internationalization (i18n) — FR / EN ✅
 
 **As a** user
 **I want** to switch the interface language between French and English
@@ -167,7 +167,7 @@ Then the language preference is maintained
 
 ---
 
-### US-1.7: Seed Data — Initial Tenant & Admin User
+### US-1.7: Seed Data — Initial Tenant & Admin User ✅
 
 **As a** developer
 **I want** a seed script that creates the initial tenant and admin user
@@ -183,7 +183,7 @@ And sample vehicle categories are created (Citadine, SUV, Utilitaire, Berline)
 
 ---
 
-### US-1.8: Global Search
+### US-1.8: Global Search ✅
 
 **As a** user
 **I want** a search bar in the top bar that searches across vehicles, clients, and contracts
