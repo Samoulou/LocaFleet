@@ -23,7 +23,16 @@
     "password": "Password",
     "forgotPassword": "Forgot password?",
     "loginButton": "Sign in",
-    "loginError": "Invalid email or password"
+    "loginError": "Invalid email or password",
+    "emailPlaceholder": "admin@locafleet.ch",
+    "loggingIn": "Signing in…",
+    "rememberMe": "Remember me",
+    "tagline": "Fleet management simplified",
+    "supportText": "Need help?",
+    "supportLink": "Contact support",
+    "copyright": "© {year} LocaFleet. All rights reserved.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "navigation": {
     "dashboard": "Dashboard",

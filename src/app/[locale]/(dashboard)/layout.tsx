@@ -1,3 +1,5 @@
+import { LogoutButton } from "@/components/auth/logout-button";
+
 export default function DashboardLayout({
   children,
 }: {
@@ -14,9 +16,10 @@ export default function DashboardLayout({
       </aside>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Topbar — placeholder for US-1.5 */}
-        <header className="flex h-14 shrink-0 items-center border-b border-slate-200 bg-white px-6">
+        {/* Topbar */}
+        <header className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6">
           <span className="text-sm text-slate-400">Topbar — US-1.5</span>
+          <LogoutButton />
         </header>
 
         {/* Content area */}

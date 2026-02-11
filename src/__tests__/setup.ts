@@ -38,5 +38,7 @@ vi.mock("@/lib/auth", () => ({
     tenantId: "test-tenant-id",
     role: "admin",
     email: "admin@locafleet.ch",
+    name: "Admin Test",
+    isActive: true,
   }),
 }));
