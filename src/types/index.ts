@@ -10,6 +10,9 @@ import type {
   rentalContracts,
   invoices,
   payments,
+  inspections,
+  inspectionPhotos,
+  inspectionDamages,
 } from "@/db/schema";
 
 // ============================================================================
@@ -24,6 +27,9 @@ export type SelectClient = typeof clients.$inferSelect;
 export type SelectRentalContract = typeof rentalContracts.$inferSelect;
 export type SelectInvoice = typeof invoices.$inferSelect;
 export type SelectPayment = typeof payments.$inferSelect;
+export type SelectInspection = typeof inspections.$inferSelect;
+export type SelectInspectionPhoto = typeof inspectionPhotos.$inferSelect;
+export type SelectInspectionDamage = typeof inspectionDamages.$inferSelect;
 
 // ============================================================================
 // INSERT types (required fields for creating a row)
@@ -37,6 +43,9 @@ export type InsertClient = typeof clients.$inferInsert;
 export type InsertRentalContract = typeof rentalContracts.$inferInsert;
 export type InsertInvoice = typeof invoices.$inferInsert;
 export type InsertPayment = typeof payments.$inferInsert;
+export type InsertInspection = typeof inspections.$inferInsert;
+export type InsertInspectionPhoto = typeof inspectionPhotos.$inferInsert;
+export type InsertInspectionDamage = typeof inspectionDamages.$inferInsert;
 
 // ============================================================================
 // Enum utility types
@@ -46,6 +55,8 @@ export type UserRole = SelectUser["role"];
 export type VehicleStatus = SelectVehicle["status"];
 export type ContractStatus = SelectRentalContract["status"];
 export type InvoiceStatus = SelectInvoice["status"];
+export type FuelLevel = SelectInspection["fuelLevel"];
+export type InspectionType = SelectInspection["type"];
 
 // ============================================================================
 // Server Action result type

@@ -11,12 +11,14 @@ import {
   BadgeCheck,
   FileText,
   MapPin,
+  ClipboardCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ContractStatusBadge } from "@/components/contracts/contract-status-badge";
 import { approveContract } from "@/actions/approve-contract";
 import { cn, formatCHF } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
 import type { ContractDetail as ContractDetailType } from "@/actions/get-contract";
 import type { InvoiceStatus } from "@/types";
 
@@ -132,11 +134,30 @@ export function ContractDetail({ contract }: ContractDetailProps) {
             {t("createdAt", { date: formatDateShort(contract.createdAt) })}
           </p>
         </div>
-        {contract.status === "draft" && (
-          <Button onClick={handleApprove} disabled={approving}>
-            {approving ? t("approving") : t("approveButton")}
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {contract.status === "draft" && (
+            <Button onClick={handleApprove} disabled={approving}>
+              {approving ? t("approving") : t("approveButton")}
+            </Button>
+          )}
+          {(contract.status === "approved" ||
+            contract.status === "pending_cg") && (
+            <Button asChild>
+              <Link href={`/contracts/${contract.id}/inspection/departure`}>
+                <ClipboardCheck className="mr-2 size-4" />
+                {t("departureInspection")}
+              </Link>
+            </Button>
+          )}
+          {contract.status === "active" && (
+            <Button variant="outline" asChild>
+              <Link href={`/contracts/${contract.id}/inspection/departure`}>
+                <ClipboardCheck className="mr-2 size-4" />
+                {t("viewInspection")}
+              </Link>
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* 3 cards row */}

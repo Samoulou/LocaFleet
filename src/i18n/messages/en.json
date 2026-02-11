@@ -545,7 +545,9 @@
       "notFound": "Contract not found",
       "notFoundDescription": "This contract does not exist or you do not have access.",
       "backToContracts": "Back to contracts",
-      "notes": "Notes"
+      "notes": "Notes",
+      "departureInspection": "Departure inspection",
+      "viewInspection": "View inspection"
     },
     "status": {
       "draft": "Draft",
@@ -592,6 +594,89 @@
       "toggleActive": "Enable/Disable",
       "roleUpdated": "Role updated successfully",
       "statusUpdated": "Status updated successfully"
+    }
+  },
+  "inspections": {
+    "breadcrumb": {
+      "contracts": "Contracts"
+    },
+    "departure": {
+      "createTitle": "Departure Inspection",
+      "editTitle": "Edit Departure Inspection",
+      "createDescription": "Document the vehicle condition before handover to client",
+      "editDescription": "Edit the departure inspection details",
+      "vehicleSection": "Vehicle & mileage",
+      "brand": "Vehicle",
+      "plate": "License Plate",
+      "client": "Client",
+      "mileage": "Mileage (km)",
+      "fuelLevel": "Fuel level",
+      "photosSection": "Vehicle Photos",
+      "photos": "Photos",
+      "addPhoto": "Add",
+      "dropzone": "Drag photos here or click to browse",
+      "dropzoneFormats": "JPEG, PNG or WebP — max. 10 MB",
+      "invalidFileType": "Unsupported file type",
+      "fileTooLarge": "File exceeds 10 MB",
+      "maxPhotosReached": "Maximum of 10 photos reached",
+      "uploadSuccess": "Photo added",
+      "uploadError": "Upload error",
+      "deleteSuccess": "Photo deleted",
+      "deletePhotoTitle": "Delete this photo?",
+      "deletePhotoDescription": "This action cannot be undone.",
+      "positions": {
+        "front": "Front",
+        "back": "Back",
+        "left_side": "Left side",
+        "right_side": "Right side",
+        "other": "Other"
+      },
+      "damagesSection": "Damages noted",
+      "addDamage": "Add damage",
+      "noDamages": "No damages noted",
+      "damage": "Damage",
+      "zonePlaceholder": "Zone",
+      "typePlaceholder": "Type",
+      "zones": {
+        "front": "Front",
+        "rear": "Rear",
+        "left_side": "Left side",
+        "right_side": "Right side",
+        "roof": "Roof",
+        "interior": "Interior"
+      },
+      "types": {
+        "scratch": "Scratch",
+        "dent": "Dent",
+        "broken": "Broken",
+        "stain": "Stain",
+        "other": "Other"
+      },
+      "severities": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "damageDescriptionPlaceholder": "Damage description...",
+      "cleanlinessSection": "Cleanliness",
+      "exteriorCleanliness": "Exterior",
+      "interiorCleanliness": "Interior",
+      "cleanliness": {
+        "clean": "Clean",
+        "dirty": "Dirty"
+      },
+      "agentNotesSection": "Agent Notes",
+      "agentNotesPlaceholder": "Remarks, observations...",
+      "signatureSection": "Client Signature",
+      "clientSignature": "Signature",
+      "optional": "Optional",
+      "clearSignature": "Clear",
+      "submitButton": "Submit inspection",
+      "updateButton": "Save changes",
+      "submitting": "Saving...",
+      "submitSuccess": "Departure inspection submitted — contract activated",
+      "updateSuccess": "Departure inspection updated",
+      "noDraft": "Cannot submit: draft not created"
     }
   }
 }

@@ -545,7 +545,9 @@
       "notFound": "Contrat introuvable",
       "notFoundDescription": "Ce contrat n'existe pas ou vous n'y avez pas accès.",
       "backToContracts": "Retour aux contrats",
-      "notes": "Notes"
+      "notes": "Notes",
+      "departureInspection": "Constat de départ",
+      "viewInspection": "Voir le constat"
     },
     "status": {
       "draft": "Brouillon",
@@ -592,6 +594,89 @@
       "toggleActive": "Activer/Désactiver",
       "roleUpdated": "Rôle mis à jour avec succès",
       "statusUpdated": "Statut mis à jour avec succès"
+    }
+  },
+  "inspections": {
+    "breadcrumb": {
+      "contracts": "Contrats"
+    },
+    "departure": {
+      "createTitle": "Constat de départ",
+      "editTitle": "Modifier le constat de départ",
+      "createDescription": "Documentez l'état du véhicule avant la remise au client",
+      "editDescription": "Modifiez les informations du constat de départ",
+      "vehicleSection": "Véhicule & kilométrage",
+      "brand": "Véhicule",
+      "plate": "Immatriculation",
+      "client": "Client",
+      "mileage": "Kilométrage (km)",
+      "fuelLevel": "Niveau de carburant",
+      "photosSection": "Photos du véhicule",
+      "photos": "Photos",
+      "addPhoto": "Ajouter",
+      "dropzone": "Glissez des photos ici ou cliquez pour parcourir",
+      "dropzoneFormats": "JPEG, PNG ou WebP — max. 10 Mo",
+      "invalidFileType": "Type de fichier non supporté",
+      "fileTooLarge": "Le fichier dépasse 10 Mo",
+      "maxPhotosReached": "Maximum de 10 photos atteint",
+      "uploadSuccess": "Photo ajoutée",
+      "uploadError": "Erreur lors du téléchargement",
+      "deleteSuccess": "Photo supprimée",
+      "deletePhotoTitle": "Supprimer cette photo ?",
+      "deletePhotoDescription": "Cette action est irréversible.",
+      "positions": {
+        "front": "Avant",
+        "back": "Arrière",
+        "left_side": "Côté gauche",
+        "right_side": "Côté droit",
+        "other": "Autre"
+      },
+      "damagesSection": "Dommages constatés",
+      "addDamage": "Ajouter un dommage",
+      "noDamages": "Aucun dommage constaté",
+      "damage": "Dommage",
+      "zonePlaceholder": "Zone",
+      "typePlaceholder": "Type",
+      "zones": {
+        "front": "Avant",
+        "rear": "Arrière",
+        "left_side": "Côté gauche",
+        "right_side": "Côté droit",
+        "roof": "Toit",
+        "interior": "Intérieur"
+      },
+      "types": {
+        "scratch": "Rayure",
+        "dent": "Bosse",
+        "broken": "Cassé",
+        "stain": "Tache",
+        "other": "Autre"
+      },
+      "severities": {
+        "low": "Faible",
+        "medium": "Moyen",
+        "high": "Grave"
+      },
+      "damageDescriptionPlaceholder": "Description du dommage...",
+      "cleanlinessSection": "Propreté",
+      "exteriorCleanliness": "Extérieur",
+      "interiorCleanliness": "Intérieur",
+      "cleanliness": {
+        "clean": "Propre",
+        "dirty": "Sale"
+      },
+      "agentNotesSection": "Notes de l'agent",
+      "agentNotesPlaceholder": "Remarques, observations...",
+      "signatureSection": "Signature du client",
+      "clientSignature": "Signature",
+      "optional": "Optionnel",
+      "clearSignature": "Effacer",
+      "submitButton": "Valider le constat",
+      "updateButton": "Enregistrer les modifications",
+      "submitting": "Enregistrement...",
+      "submitSuccess": "Constat de départ validé — contrat activé",
+      "updateSuccess": "Constat de départ mis à jour",
+      "noDraft": "Impossible de soumettre : brouillon non créé"
     }
   }
 }
