@@ -393,9 +393,10 @@
       "method": "Payment Method",
       "methodPlaceholder": "Select method",
       "methods": {
-        "cash": "Cash",
-        "card": "Card",
-        "bank_transfer": "Bank Transfer"
+        "cash_departure": "Cash at departure",
+        "cash_return": "Cash at return",
+        "invoice": "Invoice",
+        "card": "Card"
       },
       "paidAt": "Payment Date",
       "reference": "Payment Reference",
@@ -425,6 +426,23 @@
       "client": "Client",
       "clientPlaceholder": "Select a client",
       "trustedClient": "Trusted client",
+      "searchClientPlaceholder": "Search for a client...",
+      "noClientsFound": "No clients found",
+      "newClientButton": "New client",
+      "quickCreateClient": {
+        "title": "New client",
+        "description": "Quickly create a client",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "phone": "Phone",
+        "email": "Email",
+        "licenseNumber": "License number (recommended)",
+        "isTrusted": "Trusted client",
+        "submit": "Create client",
+        "submitting": "Creating...",
+        "success": "Client created successfully",
+        "cancel": "Cancel"
+      },
       "options": "Options",
       "noOptions": "No options available",
       "perDay": "/day",
@@ -432,9 +450,10 @@
       "paymentMethod": "Payment method",
       "paymentMethodPlaceholder": "Select method",
       "paymentMethods": {
-        "cash": "Cash",
-        "card": "Card",
-        "bank_transfer": "Bank transfer"
+        "cash_departure": "Cash at departure",
+        "cash_return": "Cash at return",
+        "invoice": "Invoice",
+        "card": "Card"
       },
       "advancedSettings": "Additional settings",
       "includedKmPerDay": "Included km / day",

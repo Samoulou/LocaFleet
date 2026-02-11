@@ -393,9 +393,10 @@
       "method": "Moyen de paiement",
       "methodPlaceholder": "Sélectionnez le moyen",
       "methods": {
-        "cash": "Espèces",
-        "card": "Carte",
-        "bank_transfer": "Virement"
+        "cash_departure": "Espèce au départ",
+        "cash_return": "Espèce au retour",
+        "invoice": "Facture",
+        "card": "Carte"
       },
       "paidAt": "Date du paiement",
       "reference": "Référence de paiement",
@@ -425,6 +426,23 @@
       "client": "Client",
       "clientPlaceholder": "Sélectionnez un client",
       "trustedClient": "Client connu",
+      "searchClientPlaceholder": "Rechercher un client...",
+      "noClientsFound": "Aucun client trouvé",
+      "newClientButton": "Nouveau client",
+      "quickCreateClient": {
+        "title": "Nouveau client",
+        "description": "Créer un client rapidement",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "phone": "Téléphone",
+        "email": "Email",
+        "licenseNumber": "N° permis (recommandé)",
+        "isTrusted": "Client de confiance",
+        "submit": "Créer le client",
+        "submitting": "Création...",
+        "success": "Client créé avec succès",
+        "cancel": "Annuler"
+      },
       "options": "Options",
       "noOptions": "Aucune option disponible",
       "perDay": "/jour",
@@ -432,9 +450,10 @@
       "paymentMethod": "Moyen de paiement",
       "paymentMethodPlaceholder": "Sélectionnez le moyen",
       "paymentMethods": {
-        "cash": "Espèces",
-        "card": "Carte",
-        "bank_transfer": "Virement bancaire"
+        "cash_departure": "Espèce au départ",
+        "cash_return": "Espèce au retour",
+        "invoice": "Facture",
+        "card": "Carte"
       },
       "advancedSettings": "Paramètres supplémentaires",
       "includedKmPerDay": "Km inclus / jour",

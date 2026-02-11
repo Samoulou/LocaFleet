@@ -26,8 +26,8 @@ import {
 } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
 import { ContractPriceSummary } from "@/components/contracts/contract-price-summary";
+import { ClientAutocomplete } from "@/components/contracts/client-autocomplete";
 import {
-  getClientsForTenant,
   getRentalOptionsForTenant,
   createDraftContract,
   type ClientSelectItem,
@@ -62,9 +62,11 @@ export function NewContractSheet({
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   // Data from server
-  const [clientsList, setClientsList] = useState<ClientSelectItem[]>([]);
   const [optionsList, setOptionsList] = useState<RentalOptionItem[]>([]);
   const [loadingData, setLoadingData] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<ClientSelectItem | null>(
+    null
+  );
 
   // Form state
   const [startDate, setStartDate] = useState<Date | undefined>();
@@ -88,20 +90,11 @@ export function NewContractSheet({
   const totalDays = rentalInfo?.billedDays ?? null;
   const totalHours = rentalInfo?.totalHours ?? null;
 
-  // Selected client
-  const selectedClient = clientsList.find((c) => c.id === clientId);
-
   // Fetch data when sheet opens
   async function fetchData() {
     setLoadingData(true);
-    const [clientsResult, optionsResult] = await Promise.all([
-      getClientsForTenant(),
-      getRentalOptionsForTenant(),
-    ]);
+    const optionsResult = await getRentalOptionsForTenant();
 
-    if (clientsResult.success) {
-      setClientsList(clientsResult.data);
-    }
     if (optionsResult.success) {
       setOptionsList(optionsResult.data);
     }
@@ -113,6 +106,7 @@ export function NewContractSheet({
     setStartDate(undefined);
     setEndDate(undefined);
     setClientId("");
+    setSelectedClient(null);
     setSelectedOptionIds([]);
     setPaymentMethod("");
     setIncludedKmPerDay("");
@@ -268,25 +262,16 @@ export function NewContractSheet({
             </p>
           )}
 
-          {/* 3. Client select */}
+          {/* 3. Client autocomplete */}
           <div className="space-y-1.5">
             <Label>{t("client")}</Label>
-            {loadingData ? (
-              <p className="text-sm text-slate-400">{t("loadingClients")}</p>
-            ) : (
-              <Select value={clientId} onValueChange={setClientId}>
-                <SelectTrigger>
-                  <SelectValue placeholder={t("clientPlaceholder")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {clientsList.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.lastName} {c.firstName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+            <ClientAutocomplete
+              value={clientId}
+              onChange={(id, client) => {
+                setClientId(id);
+                setSelectedClient(client);
+              }}
+            />
             {selectedClient?.isTrusted && (
               <div className="flex items-center gap-1 text-xs text-emerald-600">
                 <BadgeCheck className="size-3.5" />
@@ -335,11 +320,16 @@ export function NewContractSheet({
                 <SelectValue placeholder={t("paymentMethodPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="cash">{t("paymentMethods.cash")}</SelectItem>
-                <SelectItem value="card">{t("paymentMethods.card")}</SelectItem>
-                <SelectItem value="bank_transfer">
-                  {t("paymentMethods.bank_transfer")}
+                <SelectItem value="cash_departure">
+                  {t("paymentMethods.cash_departure")}
                 </SelectItem>
+                <SelectItem value="cash_return">
+                  {t("paymentMethods.cash_return")}
+                </SelectItem>
+                <SelectItem value="invoice">
+                  {t("paymentMethods.invoice")}
+                </SelectItem>
+                <SelectItem value="card">{t("paymentMethods.card")}</SelectItem>
               </SelectContent>
             </Select>
             {errors.paymentMethod && (
