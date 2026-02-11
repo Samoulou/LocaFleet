@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { VehicleStatusBadge } from "@/components/vehicles/vehicle-status-badge";
 import { VehicleDetailInfo } from "@/components/vehicles/vehicle-detail-info";
 import { VehiclePhotoGallery } from "@/components/vehicles/vehicle-photo-gallery";
+import { ChangeStatusDialog } from "@/components/vehicles/change-status-dialog";
+import { VehicleActivityLog } from "@/components/vehicles/vehicle-activity-log";
 import { getVehicleWithPhotos } from "@/actions/vehicles";
 import { getCurrentUser } from "@/lib/auth";
 import { hasPermission } from "@/lib/rbac";
@@ -54,12 +56,18 @@ export default async function VehicleDetailPage({
             <p className="mt-1 text-sm text-slate-500">{vehicle.plateNumber}</p>
           </div>
           {canEdit && (
-            <Button asChild>
-              <Link href={`/vehicles/${vehicle.id}/edit`}>
-                <Pencil className="mr-2 size-4" />
-                {t("detail.edit")}
-              </Link>
-            </Button>
+            <div className="flex items-center gap-2">
+              <ChangeStatusDialog
+                vehicleId={vehicle.id}
+                currentStatus={vehicle.status}
+              />
+              <Button asChild>
+                <Link href={`/vehicles/${vehicle.id}/edit`}>
+                  <Pencil className="mr-2 size-4" />
+                  {t("detail.edit")}
+                </Link>
+              </Button>
+            </div>
           )}
         </div>
       </div>
@@ -81,6 +89,9 @@ export default async function VehicleDetailPage({
           <VehicleDetailInfo vehicle={vehicle} />
         </div>
       </div>
+
+      {/* Activity Log */}
+      <VehicleActivityLog vehicleId={vehicle.id} />
     </div>
   );
 }
