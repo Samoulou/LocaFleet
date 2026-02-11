@@ -169,6 +169,7 @@
         "finalCost": "Final Cost",
         "status": "Status",
         "mechanic": "Mechanic",
+        "actions": "Actions",
         "statuses": {
           "open": "Open",
           "in_progress": "In Progress",
@@ -339,6 +340,18 @@
     }
   },
   "maintenance": {
+    "close": {
+      "button": "Close",
+      "title": "Close maintenance",
+      "endDate": "End date",
+      "finalCost": "Final cost (CHF)",
+      "finalCostPlaceholder": "e.g. 450.00",
+      "notes": "Notes",
+      "notesPlaceholder": "Closing notes...",
+      "submitting": "Closing...",
+      "submitButton": "Close maintenance",
+      "success": "Maintenance closed successfully"
+    },
     "create": {
       "button": "New maintenance",
       "title": "New maintenance",

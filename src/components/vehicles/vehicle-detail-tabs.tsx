@@ -67,7 +67,10 @@ export function VehicleDetailTabs({
           </div>
         )}
         <div className="rounded-xl border border-slate-200 bg-white">
-          <VehicleMaintenanceHistory records={maintenanceHistory} />
+          <VehicleMaintenanceHistory
+            records={maintenanceHistory}
+            canEdit={canEdit}
+          />
         </div>
       </TabsContent>
     </Tabs>
