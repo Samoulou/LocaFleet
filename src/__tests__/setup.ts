@@ -21,15 +21,22 @@ vi.stubEnv("DIRECT_URL", "postgresql://test:test@localhost:5432/test");
 vi.stubEnv("NEXT_PUBLIC_APP_URL", "http://localhost:3000");
 
 // Mock DB connection for unit tests
-vi.mock("@/db", () => ({
-  db: {
+vi.mock("@/db", () => {
+  const mockDb: Record<string, unknown> = {
     select: vi.fn(),
     insert: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+    execute: vi.fn(),
     query: {},
-  },
-}));
+  };
+  mockDb.transaction = vi
+    .fn()
+    .mockImplementation(async (cb: (tx: typeof mockDb) => unknown) =>
+      cb(mockDb)
+    );
+  return { db: mockDb };
+});
 
 // Mock Better Auth
 vi.mock("@/lib/auth", () => ({
@@ -38,5 +45,7 @@ vi.mock("@/lib/auth", () => ({
     tenantId: "test-tenant-id",
     role: "admin",
     email: "admin@locafleet.ch",
+    name: "Admin Test",
+    isActive: true,
   }),
 }));

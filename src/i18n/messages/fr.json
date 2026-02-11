@@ -14,7 +14,10 @@
     "actions": "Actions",
     "yes": "Oui",
     "no": "Non",
-    "confirm": "Confirmer"
+    "confirm": "Confirmer",
+    "language": "Langue",
+    "languageFr": "Français",
+    "languageEn": "English"
   },
   "auth": {
     "login": "Connexion",
@@ -23,7 +26,16 @@
     "password": "Mot de passe",
     "forgotPassword": "Mot de passe oublié ?",
     "loginButton": "Se connecter",
-    "loginError": "Email ou mot de passe incorrect"
+    "loginError": "Email ou mot de passe incorrect",
+    "emailPlaceholder": "admin@locafleet.ch",
+    "loggingIn": "Connexion en cours…",
+    "rememberMe": "Se souvenir de moi",
+    "tagline": "Gestion de flotte simplifiée",
+    "supportText": "Besoin d'aide ?",
+    "supportLink": "Contacter le support",
+    "copyright": "© {year} LocaFleet. Tous droits réservés.",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe"
   },
   "navigation": {
     "dashboard": "Tableau de bord",
@@ -32,7 +44,398 @@
     "contracts": "Contrats",
     "inspections": "États des lieux",
     "planning": "Planning",
+    "dossiers": "Dossiers",
+    "maintenance": "Maintenance",
     "invoices": "Factures",
     "settings": "Paramètres"
+  },
+  "sidebar": {
+    "collapse": "Réduire le menu",
+    "expand": "Agrandir le menu",
+    "profile": "Profil",
+    "openMenu": "Ouvrir le menu"
+  },
+  "topbar": {
+    "searchPlaceholder": "Rechercher...",
+    "notifications": "Notifications",
+    "noNotifications": "Aucune notification",
+    "searchEmpty": "Aucun résultat",
+    "searchNoResults": "Aucun résultat pour \"{query}\"",
+    "searchMinChars": "Tapez au moins 2 caractères"
+  },
+  "vehicles": {
+    "title": "Véhicules",
+    "subtitle": "Gérez votre flotte de véhicules",
+    "newVehicle": "Nouveau véhicule",
+    "searchPlaceholder": "Rechercher par marque, modèle ou plaque...",
+    "allStatuses": "Tous les statuts",
+    "allCategories": "Toutes les catégories",
+    "columns": {
+      "photo": "Photo",
+      "brandModel": "Marque / Modèle",
+      "plateNumber": "Immatriculation",
+      "category": "Catégorie",
+      "mileage": "Km",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "status": {
+      "available": "Disponible",
+      "rented": "Loué",
+      "maintenance": "Maintenance",
+      "out_of_service": "Hors service"
+    },
+    "viewDetails": "Voir les détails",
+    "emptyState": {
+      "title": "Aucun véhicule",
+      "description": "Ajoutez votre premier véhicule pour commencer",
+      "cta": "Ajouter votre premier véhicule"
+    },
+    "noResults": "Aucun véhicule ne correspond aux filtres",
+    "pagination": {
+      "showing": "Affichage {start} à {end} sur {total}",
+      "previous": "Précédent",
+      "next": "Suivant"
+    },
+    "error": "Une erreur est survenue lors du chargement des véhicules",
+    "detail": {
+      "back": "Véhicules",
+      "edit": "Modifier",
+      "category": "Catégorie",
+      "year": "Année",
+      "color": "Couleur",
+      "fuelType": "Carburant",
+      "transmission": "Transmission",
+      "seats": "Places",
+      "mileage": "Kilométrage",
+      "vin": "VIN",
+      "dailyRate": "Tarif journalier",
+      "weeklyRate": "Tarif hebdomadaire",
+      "notes": "Notes",
+      "createdAt": "Créé le",
+      "updatedAt": "Modifié le",
+      "notSpecified": "Non spécifié",
+      "vehicleInfo": "Informations",
+      "fuelTypes": {
+        "gasoline": "Essence",
+        "diesel": "Diesel",
+        "electric": "Électrique",
+        "hybrid": "Hybride"
+      },
+      "transmissions": {
+        "manual": "Manuelle",
+        "automatic": "Automatique"
+      },
+      "tabs": {
+        "informations": "Informations",
+        "photos": "Photos",
+        "locations": "Locations",
+        "maintenance": "Maintenance"
+      },
+      "summary": {
+        "category": "Catégorie",
+        "fuelType": "Carburant",
+        "transmission": "Transmission",
+        "mileage": "Kilométrage",
+        "year": "Année",
+        "seats": "Places",
+        "dailyRate": "Tarif journalier",
+        "weeklyRate": "Tarif hebdomadaire"
+      },
+      "rentalHistory": {
+        "title": "Historique des locations",
+        "empty": "Aucune location pour ce véhicule",
+        "contractNumber": "N° contrat",
+        "client": "Client",
+        "startDate": "Début",
+        "endDate": "Fin",
+        "amount": "Montant",
+        "status": "Statut",
+        "statuses": {
+          "draft": "Brouillon",
+          "active": "Actif",
+          "completed": "Terminé",
+          "cancelled": "Annulé"
+        }
+      },
+      "maintenanceHistory": {
+        "title": "Historique de maintenance",
+        "empty": "Aucun historique de maintenance",
+        "type": "Type",
+        "description": "Description",
+        "startDate": "Début",
+        "endDate": "Fin",
+        "estimatedCost": "Coût estimé",
+        "finalCost": "Coût final",
+        "status": "Statut",
+        "mechanic": "Mécanicien",
+        "actions": "Actions",
+        "statuses": {
+          "open": "Ouvert",
+          "in_progress": "En cours",
+          "completed": "Terminé"
+        },
+        "types": {
+          "regular_service": "Entretien régulier",
+          "repair": "Réparation",
+          "technical_inspection": "Contrôle technique",
+          "tires": "Pneus",
+          "other": "Autre"
+        }
+      }
+    },
+    "photos": {
+      "title": "Photos",
+      "addPhotos": "Ajouter des photos",
+      "dropzone": "Glissez des photos ici ou cliquez pour parcourir",
+      "dropzoneFormats": "JPEG, PNG ou WebP — max. 10 Mo par fichier",
+      "uploading": "Téléchargement en cours...",
+      "setCover": "Définir comme couverture",
+      "delete": "Supprimer",
+      "deleteConfirmTitle": "Supprimer cette photo ?",
+      "deleteConfirmDescription": "Cette action est irréversible. La photo sera définitivement supprimée.",
+      "deleteConfirmButton": "Supprimer",
+      "cover": "Couverture",
+      "noPhotos": "Aucune photo",
+      "noPhotosDescription": "Ajoutez des photos pour illustrer ce véhicule",
+      "uploadError": "Erreur lors du téléchargement",
+      "uploadSuccess": "Photo ajoutée avec succès",
+      "deleteSuccess": "Photo supprimée avec succès",
+      "coverSuccess": "Photo de couverture mise à jour",
+      "invalidFileType": "Type de fichier non supporté. Utilisez JPEG, PNG ou WebP.",
+      "fileTooLarge": "Le fichier dépasse la taille maximale de 10 Mo"
+    },
+    "statusChange": {
+      "button": "Changer le statut",
+      "title": "Changer le statut du véhicule",
+      "currentStatus": "Statut actuel",
+      "newStatus": "Nouveau statut",
+      "newStatusPlaceholder": "Sélectionnez un statut",
+      "reason": "Raison (optionnel)",
+      "reasonPlaceholder": "Raison du changement de statut...",
+      "rentedWarning": "Ce véhicule est actuellement loué. Terminez le contrat avant de changer le statut.",
+      "createMaintenance": "Créer un dossier de maintenance",
+      "maintenanceDescription": "Description de la maintenance",
+      "maintenanceDescriptionPlaceholder": "Décrivez les travaux à effectuer...",
+      "maintenanceType": "Type de maintenance",
+      "maintenanceTypePlaceholder": "Sélectionnez le type",
+      "maintenanceTypes": {
+        "regular_service": "Entretien régulier",
+        "repair": "Réparation",
+        "technical_inspection": "Contrôle technique",
+        "tires": "Pneus",
+        "other": "Autre"
+      },
+      "submitting": "Changement en cours...",
+      "submitButton": "Confirmer le changement",
+      "success": "Statut du véhicule mis à jour",
+      "error": "Erreur lors du changement de statut"
+    },
+    "activityLog": {
+      "title": "Historique d'activité",
+      "empty": "Aucune activité",
+      "statusChange": "Statut changé de {from} à {to}",
+      "reason": "Raison",
+      "by": "par"
+    },
+    "form": {
+      "createTitle": "Nouveau véhicule",
+      "editTitle": "Modifier le véhicule",
+      "createSubtitle": "Ajoutez un nouveau véhicule à votre flotte",
+      "editSubtitle": "Modifiez les informations du véhicule",
+      "sectionIdentification": "Identification",
+      "sectionDetails": "Détails",
+      "sectionOperational": "Opérationnel",
+      "sectionNotes": "Notes",
+      "brand": "Marque",
+      "brandPlaceholder": "ex. BMW, Toyota...",
+      "model": "Modèle",
+      "modelPlaceholder": "ex. X3, Corolla...",
+      "plateNumber": "Immatriculation",
+      "plateNumberPlaceholder": "ex. VD 123456",
+      "vin": "VIN",
+      "vinPlaceholder": "Numéro d'identification du véhicule",
+      "year": "Année",
+      "yearPlaceholder": "ex. 2024",
+      "color": "Couleur",
+      "colorPlaceholder": "ex. Noir, Blanc...",
+      "categoryId": "Catégorie",
+      "categoryPlaceholder": "Sélectionnez une catégorie",
+      "fuelType": "Carburant",
+      "fuelTypePlaceholder": "Sélectionnez le type",
+      "fuelTypes": {
+        "gasoline": "Essence",
+        "diesel": "Diesel",
+        "electric": "Électrique",
+        "hybrid": "Hybride"
+      },
+      "transmission": "Transmission",
+      "transmissionPlaceholder": "Sélectionnez le type",
+      "transmissions": {
+        "manual": "Manuelle",
+        "automatic": "Automatique"
+      },
+      "seats": "Places",
+      "seatsPlaceholder": "ex. 5",
+      "mileage": "Kilométrage",
+      "mileagePlaceholder": "ex. 45000",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes internes sur le véhicule...",
+      "creating": "Création en cours...",
+      "updating": "Modification en cours...",
+      "createButton": "Créer le véhicule",
+      "updateButton": "Enregistrer les modifications",
+      "createSuccess": "Véhicule créé avec succès",
+      "updateSuccess": "Véhicule modifié avec succès",
+      "loadError": "Impossible de charger le véhicule"
+    }
+  },
+  "settings": {
+    "categories": {
+      "title": "Catégories de véhicules",
+      "subtitle": "Gérez les catégories de votre flotte",
+      "newCategory": "Nouvelle catégorie",
+      "columns": {
+        "name": "Nom",
+        "description": "Description",
+        "dailyRate": "Tarif journalier",
+        "weeklyRate": "Tarif hebdomadaire",
+        "vehicles": "Véhicules",
+        "actions": "Actions"
+      },
+      "emptyState": {
+        "title": "Aucune catégorie",
+        "description": "Créez votre première catégorie de véhicules"
+      },
+      "form": {
+        "createTitle": "Nouvelle catégorie",
+        "editTitle": "Modifier la catégorie",
+        "name": "Nom",
+        "namePlaceholder": "ex. Citadine, Berline, SUV...",
+        "description": "Description",
+        "descriptionPlaceholder": "Description de la catégorie...",
+        "dailyRate": "Tarif journalier (CHF)",
+        "dailyRatePlaceholder": "ex. 85.00",
+        "weeklyRate": "Tarif hebdomadaire (CHF)",
+        "weeklyRatePlaceholder": "ex. 450.00",
+        "sortOrder": "Ordre de tri",
+        "sortOrderPlaceholder": "ex. 0",
+        "creating": "Création en cours...",
+        "updating": "Modification en cours...",
+        "createButton": "Créer la catégorie",
+        "updateButton": "Enregistrer les modifications",
+        "createSuccess": "Catégorie créée avec succès",
+        "updateSuccess": "Catégorie modifiée avec succès"
+      },
+      "delete": {
+        "title": "Supprimer la catégorie",
+        "description": "Êtes-vous sûr de vouloir supprimer la catégorie \"{name}\" ?",
+        "warning": "{count} véhicule(s) utilise(nt) cette catégorie. Réassignez-les avant de supprimer.",
+        "confirm": "Supprimer",
+        "success": "Catégorie supprimée avec succès",
+        "deleting": "Suppression en cours..."
+      },
+      "error": "Une erreur est survenue lors du chargement des catégories",
+      "noRate": "—"
+    }
+  },
+  "maintenance": {
+    "close": {
+      "button": "Clôturer",
+      "title": "Clôturer la maintenance",
+      "endDate": "Date de fin",
+      "finalCost": "Coût final (CHF)",
+      "finalCostPlaceholder": "ex. 450.00",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes de clôture...",
+      "submitting": "Clôture en cours...",
+      "submitButton": "Clôturer la maintenance",
+      "success": "Maintenance clôturée avec succès"
+    },
+    "create": {
+      "button": "Nouvelle maintenance",
+      "title": "Nouvelle maintenance",
+      "type": "Type",
+      "typePlaceholder": "Sélectionnez le type",
+      "types": {
+        "regular_service": "Entretien régulier",
+        "repair": "Réparation",
+        "technical_inspection": "Contrôle technique",
+        "tires": "Pneus",
+        "other": "Autre"
+      },
+      "urgency": "Urgence",
+      "urgencies": {
+        "low": "Basse",
+        "medium": "Moyenne",
+        "high": "Haute"
+      },
+      "description": "Description",
+      "descriptionPlaceholder": "Décrivez les travaux à effectuer...",
+      "startDate": "Date de début",
+      "estimatedCost": "Coût estimé (CHF)",
+      "estimatedCostPlaceholder": "ex. 350.00",
+      "mechanicName": "Nom du mécanicien",
+      "mechanicNamePlaceholder": "ex. Jean Dupont",
+      "mechanicEmail": "Email du mécanicien",
+      "mechanicEmailPlaceholder": "ex. mecanicien@garage.ch",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes supplémentaires...",
+      "submitting": "Création en cours...",
+      "submitButton": "Créer la maintenance",
+      "success": "Maintenance créée avec succès"
+    }
+  },
+  "payments": {
+    "process": {
+      "button": "Quittancer",
+      "title": "Quittancer la facture",
+      "amount": "Montant (CHF)",
+      "method": "Moyen de paiement",
+      "methodPlaceholder": "Sélectionnez le moyen",
+      "methods": {
+        "cash": "Espèces",
+        "card": "Carte",
+        "bank_transfer": "Virement"
+      },
+      "paidAt": "Date du paiement",
+      "reference": "Référence de paiement",
+      "referencePlaceholder": "ex. VIR-2026-001",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes optionnelles...",
+      "submitting": "Traitement en cours...",
+      "submitButton": "Confirmer le paiement",
+      "success": "Paiement enregistré avec succès"
+    }
+  },
+  "rbac": {
+    "accessDenied": "Accès refusé",
+    "accessDeniedDescription": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",
+    "backToDashboard": "Retour au tableau de bord",
+    "roles": {
+      "admin": "Administrateur",
+      "agent": "Agent",
+      "viewer": "Lecteur"
+    },
+    "errors": {
+      "notAuthenticated": "Vous devez être connecté",
+      "accountInactive": "Votre compte est désactivé",
+      "accessDenied": "Permissions insuffisantes",
+      "cannotChangeOwnRole": "Vous ne pouvez pas modifier votre propre rôle",
+      "cannotDeactivateSelf": "Vous ne pouvez pas modifier votre propre statut",
+      "userNotFound": "Utilisateur introuvable",
+      "invalidInput": "Données invalides"
+    },
+    "users": {
+      "title": "Gestion des utilisateurs",
+      "role": "Rôle",
+      "status": "Statut",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "changeRole": "Changer le rôle",
+      "toggleActive": "Activer/Désactiver",
+      "roleUpdated": "Rôle mis à jour avec succès",
+      "statusUpdated": "Statut mis à jour avec succès"
+    }
   }
 }

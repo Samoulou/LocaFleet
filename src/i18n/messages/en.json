@@ -14,7 +14,10 @@
     "actions": "Actions",
     "yes": "Yes",
     "no": "No",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "language": "Language",
+    "languageFr": "Français",
+    "languageEn": "English"
   },
   "auth": {
     "login": "Login",
@@ -23,7 +26,16 @@
     "password": "Password",
     "forgotPassword": "Forgot password?",
     "loginButton": "Sign in",
-    "loginError": "Invalid email or password"
+    "loginError": "Invalid email or password",
+    "emailPlaceholder": "admin@locafleet.ch",
+    "loggingIn": "Signing in…",
+    "rememberMe": "Remember me",
+    "tagline": "Fleet management simplified",
+    "supportText": "Need help?",
+    "supportLink": "Contact support",
+    "copyright": "© {year} LocaFleet. All rights reserved.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -32,7 +44,398 @@
     "contracts": "Contracts",
     "inspections": "Inspections",
     "planning": "Planning",
+    "dossiers": "Dossiers",
+    "maintenance": "Maintenance",
     "invoices": "Invoices",
     "settings": "Settings"
+  },
+  "sidebar": {
+    "collapse": "Collapse menu",
+    "expand": "Expand menu",
+    "profile": "Profile",
+    "openMenu": "Open menu"
+  },
+  "topbar": {
+    "searchPlaceholder": "Search...",
+    "notifications": "Notifications",
+    "noNotifications": "No notifications",
+    "searchEmpty": "No results",
+    "searchNoResults": "No results for \"{query}\"",
+    "searchMinChars": "Type at least 2 characters"
+  },
+  "vehicles": {
+    "title": "Vehicles",
+    "subtitle": "Manage your vehicle fleet",
+    "newVehicle": "New vehicle",
+    "searchPlaceholder": "Search by brand, model or plate...",
+    "allStatuses": "All statuses",
+    "allCategories": "All categories",
+    "columns": {
+      "photo": "Photo",
+      "brandModel": "Brand / Model",
+      "plateNumber": "License Plate",
+      "category": "Category",
+      "mileage": "Km",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "available": "Available",
+      "rented": "Rented",
+      "maintenance": "Maintenance",
+      "out_of_service": "Out of service"
+    },
+    "viewDetails": "View details",
+    "emptyState": {
+      "title": "No vehicles",
+      "description": "Add your first vehicle to get started",
+      "cta": "Add your first vehicle"
+    },
+    "noResults": "No vehicles match the filters",
+    "pagination": {
+      "showing": "Showing {start} to {end} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "error": "An error occurred while loading vehicles",
+    "detail": {
+      "back": "Vehicles",
+      "edit": "Edit",
+      "category": "Category",
+      "year": "Year",
+      "color": "Color",
+      "fuelType": "Fuel Type",
+      "transmission": "Transmission",
+      "seats": "Seats",
+      "mileage": "Mileage",
+      "vin": "VIN",
+      "dailyRate": "Daily Rate",
+      "weeklyRate": "Weekly Rate",
+      "notes": "Notes",
+      "createdAt": "Created",
+      "updatedAt": "Updated",
+      "notSpecified": "Not specified",
+      "vehicleInfo": "Information",
+      "fuelTypes": {
+        "gasoline": "Gasoline",
+        "diesel": "Diesel",
+        "electric": "Electric",
+        "hybrid": "Hybrid"
+      },
+      "transmissions": {
+        "manual": "Manual",
+        "automatic": "Automatic"
+      },
+      "tabs": {
+        "informations": "Information",
+        "photos": "Photos",
+        "locations": "Rentals",
+        "maintenance": "Maintenance"
+      },
+      "summary": {
+        "category": "Category",
+        "fuelType": "Fuel Type",
+        "transmission": "Transmission",
+        "mileage": "Mileage",
+        "year": "Year",
+        "seats": "Seats",
+        "dailyRate": "Daily Rate",
+        "weeklyRate": "Weekly Rate"
+      },
+      "rentalHistory": {
+        "title": "Rental History",
+        "empty": "No rentals for this vehicle",
+        "contractNumber": "Contract #",
+        "client": "Client",
+        "startDate": "Start",
+        "endDate": "End",
+        "amount": "Amount",
+        "status": "Status",
+        "statuses": {
+          "draft": "Draft",
+          "active": "Active",
+          "completed": "Completed",
+          "cancelled": "Cancelled"
+        }
+      },
+      "maintenanceHistory": {
+        "title": "Maintenance History",
+        "empty": "No maintenance history",
+        "type": "Type",
+        "description": "Description",
+        "startDate": "Start",
+        "endDate": "End",
+        "estimatedCost": "Estimated Cost",
+        "finalCost": "Final Cost",
+        "status": "Status",
+        "mechanic": "Mechanic",
+        "actions": "Actions",
+        "statuses": {
+          "open": "Open",
+          "in_progress": "In Progress",
+          "completed": "Completed"
+        },
+        "types": {
+          "regular_service": "Regular Service",
+          "repair": "Repair",
+          "technical_inspection": "Technical Inspection",
+          "tires": "Tires",
+          "other": "Other"
+        }
+      }
+    },
+    "photos": {
+      "title": "Photos",
+      "addPhotos": "Add photos",
+      "dropzone": "Drag photos here or click to browse",
+      "dropzoneFormats": "JPEG, PNG or WebP — max. 10 MB per file",
+      "uploading": "Uploading...",
+      "setCover": "Set as cover",
+      "delete": "Delete",
+      "deleteConfirmTitle": "Delete this photo?",
+      "deleteConfirmDescription": "This action cannot be undone. The photo will be permanently deleted.",
+      "deleteConfirmButton": "Delete",
+      "cover": "Cover",
+      "noPhotos": "No photos",
+      "noPhotosDescription": "Add photos to illustrate this vehicle",
+      "uploadError": "Upload error",
+      "uploadSuccess": "Photo added successfully",
+      "deleteSuccess": "Photo deleted successfully",
+      "coverSuccess": "Cover photo updated",
+      "invalidFileType": "Unsupported file type. Use JPEG, PNG or WebP.",
+      "fileTooLarge": "File exceeds the maximum size of 10 MB"
+    },
+    "statusChange": {
+      "button": "Change status",
+      "title": "Change vehicle status",
+      "currentStatus": "Current status",
+      "newStatus": "New status",
+      "newStatusPlaceholder": "Select a status",
+      "reason": "Reason (optional)",
+      "reasonPlaceholder": "Reason for status change...",
+      "rentedWarning": "This vehicle is currently rented. End the contract before changing the status.",
+      "createMaintenance": "Create a maintenance record",
+      "maintenanceDescription": "Maintenance description",
+      "maintenanceDescriptionPlaceholder": "Describe the work to be done...",
+      "maintenanceType": "Maintenance type",
+      "maintenanceTypePlaceholder": "Select type",
+      "maintenanceTypes": {
+        "regular_service": "Regular service",
+        "repair": "Repair",
+        "technical_inspection": "Technical inspection",
+        "tires": "Tires",
+        "other": "Other"
+      },
+      "submitting": "Changing...",
+      "submitButton": "Confirm change",
+      "success": "Vehicle status updated",
+      "error": "Error changing status"
+    },
+    "activityLog": {
+      "title": "Activity log",
+      "empty": "No activity",
+      "statusChange": "Status changed from {from} to {to}",
+      "reason": "Reason",
+      "by": "by"
+    },
+    "form": {
+      "createTitle": "New vehicle",
+      "editTitle": "Edit vehicle",
+      "createSubtitle": "Add a new vehicle to your fleet",
+      "editSubtitle": "Edit vehicle information",
+      "sectionIdentification": "Identification",
+      "sectionDetails": "Details",
+      "sectionOperational": "Operational",
+      "sectionNotes": "Notes",
+      "brand": "Brand",
+      "brandPlaceholder": "e.g. BMW, Toyota...",
+      "model": "Model",
+      "modelPlaceholder": "e.g. X3, Corolla...",
+      "plateNumber": "License Plate",
+      "plateNumberPlaceholder": "e.g. VD 123456",
+      "vin": "VIN",
+      "vinPlaceholder": "Vehicle Identification Number",
+      "year": "Year",
+      "yearPlaceholder": "e.g. 2024",
+      "color": "Color",
+      "colorPlaceholder": "e.g. Black, White...",
+      "categoryId": "Category",
+      "categoryPlaceholder": "Select a category",
+      "fuelType": "Fuel Type",
+      "fuelTypePlaceholder": "Select type",
+      "fuelTypes": {
+        "gasoline": "Gasoline",
+        "diesel": "Diesel",
+        "electric": "Electric",
+        "hybrid": "Hybrid"
+      },
+      "transmission": "Transmission",
+      "transmissionPlaceholder": "Select type",
+      "transmissions": {
+        "manual": "Manual",
+        "automatic": "Automatic"
+      },
+      "seats": "Seats",
+      "seatsPlaceholder": "e.g. 5",
+      "mileage": "Mileage",
+      "mileagePlaceholder": "e.g. 45000",
+      "notes": "Notes",
+      "notesPlaceholder": "Internal notes about the vehicle...",
+      "creating": "Creating...",
+      "updating": "Updating...",
+      "createButton": "Create vehicle",
+      "updateButton": "Save changes",
+      "createSuccess": "Vehicle created successfully",
+      "updateSuccess": "Vehicle updated successfully",
+      "loadError": "Unable to load vehicle"
+    }
+  },
+  "settings": {
+    "categories": {
+      "title": "Vehicle Categories",
+      "subtitle": "Manage your fleet categories",
+      "newCategory": "New category",
+      "columns": {
+        "name": "Name",
+        "description": "Description",
+        "dailyRate": "Daily Rate",
+        "weeklyRate": "Weekly Rate",
+        "vehicles": "Vehicles",
+        "actions": "Actions"
+      },
+      "emptyState": {
+        "title": "No categories",
+        "description": "Create your first vehicle category"
+      },
+      "form": {
+        "createTitle": "New category",
+        "editTitle": "Edit category",
+        "name": "Name",
+        "namePlaceholder": "e.g. City car, Sedan, SUV...",
+        "description": "Description",
+        "descriptionPlaceholder": "Category description...",
+        "dailyRate": "Daily Rate (CHF)",
+        "dailyRatePlaceholder": "e.g. 85.00",
+        "weeklyRate": "Weekly Rate (CHF)",
+        "weeklyRatePlaceholder": "e.g. 450.00",
+        "sortOrder": "Sort Order",
+        "sortOrderPlaceholder": "e.g. 0",
+        "creating": "Creating...",
+        "updating": "Updating...",
+        "createButton": "Create category",
+        "updateButton": "Save changes",
+        "createSuccess": "Category created successfully",
+        "updateSuccess": "Category updated successfully"
+      },
+      "delete": {
+        "title": "Delete category",
+        "description": "Are you sure you want to delete the category \"{name}\"?",
+        "warning": "{count} vehicle(s) use this category. Reassign them before deleting.",
+        "confirm": "Delete",
+        "success": "Category deleted successfully",
+        "deleting": "Deleting..."
+      },
+      "error": "An error occurred while loading categories",
+      "noRate": "—"
+    }
+  },
+  "maintenance": {
+    "close": {
+      "button": "Close",
+      "title": "Close maintenance",
+      "endDate": "End date",
+      "finalCost": "Final cost (CHF)",
+      "finalCostPlaceholder": "e.g. 450.00",
+      "notes": "Notes",
+      "notesPlaceholder": "Closing notes...",
+      "submitting": "Closing...",
+      "submitButton": "Close maintenance",
+      "success": "Maintenance closed successfully"
+    },
+    "create": {
+      "button": "New maintenance",
+      "title": "New maintenance",
+      "type": "Type",
+      "typePlaceholder": "Select type",
+      "types": {
+        "regular_service": "Regular service",
+        "repair": "Repair",
+        "technical_inspection": "Technical inspection",
+        "tires": "Tires",
+        "other": "Other"
+      },
+      "urgency": "Urgency",
+      "urgencies": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "description": "Description",
+      "descriptionPlaceholder": "Describe the work to be done...",
+      "startDate": "Start date",
+      "estimatedCost": "Estimated cost (CHF)",
+      "estimatedCostPlaceholder": "e.g. 350.00",
+      "mechanicName": "Mechanic name",
+      "mechanicNamePlaceholder": "e.g. John Smith",
+      "mechanicEmail": "Mechanic email",
+      "mechanicEmailPlaceholder": "e.g. mechanic@garage.ch",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional notes...",
+      "submitting": "Creating...",
+      "submitButton": "Create maintenance",
+      "success": "Maintenance created successfully"
+    }
+  },
+  "payments": {
+    "process": {
+      "button": "Mark as Paid",
+      "title": "Record Payment",
+      "amount": "Amount (CHF)",
+      "method": "Payment Method",
+      "methodPlaceholder": "Select method",
+      "methods": {
+        "cash": "Cash",
+        "card": "Card",
+        "bank_transfer": "Bank Transfer"
+      },
+      "paidAt": "Payment Date",
+      "reference": "Payment Reference",
+      "referencePlaceholder": "e.g. TRF-2026-001",
+      "notes": "Notes",
+      "notesPlaceholder": "Optional notes...",
+      "submitting": "Processing...",
+      "submitButton": "Confirm Payment",
+      "success": "Payment recorded successfully"
+    }
+  },
+  "rbac": {
+    "accessDenied": "Access Denied",
+    "accessDeniedDescription": "You do not have the necessary permissions to access this page.",
+    "backToDashboard": "Back to Dashboard",
+    "roles": {
+      "admin": "Administrator",
+      "agent": "Agent",
+      "viewer": "Viewer"
+    },
+    "errors": {
+      "notAuthenticated": "You must be logged in",
+      "accountInactive": "Your account is disabled",
+      "accessDenied": "Insufficient permissions",
+      "cannotChangeOwnRole": "You cannot change your own role",
+      "cannotDeactivateSelf": "You cannot change your own status",
+      "userNotFound": "User not found",
+      "invalidInput": "Invalid data"
+    },
+    "users": {
+      "title": "User Management",
+      "role": "Role",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "changeRole": "Change role",
+      "toggleActive": "Enable/Disable",
+      "roleUpdated": "Role updated successfully",
+      "statusUpdated": "Status updated successfully"
+    }
   }
 }

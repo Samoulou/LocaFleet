@@ -1,16 +1,18 @@
 Read the user story $ARGUMENTS from docs/prd/.
+Read the schema from src/db/schema.ts.
+Read the UI specs from docs/prd/3-user-interface-design-goals.md.
 
 First, enter Plan Mode and propose an implementation plan.
-Reference the relevant skills (locafleet-schema, locafleet-stack, locafleet-ui).
 Wait for my approval before coding.
 
 Your plan must include:
-1. Files to create/modify
-2. Components needed
-3. Server Actions needed
-4. Validation schemas needed (Zod)
-5. Unit tests needed (list each test file and what it tests)
-6. Edge cases to handle
+1. Files to create/modify (with full paths)
+2. Components needed (new or existing to reuse)
+3. Server Actions needed (with function signatures)
+4. Validation schemas needed (Zod schemas with fields)
+5. Unit tests needed (list each test file and what scenarios it tests)
+6. E2E scenarios if this completes an Epic
+7. Edge cases to handle
 
 After I approve and you implement:
 1. Write unit tests for every Server Action created/modified
