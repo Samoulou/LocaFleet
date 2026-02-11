@@ -125,6 +125,62 @@
       "transmissions": {
         "manual": "Manual",
         "automatic": "Automatic"
+      },
+      "tabs": {
+        "informations": "Information",
+        "photos": "Photos",
+        "locations": "Rentals",
+        "maintenance": "Maintenance"
+      },
+      "summary": {
+        "category": "Category",
+        "fuelType": "Fuel Type",
+        "transmission": "Transmission",
+        "mileage": "Mileage",
+        "year": "Year",
+        "seats": "Seats",
+        "dailyRate": "Daily Rate",
+        "weeklyRate": "Weekly Rate"
+      },
+      "rentalHistory": {
+        "title": "Rental History",
+        "empty": "No rentals for this vehicle",
+        "contractNumber": "Contract #",
+        "client": "Client",
+        "startDate": "Start",
+        "endDate": "End",
+        "amount": "Amount",
+        "status": "Status",
+        "statuses": {
+          "draft": "Draft",
+          "active": "Active",
+          "completed": "Completed",
+          "cancelled": "Cancelled"
+        }
+      },
+      "maintenanceHistory": {
+        "title": "Maintenance History",
+        "empty": "No maintenance history",
+        "type": "Type",
+        "description": "Description",
+        "startDate": "Start",
+        "endDate": "End",
+        "estimatedCost": "Estimated Cost",
+        "finalCost": "Final Cost",
+        "status": "Status",
+        "mechanic": "Mechanic",
+        "statuses": {
+          "open": "Open",
+          "in_progress": "In Progress",
+          "completed": "Completed"
+        },
+        "types": {
+          "regular_service": "Regular Service",
+          "repair": "Repair",
+          "technical_inspection": "Technical Inspection",
+          "tires": "Tires",
+          "other": "Other"
+        }
       }
     },
     "photos": {
