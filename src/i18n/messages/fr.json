@@ -200,6 +200,55 @@
       "loadError": "Impossible de charger le véhicule"
     }
   },
+  "settings": {
+    "categories": {
+      "title": "Catégories de véhicules",
+      "subtitle": "Gérez les catégories de votre flotte",
+      "newCategory": "Nouvelle catégorie",
+      "columns": {
+        "name": "Nom",
+        "description": "Description",
+        "dailyRate": "Tarif journalier",
+        "weeklyRate": "Tarif hebdomadaire",
+        "vehicles": "Véhicules",
+        "actions": "Actions"
+      },
+      "emptyState": {
+        "title": "Aucune catégorie",
+        "description": "Créez votre première catégorie de véhicules"
+      },
+      "form": {
+        "createTitle": "Nouvelle catégorie",
+        "editTitle": "Modifier la catégorie",
+        "name": "Nom",
+        "namePlaceholder": "ex. Citadine, Berline, SUV...",
+        "description": "Description",
+        "descriptionPlaceholder": "Description de la catégorie...",
+        "dailyRate": "Tarif journalier (CHF)",
+        "dailyRatePlaceholder": "ex. 85.00",
+        "weeklyRate": "Tarif hebdomadaire (CHF)",
+        "weeklyRatePlaceholder": "ex. 450.00",
+        "sortOrder": "Ordre de tri",
+        "sortOrderPlaceholder": "ex. 0",
+        "creating": "Création en cours...",
+        "updating": "Modification en cours...",
+        "createButton": "Créer la catégorie",
+        "updateButton": "Enregistrer les modifications",
+        "createSuccess": "Catégorie créée avec succès",
+        "updateSuccess": "Catégorie modifiée avec succès"
+      },
+      "delete": {
+        "title": "Supprimer la catégorie",
+        "description": "Êtes-vous sûr de vouloir supprimer la catégorie \"{name}\" ?",
+        "warning": "{count} véhicule(s) utilise(nt) cette catégorie. Réassignez-les avant de supprimer.",
+        "confirm": "Supprimer",
+        "success": "Catégorie supprimée avec succès",
+        "deleting": "Suppression en cours..."
+      },
+      "error": "Une erreur est survenue lors du chargement des catégories",
+      "noRate": "—"
+    }
+  },
   "rbac": {
     "accessDenied": "Accès refusé",
     "accessDeniedDescription": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",
