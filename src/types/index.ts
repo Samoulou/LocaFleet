@@ -43,6 +43,7 @@ export type InsertPayment = typeof payments.$inferInsert;
 // ============================================================================
 
 export type UserRole = SelectUser["role"];
+export type VehicleStatus = SelectVehicle["status"];
 
 // ============================================================================
 // Server Action result type

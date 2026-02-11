@@ -16,6 +16,19 @@ export function formatCHF(amount: number): string {
 }
 
 /**
+ * Format mileage in Swiss format (apostrophe thousands separator)
+ * e.g. 45230 → "45'230 km"
+ */
+export function formatMileage(km: number): string {
+  return (
+    new Intl.NumberFormat("de-CH", {
+      style: "decimal",
+      maximumFractionDigits: 0,
+    }).format(km) + " km"
+  );
+}
+
+/**
  * Format a date in Swiss format
  */
 export function formatDate(date: Date | string): string {

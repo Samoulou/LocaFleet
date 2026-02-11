@@ -63,6 +63,42 @@
     "searchNoResults": "Aucun résultat pour \"{query}\"",
     "searchMinChars": "Tapez au moins 2 caractères"
   },
+  "vehicles": {
+    "title": "Véhicules",
+    "subtitle": "Gérez votre flotte de véhicules",
+    "newVehicle": "Nouveau véhicule",
+    "searchPlaceholder": "Rechercher par marque, modèle ou plaque...",
+    "allStatuses": "Tous les statuts",
+    "allCategories": "Toutes les catégories",
+    "columns": {
+      "photo": "Photo",
+      "brandModel": "Marque / Modèle",
+      "plateNumber": "Immatriculation",
+      "category": "Catégorie",
+      "mileage": "Km",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "status": {
+      "available": "Disponible",
+      "rented": "Loué",
+      "maintenance": "Maintenance",
+      "out_of_service": "Hors service"
+    },
+    "viewDetails": "Voir les détails",
+    "emptyState": {
+      "title": "Aucun véhicule",
+      "description": "Ajoutez votre premier véhicule pour commencer",
+      "cta": "Ajouter votre premier véhicule"
+    },
+    "noResults": "Aucun véhicule ne correspond aux filtres",
+    "pagination": {
+      "showing": "Affichage {start} à {end} sur {total}",
+      "previous": "Précédent",
+      "next": "Suivant"
+    },
+    "error": "Une erreur est survenue lors du chargement des véhicules"
+  },
   "rbac": {
     "accessDenied": "Accès refusé",
     "accessDeniedDescription": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",
