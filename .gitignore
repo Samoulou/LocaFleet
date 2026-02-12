@@ -49,6 +49,7 @@ yarn-error.log*
 # Misc
 *.log
 .turbo/
+nul
 
 # Drizzle
 drizzle/
