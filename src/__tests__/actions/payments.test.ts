@@ -42,7 +42,7 @@ const VIEWER_USER = {
 const VALID_INPUT = {
   invoiceId: INVOICE_ID,
   amount: 1250.5,
-  method: "bank_transfer",
+  method: "invoice",
   paidAt: "2026-02-10",
 };
 

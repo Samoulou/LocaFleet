@@ -678,7 +678,7 @@ export const SEED_PAYMENTS = [
     invoiceId: SEED_INVOICES[2].id, // FAC-2026-0003 (verification)
     processedByUserId: SEED_USERS[0].id, // Admin
     amount: "525.00",
-    method: "bank_transfer" as const,
+    method: "invoice" as const,
     reference: "VIR-2026-00341",
     paidAt: "2026-01-20T14:00:00.000Z",
   },
@@ -687,7 +687,7 @@ export const SEED_PAYMENTS = [
     invoiceId: SEED_INVOICES[3].id, // FAC-2026-0004 (paid)
     processedByUserId: SEED_USERS[1].id, // Agent
     amount: "260.00",
-    method: "cash" as const,
+    method: "cash_departure" as const,
     reference: "CASH-2026-00112",
     paidAt: "2026-01-26T10:00:00.000Z",
   },
