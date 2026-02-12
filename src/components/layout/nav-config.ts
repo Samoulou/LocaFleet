@@ -23,6 +23,7 @@ export type NavItem = {
   icon: LucideIcon;
   resource?: Resource;
   adminOnly?: boolean;
+  disabled?: boolean;
 };
 
 export type NavSection = {
@@ -33,7 +34,13 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     items: [
       { key: "vehicles", href: "/vehicles", icon: Car, resource: "vehicles" },
-      { key: "clients", href: "/clients", icon: Users, resource: "clients" },
+      {
+        key: "clients",
+        href: "/clients",
+        icon: Users,
+        resource: "clients",
+        disabled: true,
+      },
       {
         key: "contracts",
         href: "/contracts",
@@ -51,6 +58,7 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/maintenance",
         icon: Wrench,
         resource: "vehicles",
+        disabled: true,
       },
     ],
   },
