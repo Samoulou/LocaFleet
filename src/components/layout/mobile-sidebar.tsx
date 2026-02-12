@@ -61,9 +61,25 @@ export function MobileSidebar({ user }: MobileSidebarProps) {
                 {section.items
                   .filter((item) => isItemVisible(item, user.role))
                   .map((item) => {
-                    const active = isActive(item.href);
+                    const active = !item.disabled && isActive(item.href);
                     const Icon = item.icon;
                     const label = t(`navigation.${item.key}`);
+
+                    if (item.disabled) {
+                      return (
+                        <span
+                          key={item.key}
+                          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium border-l-[3px] border-transparent text-slate-400 cursor-not-allowed"
+                          aria-disabled="true"
+                        >
+                          <Icon className="w-5 h-5 shrink-0" />
+                          <span className="truncate">{label}</span>
+                          <span className="ml-auto text-[10px] font-normal text-slate-400">
+                            {t("sidebar.comingSoon")}
+                          </span>
+                        </span>
+                      );
+                    }
 
                     return (
                       <Link

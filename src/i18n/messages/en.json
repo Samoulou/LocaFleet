@@ -50,7 +50,8 @@
     "collapse": "Collapse menu",
     "expand": "Expand menu",
     "profile": "Profile",
-    "openMenu": "Open menu"
+    "openMenu": "Open menu",
+    "comingSoon": "Soon"
   },
   "topbar": {
     "searchPlaceholder": "Search...",
