@@ -9,7 +9,7 @@
 ```
 Phase 1  Foundation & Auth .............. ✅ DONE
 Phase 2  Fleet Management ............... ✅ DONE
-Phase 3  MVP Flux Location .............. 🔄 EN COURS (4/9 US)
+Phase 3  MVP Flux Location .............. 🔄 9/11 US done (reste MVP-4 + MVP-5)
 Phase 4  Post-MVP ....................... ░░ BACKLOG
 ```
 
@@ -23,9 +23,11 @@ Phase 4  Post-MVP ....................... ░░ BACKLOG
 | MVP-4 | Email CG + page publique | ❌ A faire |
 | MVP-5 | Digicode + notification | ❌ A faire |
 | MVP-6 | Constat de depart | ✅ Done |
-| MVP-7 | Constat de retour (+ photos tablette) | ❌ A faire |
-| MVP-8 | Validation retour + archivage | ❌ A faire |
-| MVP-9 | Page CRUD clients | ❌ A faire |
+| MVP-7 | Constat de retour (+ photos tablette) | ✅ Done |
+| MVP-8 | Validation retour + archivage | ✅ Done |
+| MVP-9 | Page CRUD clients (detail, documents, KPIs) | ✅ Done |
+| MVP-10 | Capture photo tablette + compression WebP | ✅ Done |
+| MVP-11 | Page detail facture | ✅ Done |
 
 **Bonus deja implemente :** liste contrats, detail contrat, liste factures, paiements.
 

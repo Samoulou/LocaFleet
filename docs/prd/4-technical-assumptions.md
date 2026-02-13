@@ -155,18 +155,23 @@ CREATE POLICY "tenant_isolation" ON vehicles
 
 ## 4.6 Database Schema — Core Entities
 
+> **Total : 23 tables, 23 enums** — voir `src/db/schema.ts` pour la source de verite.
+
 ```
 Tenant ──┬── User
          ├── Vehicle ──── VehicleCategory
          │      ├── MaintenanceRecord
          │      ├── VehiclePhoto
-         │      └── Inspection
+         │      └── Inspection ──┬── InspectionPhoto
+         │                       └── InspectionDamage
          ├── Client ──── ClientDocument
          ├── RentalContract ──┬── ContractOption
          │      │             └── Inspection
          │      ├── Invoice ──── Payment
          │      └── RentalDossier (archived)
-         └── EmailLog
+         ├── EmailLog
+         ├── Notification
+         └── AuditLog
 ```
 
 ## 4.7 Key Technical Decisions

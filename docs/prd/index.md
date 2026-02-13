@@ -1,9 +1,9 @@
 # LocaFleet — Product Requirements Document (PRD)
 
-> **Version:** 2.0.0
+> **Version:** 2.1.0
 > **Last updated:** 2026-02-13
 > **Author:** Sam
-> **Status:** MVP in progress
+> **Status:** MVP 9/11 US done — reste MVP-4 (Email CG) + MVP-5 (Digicode)
 
 ---
 
@@ -45,7 +45,7 @@
 
 | # | Document | Description |
 |---|----------|-------------|
-| — | [Schema Drizzle](./schema.ts) | Schema complet de la base de donnees (21 tables) |
+| — | [Schema Drizzle](./schema.ts) | Schema complet de la base de donnees (23 tables, 23 enums) |
 | — | [Change Log](./change-log.md) | Version history |
 | — | [Prompt Maquettes](./prompt-maquettes-locafleet.md) | Prompts pour la generation de maquettes UI |
 | — | [Railway Setup](./railway-setup.md) | Guide de deploiement Railway |

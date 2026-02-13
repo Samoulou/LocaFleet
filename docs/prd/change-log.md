@@ -1,5 +1,21 @@
 # Change Log
 
+## [2.1.0] — 2026-02-13
+
+### Changed
+- **Audit PRD complet** : mise a jour de tous les documents pour refleter l'etat reel du codebase
+- Statuts MVP mis a jour : 9/11 US completees (MVP-7, MVP-8, MVP-9, MVP-10, MVP-11 marques DONE)
+- Sprint 4 et Sprint 5 marques COMPLETE dans doc 23
+- Nombre de tables corrige : 21 → **23 tables** (ajout `inspectionDamages`, `notifications`, `auditLogs`)
+- Nombre d'enums documente : **23 enums**
+- Doc 5 (epic list) : barre de progression mise a jour (~90%), MVP-10 ajoute au tableau
+- Doc 13 (next steps) : travail restant reduit de ~24h a ~8h (MVP-4 + MVP-5 uniquement)
+- Doc 12 (checklist) : story count mis a jour (11 US, 9/11 done)
+- Doc 15 (testing) : arborescence corrigee (`src/__tests__/` pas co-located), mention des 51 fichiers de tests
+- Doc 14 (claude code setup) : tables/enums corriges, organisation des tests corrigee
+- Doc 4 (technical assumptions) : diagramme entites complete avec InspectionDamage, Notification, AuditLog
+- Doc 22 (dev flow summary) : avancement mis a jour (9/11 US)
+
 ## [2.0.0] — 2026-02-13
 
 ### Changed

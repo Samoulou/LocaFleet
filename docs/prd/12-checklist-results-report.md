@@ -16,9 +16,9 @@
 | 10 | Architecture documented | ✅ | Section 4.2 — diagram + rationale |
 | 11 | Multi-tenancy strategy defined | ✅ | Section 4.3 — RLS des V1 |
 | 12 | Auth & RBAC specified | ✅ | Section 4.4 — 3 roles with permission matrix |
-| 13 | Data model documented | ✅ | Section 4.6 + schema.ts (21 tables) |
+| 13 | Data model documented | ✅ | Section 4.6 + schema.ts (23 tables, 23 enums) |
 | 14 | MVP workflow defined | ✅ | Section 23 — flux location complet |
-| 15 | User stories with acceptance criteria (Gherkin) | ✅ | 23-mvp-workflow — 9 US MVP |
+| 15 | User stories with acceptance criteria (Gherkin) | ✅ | 23-mvp-workflow — 11 US MVP (9/11 done) |
 | 16 | Dependencies between US mapped | ✅ | Section 23.5 — sprint planning |
 | 17 | Definition of Done established | ✅ | Section 5 |
 | 18 | Inspection photo capture spec | ✅ | Section 3.7 — camera native tablette |
@@ -35,7 +35,7 @@
 |-------|---------|--------|
 | Phase 1 — Foundation & Auth | ~8 | ✅ Complete |
 | Phase 2 — Fleet Management | ~10 | ✅ Complete |
-| Phase 3 — MVP Flux Location | 9 (MVP-1 a MVP-9) | 🔄 4/9 done |
+| Phase 3 — MVP Flux Location | 11 (MVP-1 a MVP-11) | 🔄 9/11 done |
 | Phase 4 — Post-MVP (backlog) | ~6 features | Backlog |
 
 ## Dev Readiness Assessment
@@ -50,6 +50,6 @@
 | UI/UX specs | 🟢 9/10 | Design system + camera native spec |
 | Tech stack | 🟢 10/10 | Finalisee et validee, en production |
 | Architecture | 🟢 9/10 | Multi-tenant, RLS, Server Actions |
-| Data model | 🟢 10/10 | Schema Drizzle complet (21 tables), en production |
+| Data model | 🟢 10/10 | Schema Drizzle complet (23 tables, 23 enums), en production |
 | Tests | 🟢 8/10 | 50+ test files, patterns etablis |
-| **Score global** | **🟢 9.3/10** | **MVP Phase 3 en cours** |
+| **Score global** | **🟢 9.3/10** | **MVP Phase 3 : 9/11 US done, reste MVP-4 + MVP-5** |

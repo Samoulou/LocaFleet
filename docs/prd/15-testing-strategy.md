@@ -41,35 +41,44 @@
 
 ## 3. Organisation des Fichiers
 
+> **Convention reelle :** tous les tests unitaires sont dans `src/__tests__/` (pas co-localisés).
+> ~51 fichiers de tests existent actuellement.
+
 ```
 src/
-├── __tests__/                    # Tests unitaires globaux
-│   ├── utils/
+├── __tests__/                    # Tous les tests unitaires
+│   ├── setup.ts                  # Mocks DB + Auth (vi.mock)
+│   ├── actions/                  # Tests des Server Actions
+│   │   ├── clients.test.ts
+│   │   ├── vehicles.test.ts
+│   │   ├── contracts.test.ts
+│   │   ├── inspections.test.ts
+│   │   └── invoices.test.ts
+│   ├── validations/              # Tests des schemas Zod
+│   │   ├── vehicle.test.ts
+│   │   ├── client.test.ts
+│   │   ├── contract.test.ts
+│   │   └── inspection.test.ts
+│   ├── components/               # Tests des composants partages
+│   │   └── status-badge.test.tsx
+│   ├── lib/                      # Tests utilitaires
 │   │   ├── format-chf.test.ts
 │   │   ├── format-date.test.ts
-│   │   └── cn.test.ts
-│   └── validations/
-│       ├── vehicle.test.ts
-│       ├── client.test.ts
-│       ├── contract.test.ts
-│       └── inspection.test.ts
-├── actions/
+│   │   └── pricing.test.ts
+│   └── i18n/                     # Tests internationalisation
+│       └── messages.test.ts
+├── actions/                      # Server Actions (source)
 │   ├── vehicle.actions.ts
-│   ├── vehicle.actions.test.ts    # Test co-localisé avec l'action
 │   ├── client.actions.ts
-│   ├── client.actions.test.ts
 │   ├── contract.actions.ts
-│   └── contract.actions.test.ts
+│   └── inspection.actions.ts
 ├── components/
 │   └── shared/
 │       ├── status-badge.tsx
-│       ├── status-badge.test.tsx   # Test co-localisé avec le composant
-│       ├── data-table.tsx
-│       └── data-table.test.tsx
+│       └── data-table.tsx
 └── lib/
     ├── utils.ts
-    ├── pricing.ts                  # Logique calcul tarifs
-    └── pricing.test.ts
+    └── pricing.ts
 
 e2e/                               # Tests Playwright (racine du projet)
 ├── auth.setup.ts                  # Login partagé (storageState)
@@ -83,7 +92,7 @@ e2e/                               # Tests Playwright (racine du projet)
     └── helpers.ts                 # Utilitaires Playwright (login, navigation...)
 ```
 
-**Convention :** tests co-localisés (`*.test.ts` à côté du fichier testé) sauf pour les tests globaux (validations, utils).
+**Convention :** tests dans `src/__tests__/` organises par type (actions, validations, components, lib). Helpers de mock : `mockSelectChain()` et `mockInsertChain()` dans setup.ts.
 
 ---
 

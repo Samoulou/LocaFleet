@@ -34,7 +34,7 @@ Skills qu'on doit écrire car ils sont spécifiques à notre stack exact.
 | Skill | Contenu | Priorité |
 |-------|---------|----------|
 | **locafleet-stack** | Stack complète (Next.js 15 + Drizzle + Supabase + Hono + Better Auth + Railway) — conventions, patterns, file structure | 🔴 Critique |
-| **locafleet-schema** | Référence du schéma Drizzle (21 tables, relations, enums) — Claude le consulte avant toute requête DB | 🔴 Critique |
+| **locafleet-schema** | Référence du schéma Drizzle (23 tables, 23 enums, relations) — Claude le consulte avant toute requête DB | 🔴 Critique |
 | **locafleet-ui** | Design system (couleurs, badges, patterns A/B/C/D, sidebar specs, planby config) | 🔴 Critique |
 | **locafleet-testing** | Conventions de tests (Vitest + Playwright), patterns, mocks DB/Auth, organisation fichiers | 🔴 Critique |
 | **locafleet-orchestrator** | Meta-skill qui route vers le bon skill selon la tâche (voir section 2) | 🟠 Important |
@@ -289,7 +289,7 @@ name: locafleet-schema
 description: >
   Complete database schema reference for LocaFleet.
   MUST be consulted before ANY database operation (query, insert, update, migration).
-  Contains all 21 tables, 18 enums, relations, and indexes.
+  Contains all 23 tables, 23 enums, relations, and indexes.
 ---
 
 # LocaFleet Database Schema
@@ -298,7 +298,7 @@ description: >
 
 @src/db/schema.ts
 
-## Tables (21 tables)
+## Tables (23 tables)
 
 ### Foundation
 - `tenants`, `users`, `sessions`, `accounts`, `verifications`
@@ -406,7 +406,10 @@ description: >
 - **Mocks**: vi.mock for DB and Auth (see setup.ts)
 
 ## File Organization
-- Tests co-located: `entity.actions.test.ts` next to `entity.actions.ts`
+- Server Action tests: `src/__tests__/actions/entity.test.ts`
+- Validation tests: `src/__tests__/validations/entity.test.ts`
+- Component tests: `src/__tests__/components/entity.test.tsx`
+- Lib/util tests: `src/__tests__/lib/entity.test.ts`
 - Shared test utils: `src/__tests__/setup.ts`
 - E2E tests: `e2e/feature.spec.ts`
 - E2E fixtures: `e2e/fixtures/`
@@ -519,7 +522,7 @@ Next.js 15 (App Router) + Drizzle ORM + Supabase (PostgreSQL 16) + Better Auth +
 - NEVER commit `.env.local` or secrets
 
 ## Important Files
-- Schema: `src/db/schema.ts` (21 tables, single source of truth)
+- Schema: `src/db/schema.ts` (23 tables, 23 enums, single source of truth)
 - Auth: `src/lib/auth.ts` (Better Auth config)
 - PRD: `docs/prd/` (product requirements, UI specs, user stories)
 - UI specs: `docs/prd/3-user-interface-design-goals.md`

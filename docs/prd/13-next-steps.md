@@ -6,12 +6,18 @@
 |----|-------------|-------------|-------------|
 | MVP-4 | Email CG + page approbation publique | 5h | MVP-3 ✅ |
 | MVP-5 | Generation digicode + notification | 3h | MVP-4 |
-| MVP-7 | Constat de retour (photos tablette live) | 5h | MVP-6 ✅ |
-| MVP-8 | Validation retour + archivage automatique | 4h | MVP-7 |
-| MVP-9 | Page CRUD clients autonome | 5h | MVP-2 ✅ |
-| — | Mise a jour constat de depart (camera native) | 2h | MVP-6 ✅ |
 
-**Total estime restant : ~24h**
+**Total estime restant : ~8h**
+
+### Recemment completes (Sprint 4 & 5)
+
+| US | Description | Statut |
+|----|-------------|--------|
+| MVP-7 | Constat de retour (photos tablette live) | ✅ Done |
+| MVP-8 | Validation retour + archivage automatique | ✅ Done |
+| MVP-9 | Page CRUD clients autonome (detail, documents, KPIs) | ✅ Done |
+| MVP-10 | Capture photo tablette native + compression WebP | ✅ Done |
+| MVP-11 | Page detail facture (getInvoiceById, updateInvoiceStatus) | ✅ Done |
 
 ## Post-MVP — Backlog
 

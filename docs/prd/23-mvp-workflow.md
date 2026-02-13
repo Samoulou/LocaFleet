@@ -3,6 +3,8 @@
 > **Source de verite unique** pour le scope MVP. Les anciens fichiers Epic (6 a 11) ont ete supprimes.
 > Pour le backlog post-MVP, voir [5-epic-list.md](./5-epic-list.md#phase-4--post-mvp-backlog).
 
+> **Avancement : 9/11 US completes. Reste : MVP-4 (Email CG), MVP-5 (Digicode).**
+
 ---
 
 ## 1. Vue d'ensemble du flux
@@ -321,7 +323,7 @@ And a payment record is created with method "cash"
 
 ---
 
-#### US-MVP-4 : Email CG + page d'approbation publique (client trusted)
+#### US-MVP-4 : Email CG + page d'approbation publique (client trusted) — A FAIRE
 
 **As a** trusted client
 **I want** to receive an email with a link to approve the rental terms
@@ -372,7 +374,7 @@ And the digicode is generated (US-MVP-5)
 
 ---
 
-#### US-MVP-5 : Génération digicode + notification
+#### US-MVP-5 : Génération digicode + notification — A FAIRE
 
 **As a** admin
 **I want** a digicode auto-generated when the client approves the CG
@@ -639,7 +641,7 @@ And I can upload/view their documents (license, ID)
 
 ---
 
-#### US-MVP-11 : Page détail facture
+#### US-MVP-11 : Page détail facture ✅ DONE
 
 **As a** admin / comptable
 **I want** to view the full detail of an invoice on a dedicated page
@@ -741,7 +743,7 @@ Then I am navigated to the corresponding detail page
 
 ## 5. Résumé Sprint Planning
 
-### Sprint 3 — Contrat & Facturation ✅ COMPLETE
+### Sprint 3 — Contrat & Facturation (3/5 DONE)
 
 | US | Description | Statut |
 |----|-------------|--------|
@@ -751,21 +753,21 @@ Then I am navigated to the corresponding detail page
 | MVP-4 | Email CG + page publique | ❌ A faire |
 | MVP-5 | Digicode + notification | ❌ A faire |
 
-### Sprint 4 — Inspections & Archivage 🔄 EN COURS
+### Sprint 4 — Inspections & Archivage ✅ COMPLETE
 
 | US | Description | Statut |
 |----|-------------|--------|
 | MVP-6 | Constat de depart | ✅ Done |
-| MVP-7 | Constat de retour | ❌ A faire |
-| MVP-10 | Capture photo tablette + compression WebP | ❌ A faire |
-| MVP-8 | Validation retour + archivage | ❌ A faire |
+| MVP-7 | Constat de retour | ✅ Done |
+| MVP-10 | Capture photo tablette + compression WebP | ✅ Done |
+| MVP-8 | Validation retour + archivage | ✅ Done |
 
-### Sprint 5 — Clients, Facturation & Polish
+### Sprint 5 — Clients, Facturation & Polish ✅ COMPLETE
 
 | US | Description | Statut |
 |----|-------------|--------|
-| MVP-9 | Page CRUD clients | ❌ A faire |
-| MVP-11 | Page detail facture | ❌ A faire |
+| MVP-9 | Page CRUD clients | ✅ Done |
+| MVP-11 | Page detail facture | ✅ Done |
 
 ---
 

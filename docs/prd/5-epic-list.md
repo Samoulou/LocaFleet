@@ -7,7 +7,7 @@ LocaFleet MVP couvre le **flux complet de location** : de la creation du contrat
 ```
 Phase 1 (Foundation)     ████████████████████  DONE
 Phase 2 (Fleet)          ████████████████████  DONE
-Phase 3 (MVP Contrats)   ████████████░░░░░░░░  EN COURS
+Phase 3 (MVP Contrats)   ██████████████████░░  ~90% (9/11 US)
 Phase 4 (Post-MVP)       ░░░░░░░░░░░░░░░░░░░░  BACKLOG
 ```
 
@@ -33,7 +33,7 @@ Phase 4 (Post-MVP)       ░░░░░░░░░░░░░░░░░░�
 - Maintenance records (creation, cloture)
 - Settings categories
 
-### Phase 3 — MVP Flux Location 🔄 EN COURS
+### Phase 3 — MVP Flux Location (9/11 US — reste MVP-4 + MVP-5)
 
 > Detail complet : [23-mvp-workflow.md](./23-mvp-workflow.md)
 
@@ -45,10 +45,11 @@ Phase 4 (Post-MVP)       ░░░░░░░░░░░░░░░░░░�
 | MVP-4 | Email CG + page approbation publique (client trusted) | ❌ A faire |
 | MVP-5 | Generation digicode + notification | ❌ A faire |
 | MVP-6 | Constat de depart (etat des lieux sortie) | ✅ Done |
-| MVP-7 | Constat de retour (etat des lieux retour) | ❌ A faire |
-| MVP-8 | Validation retour + archivage automatique | ❌ A faire |
-| MVP-9 | Page CRUD clients autonome | ❌ A faire |
-| MVP-11 | Page detail facture | ❌ A faire |
+| MVP-7 | Constat de retour (etat des lieux retour) | ✅ Done |
+| MVP-8 | Validation retour + archivage automatique | ✅ Done |
+| MVP-9 | Page CRUD clients autonome | ✅ Done |
+| MVP-10 | Capture photo tablette + compression WebP | ✅ Done |
+| MVP-11 | Page detail facture | ✅ Done |
 
 **Bonus deja implemente :**
 - Liste des contrats avec filtres par statut
