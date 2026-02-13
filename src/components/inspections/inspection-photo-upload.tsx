@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import imageCompression from "browser-image-compression";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -33,6 +34,14 @@ const MAX_PHOTOS = 10;
 const MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 
+const COMPRESSION_OPTIONS = {
+  maxWidthOrHeight: 1920,
+  fileType: "image/webp" as const,
+  initialQuality: 0.8,
+  useWebWorker: true,
+  maxSizeMB: 1,
+};
+
 const POSITIONS = [
   "front",
   "back",
@@ -60,6 +69,7 @@ type InspectionPhotoUploadProps = {
 type UploadingFile = {
   id: string;
   previewUrl: string;
+  compressing: boolean;
 };
 
 export function InspectionPhotoUpload({
@@ -76,6 +86,25 @@ export function InspectionPhotoUpload({
   const [selectedPosition, setSelectedPosition] = useState<string>("other");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+
+  const isMaxReached = photos.length >= MAX_PHOTOS;
+  const isUploading = uploading.length > 0;
+
+  const handleCameraClick = useCallback(() => {
+    if (isMaxReached) {
+      toast.error(t("maxPhotosReached"));
+      return;
+    }
+    cameraInputRef.current?.click();
+  }, [isMaxReached, t]);
+
+  const handleGalleryClick = useCallback(() => {
+    if (isMaxReached) {
+      toast.error(t("maxPhotosReached"));
+      return;
+    }
+    fileInputRef.current?.click();
+  }, [isMaxReached, t]);
 
   const handleFiles = useCallback(
     async (files: FileList | File[]) => {
@@ -100,17 +129,38 @@ export function InspectionPhotoUpload({
         const uploadId = crypto.randomUUID();
         const previewUrl = URL.createObjectURL(file);
 
-        setUploading((prev) => [...prev, { id: uploadId, previewUrl }]);
+        setUploading((prev) => [
+          ...prev,
+          { id: uploadId, previewUrl, compressing: true },
+        ]);
 
         try {
-          const ext = file.name.split(".").pop() ?? "jpg";
-          const storagePath = `${tenantId}/inspections/${inspectionId}/${crypto.randomUUID()}.${ext}`;
+          // Compress to WebP before upload
+          let compressed: File;
+          try {
+            compressed = await imageCompression(file, COMPRESSION_OPTIONS);
+          } catch {
+            toast.error(t("compressionError"));
+            setUploading((prev) => prev.filter((u) => u.id !== uploadId));
+            URL.revokeObjectURL(previewUrl);
+            continue;
+          }
+
+          // Mark compression as done, now uploading
+          setUploading((prev) =>
+            prev.map((u) =>
+              u.id === uploadId ? { ...u, compressing: false } : u
+            )
+          );
+
+          const baseName = file.name.replace(/\.[^.]+$/, "");
+          const storagePath = `${tenantId}/inspections/${inspectionId}/${crypto.randomUUID()}.webp`;
           const supabase = getSupabaseBrowserClient();
 
           const { error: uploadError } = await supabase.storage
             .from("inspection-photos")
-            .upload(storagePath, file, {
-              contentType: file.type,
+            .upload(storagePath, compressed, {
+              contentType: "image/webp",
               upsert: false,
             });
 
@@ -125,7 +175,7 @@ export function InspectionPhotoUpload({
           const result = await saveInspectionPhoto({
             inspectionId,
             url: publicUrl,
-            fileName: file.name,
+            fileName: `${baseName}.webp`,
             position: selectedPosition,
           });
 
@@ -134,7 +184,7 @@ export function InspectionPhotoUpload({
           const newPhoto: InspectionPhoto = {
             id: result.data.id,
             url: publicUrl,
-            fileName: file.name,
+            fileName: `${baseName}.webp`,
             position: selectedPosition,
             caption: null,
             sortOrder: photos.length,
@@ -215,29 +265,39 @@ export function InspectionPhotoUpload({
                 ))}
               </SelectContent>
             </Select>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => cameraInputRef.current?.click()}
-              disabled={photos.length >= MAX_PHOTOS}
-            >
-              <Camera className="mr-1 size-4" />
-              {t("takePhoto")}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={photos.length >= MAX_PHOTOS}
-            >
-              <ImagePlus className="mr-1 size-4" />
-              {t("addPhoto")}
-            </Button>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button
+                type="button"
+                variant="default"
+                size="sm"
+                onClick={handleCameraClick}
+                disabled={isMaxReached || isUploading}
+                aria-label={t("cameraAriaLabel")}
+                aria-disabled={isMaxReached || undefined}
+              >
+                <Camera className="mr-1 size-4" />
+                {t("takePhoto")}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleGalleryClick}
+                disabled={isMaxReached}
+                aria-label={t("galleryAriaLabel")}
+                aria-disabled={isMaxReached || undefined}
+              >
+                <ImagePlus className="mr-1 size-4" />
+                {t("addPhoto")}
+              </Button>
+            </div>
           </div>
         )}
       </div>
+
+      {!disabled && isMaxReached && (
+        <p className="text-xs text-slate-500">{t("maxPhotosInfo")}</p>
+      )}
 
       <input
         ref={fileInputRef}
@@ -245,6 +305,9 @@ export function InspectionPhotoUpload({
         accept="image/jpeg,image/png,image/webp"
         multiple
         className="hidden"
+        aria-hidden="true"
+        tabIndex={-1}
+        title={t("galleryAriaLabel")}
         onChange={(e) => {
           if (e.target.files) {
             handleFiles(e.target.files);
@@ -253,12 +316,17 @@ export function InspectionPhotoUpload({
         }}
       />
 
+      {/* capture="environment" is intentionally used for mobile/tablet camera access.
+          On desktop browsers it gracefully falls back to the standard file picker. */}
       <input
         ref={cameraInputRef}
         type="file"
         accept="image/*"
         capture="environment"
         className="hidden"
+        aria-hidden="true"
+        tabIndex={-1}
+        title={t("cameraAriaLabel")}
         onChange={(e) => {
           if (e.target.files) {
             handleFiles(e.target.files);
@@ -323,9 +391,19 @@ export function InspectionPhotoUpload({
           {uploading.map((upload) => (
             <div
               key={upload.id}
-              className="relative flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-blue-200 bg-blue-50"
+              className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-blue-200 bg-blue-50"
             >
-              <Loader2 className="size-6 animate-spin text-blue-500" />
+              {upload.compressing ? (
+                <div className="flex flex-col items-center gap-1">
+                  <div className="absolute inset-0 bg-gray-900/80" />
+                  <Loader2 className="relative z-10 size-6 animate-spin text-white" />
+                  <span className="relative z-10 text-xs text-slate-500">
+                    {t("compressing")}
+                  </span>
+                </div>
+              ) : (
+                <Loader2 className="size-6 animate-spin text-blue-500" />
+              )}
             </div>
           ))}
 
