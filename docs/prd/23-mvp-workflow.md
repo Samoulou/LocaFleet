@@ -1,6 +1,7 @@
 # 23. MVP Workflow — Flux Location Complet
 
-> Ce document **remplace** les Epics 3, 4, 5 et 6 pour la phase MVP. Ces anciens Epics restent comme référence pour les features post-MVP (planning, dashboard avancé, notifications avancées).
+> **Source de verite unique** pour le scope MVP. Les anciens fichiers Epic (6 a 11) ont ete supprimes.
+> Pour le backlog post-MVP, voir [5-epic-list.md](./5-epic-list.md#phase-4--post-mvp-backlog).
 
 ---
 
@@ -172,13 +173,13 @@ index("contracts_cg_token_idx").on(table.cgApprovalToken),
 
 ## 4. User Stories MVP — Ordre d'implémentation
 
-> Les Epics 1 et 2 sont déjà implémentés. Les US ci-dessous constituent le **Sprint 3** et le **Sprint 4**, dans cet ordre exact.
+> Les Phases 1 (Foundation) et 2 (Fleet) sont completes.
 
 ### Sprint 3 — Contrat & Facturation
 
 ---
 
-#### US-MVP-1 : Formulaire création contrat depuis la fiche véhicule
+#### US-MVP-1 : Formulaire creation contrat depuis la fiche vehicule ✅ DONE
 
 **As a** admin
 **I want** to click a vehicle and create a rental contract
@@ -235,7 +236,7 @@ And I see a summary with an "Approuver" button
 
 ---
 
-#### US-MVP-2 : Autocomplete client + modal création rapide
+#### US-MVP-2 : Autocomplete client + modal creation rapide ✅ DONE
 
 **As a** admin
 **I want** to search for an existing client or create one on the fly
@@ -276,7 +277,7 @@ And the "Client connu" toggle reflects the new client's isTrusted value
 
 ---
 
-#### US-MVP-3 : Approbation contrat + génération facture automatique
+#### US-MVP-3 : Approbation contrat + generation facture automatique ✅ DONE
 
 **As a** admin
 **I want** to approve a draft contract and have an invoice auto-generated
@@ -413,7 +414,7 @@ Then the digicode is marked as expired
 
 ---
 
-#### US-MVP-6 : Constat de départ (état des lieux sortie)
+#### US-MVP-6 : Constat de depart (etat des lieux sortie) ✅ DONE
 
 **As a** admin
 **I want** to create a departure inspection for a contract
@@ -582,52 +583,37 @@ And I can upload/view their documents (license, ID)
 
 ## 5. Résumé Sprint Planning
 
-### Sprint 3 — Contrat & Facturation (~22h)
+### Sprint 3 — Contrat & Facturation ✅ COMPLETE
 
-| US | Description | Effort | Dépendances |
-|----|-------------|--------|-------------|
-| MVP-1 | Form contrat depuis véhicule | 6h | Epic 2 ✅ |
-| MVP-2 | Autocomplete client + modal | 4h | — |
-| MVP-3 | Approbation + facture auto | 4h | MVP-1, MVP-2 |
-| MVP-4 | Email CG + page publique | 5h | MVP-3 |
-| MVP-5 | Digicode + notification | 3h | MVP-4 |
+| US | Description | Statut |
+|----|-------------|--------|
+| MVP-1 | Form contrat depuis vehicule | ✅ Done |
+| MVP-2 | Autocomplete client + modal | ✅ Done |
+| MVP-3 | Approbation + facture auto | ✅ Done |
+| MVP-4 | Email CG + page publique | ❌ A faire |
+| MVP-5 | Digicode + notification | ❌ A faire |
 
-### Sprint 4 — Inspections & Archivage (~15h)
+### Sprint 4 — Inspections & Archivage 🔄 EN COURS
 
-| US | Description | Effort | Dépendances |
-|----|-------------|--------|-------------|
-| MVP-6 | Constat de départ | 6h | MVP-3 |
-| MVP-7 | Constat de retour | 5h | MVP-6 |
-| MVP-8 | Validation retour + archivage | 4h | MVP-7 |
+| US | Description | Statut |
+|----|-------------|--------|
+| MVP-6 | Constat de depart | ✅ Done |
+| MVP-7 | Constat de retour | ❌ A faire |
+| MVP-8 | Validation retour + archivage | ❌ A faire |
 
-### Sprint 5 — Polish & Post-MVP
+### Sprint 5 — Clients & Polish
 
-| US | Description | Effort | Dépendances |
-|----|-------------|--------|-------------|
-| MVP-9 | Page CRUD clients | 5h | MVP-2 |
-| — | Planning planby (ex-Epic 4) | 6-8h | MVP-8 |
-| — | Dashboard KPIs (ex-Epic 5) | 4-6h | MVP-8 |
-| — | Notifications avancées (ex-Epic 6) | 4-6h | MVP-8 |
+| US | Description | Statut |
+|----|-------------|--------|
+| MVP-9 | Page CRUD clients | ❌ A faire |
 
 ---
 
-## 6. Impact sur les docs existants
+## 6. Notes
 
-### Docs à adapter
-
-| Doc | Changement |
-|-----|-----------|
-| `schema.ts` | Ajouter les champs §3, mettre à jour l'enum contract_status |
-| Epic 3 (`8-epic-3-clients-contracts.md`) | **Superseded** par ce doc pour le MVP. Garder comme référence pour features avancées (pagination clients, filtres avancés, export) |
-| Epic 4 (`9-epic-4-inspections-planning.md`) | Inspections → intégrées ici (US-MVP-6/7/8). Planning → **post-MVP** |
-| Epic 5 (`10-epic-5-billing-dashboard.md`) | Facture auto → intégrée ici (US-MVP-3). Dashboard → **post-MVP** |
-| Epic 6 (`11-epic-6-notifications-email.md`) | Email CG + digicode → intégrés ici (US-MVP-4/5). Email mécanicien → intégré (US-MVP-7). Reste → **post-MVP** |
-| CLAUDE.md | Ajouter la référence à ce doc comme doc principal pour les Sprint 3-4 |
-| Orchestrateur | Routing pour US-MVP-* → charge ce doc + schema + security |
-
-### Docs inchangés
-
-Les docs 18 (sécurité), 19 (performance), 20 (ops) s'appliquent tels quels. Toutes les règles (tenantId, audit, rate limiting, pagination, logging) sont toujours valides.
+- Les anciens fichiers Epic (6 a 11) ont ete supprimes. Ce document est la **source de verite unique** pour le scope MVP.
+- Les features post-MVP (planning, dashboard KPIs, notifications avancees) sont listees dans [5-epic-list.md](./5-epic-list.md#phase-4--post-mvp-backlog).
+- Les guides techniques (securite, performance, ops, tests) s'appliquent tels quels. Toutes les regles (tenantId, audit, rate limiting, pagination, logging) restent valides.
 
 ---
 

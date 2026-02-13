@@ -290,9 +290,10 @@ Contenu de l'étape courante
 - 3 lignes : label + count + pourcentage + progress bar couleur
 - En location: bleu, Disponible: vert, Maintenance: ambre
 
-## 3.5 Planning — Gantt Timeline (planby)
+## 3.5 Planning — Gantt Timeline (planby) *(Post-MVP)*
 
-> **Librairie : `planby`** — timeline horizontale React, légère, customisable.
+> **Post-MVP.** Sera implemente apres le flux de location complet.
+> **Librairie : `planby`** — timeline horizontale React, legere, customisable.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -349,18 +350,47 @@ Contenu de l'étape courante
   - Contenu : `✅ X dossiers sélectionnés | Total: CHF X | Annuler | 📄 PDF | [Marquer comme facturé]`
   - Bouton action : `bg-blue-600 text-white`
 
-## 3.7 État des lieux — Deux versions
+## 3.7 Etat des lieux — Inspections
 
-### MVP (V1.0 — Sprint 6-8)
-Formulaire simple, une seule page scrollable :
-- Km + Carburant (gauge slider)
-- Upload photos (dropzone grid)
-- Dégâts : liste simple (zone dropdown + type dropdown + gravité + commentaire)
-- Signature client
+### MVP — Formulaire avec capture photo tablette
+Formulaire simple, une seule page scrollable, optimise tablette :
+- Km + Carburant (gauge slider 5 niveaux)
+- **Photos en direct depuis la tablette** : bouton camera qui ouvre la camera native du navigateur (`<input type="file" accept="image/*" capture="environment">`)
+- Upload photos existantes aussi possible (drag & drop / selection fichier)
+- Compression automatique WebP avant upload (browser-image-compression)
+- Stockage dans Supabase Storage (bucket `inspections`)
+- Degats : liste simple (zone dropdown + type dropdown + severite + commentaire + photo)
+- Signature client (react-signature-canvas)
 - Boutons : Save Draft | Enregistrer
 
-### Version Finale (V1.1)
-Structure enrichie en 4 sections numérotées (cf. maquette 6) :
+**Specs photo capture tablette :**
+```
+┌─────────────────────────────────────────┐
+│  Photos du vehicule                      │
+│                                          │
+│  ┌────────┐ ┌────────┐ ┌────────┐       │
+│  │ 📷     │ │ 📷     │ │ 📷     │       │
+│  │ Avant  │ │ Arriere│ │ Gauche │       │
+│  └────────┘ └────────┘ └────────┘       │
+│  ┌────────┐ ┌────────┐                  │
+│  │ 📷     │ │  +     │  ← Ajouter      │
+│  │ Droite │ │ Photo  │    plus          │
+│  └────────┘ └────────┘                  │
+│                                          │
+│  Chaque slot : tap = ouvre camera native │
+│  Photo prise = thumbnail avec X pour    │
+│  supprimer et re-prendre                │
+└─────────────────────────────────────────┘
+```
+
+- Input file avec `capture="environment"` (camera arriere)
+- Fallback : selection depuis la galerie si pas de camera
+- Preview immediate apres capture
+- Compression WebP avant upload (max 1920px, qualite 0.8)
+- Slots predefinis : AVANT, ARRIERE, GAUCHE, DROITE + photos libres
+
+### Version Finale (V1.1) *(Post-MVP)*
+Structure enrichie en 4 sections numerotees (cf. maquette 6) :
 ```
 ┌─────────────────────────────────────────────┬──────────────┐
 │  Vehicle Inspection (Return)                │ DEPARTURE    │

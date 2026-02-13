@@ -122,7 +122,7 @@ git checkout -b feat/US-3.1-crud-clients
 
 > *"Read the user story US-3.1 from docs/prd/. First, enter Plan Mode and propose an implementation plan. Reference the relevant skills. Wait for my approval before coding. After implementation: write unit tests, run vitest, run tsc, review your own code."*
 
-**2b.** Claude doit trouver l'US-3.1. Il ouvre et lit `docs/prd/8-epic-3-clients-contracts.md`. Il trouve :
+**2b.** Claude doit trouver l'US-3.1. Il ouvre et lit `docs/prd/23-mvp-workflow.md`. Il trouve :
 - La description de l'US
 - Les acceptance criteria en Gherkin
 - Les notes techniques
@@ -439,7 +439,7 @@ Par exemple, après avoir fini US-3.1 (CRUD Clients) + US-3.2 (Wizard Contrats) 
 ```
 L'Epic 3 est terminé. Écris les tests E2E Playwright pour le parcours complet 
 clients + contrats. Lis les acceptance criteria de toutes les US de l'Epic 3 
-dans docs/prd/8-epic-3-clients-contracts.md.
+dans docs/prd/23-mvp-workflow.md.
 ```
 
 **Claude crée :**

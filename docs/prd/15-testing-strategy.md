@@ -578,16 +578,13 @@ npm run check
 | **À la fin de l'Epic** | Tests E2E pour le parcours complet de l'Epic | `npx playwright test e2e/feature.spec.ts` |
 | **Avant merge sur `main`** | TOUS les tests | `npm run check && npm run e2e` |
 
-### Coverage cibles par Epic
+### Coverage cibles par Phase
 
-| Epic | Unit tests attendus | E2E tests attendus |
-|------|--------------------|--------------------|
-| Epic 1 (Auth) | Auth helpers, utils (formatCHF, formatDate, cn) | Login/logout, redirection si non connecté |
-| Epic 2 (Fleet) | Vehicle actions, vehicle schema, category CRUD | CRUD véhicule complet, upload photo, maintenance |
-| Epic 3 (Clients & Contrats) | Client actions, contract actions, pricing logic, contract schema | Wizard contrat complet, PDF generation |
-| Epic 4 (Inspections) | Inspection actions, damage validation | Inspection départ + retour, détection conflits |
-| Epic 5 (Billing) | Invoice generation, dossier logic, payment actions | Parcours facturation complet, bulk actions |
-| Epic 6 (Notifications) | Email template rendering, notification actions | Réception d'email (mock Resend) |
+| Phase | Unit tests attendus | E2E tests attendus |
+|-------|--------------------|--------------------|
+| Phase 1 (Auth) ✅ | Auth helpers, utils (formatCHF, formatDate, cn) | Login/logout, redirection si non connecte |
+| Phase 2 (Fleet) ✅ | Vehicle actions, vehicle schema, category CRUD | CRUD vehicule complet, upload photo, maintenance |
+| Phase 3 (MVP) 🔄 | Client actions, contract actions, pricing logic, inspection actions, invoice actions | Flux complet : contrat → inspection depart → retour → archivage |
 
 ---
 

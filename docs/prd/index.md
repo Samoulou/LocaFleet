@@ -1,13 +1,15 @@
 # LocaFleet — Product Requirements Document (PRD)
 
-> **Version:** 1.2.0
-> **Last updated:** 2026-02-08
+> **Version:** 2.0.0
+> **Last updated:** 2026-02-13
 > **Author:** Sam
-> **Status:** Draft
+> **Status:** MVP in progress
 
 ---
 
 ## Table of Contents
+
+### Fondation
 
 | # | Document | Description |
 |---|----------|-------------|
@@ -15,26 +17,35 @@
 | 2 | [Requirements](./2-requirements.md) | Functional & non-functional requirements |
 | 3 | [User Interface Design Goals](./3-user-interface-design-goals.md) | UI/UX principles, layout, design system |
 | 4 | [Technical Assumptions](./4-technical-assumptions.md) | Stack, architecture, infrastructure decisions |
-| 5 | [Epic List](./5-epic-list.md) | Overview of all epics and delivery phases |
-| 0 | [**Sprint 0 — Setup & Pré-requis**](./6b-sprint-0-setup.md) | **Tâches bloquantes et nice-to-have avant le dev** |
-| 6 | [Epic 1 — Foundation & Auth](./6-epic-1-foundation-auth.md) | Authentication, tenant structure, i18n setup |
-| 7 | [Epic 2 — Fleet Management](./7-epic-2-fleet-management.md) | Vehicle catalog, categories, statuses, maintenance |
-| 8 | [Epic 3 — Clients & Contracts](./8-epic-3-clients-contracts.md) | Client profiles, rental contracts, PDF generation |
-| 9 | [Epic 4 — Inspections & Planning](./9-epic-4-inspections-planning.md) | Vehicle inspections, calendar, availability |
-| 10 | [Epic 5 — Billing & Dashboard](./10-epic-5-billing-dashboard.md) | Invoicing, payments, analytics dashboard |
-| 11 | [Epic 6 — Notifications & Email](./11-epic-6-notifications-email.md) | Email workflows, maintenance alerts, confirmations |
+
+### MVP — Source de verite
+
+| # | Document | Description |
+|---|----------|-------------|
+| 5 | [Epic List & Avancement](./5-epic-list.md) | Vue d'ensemble des phases, avancement, scope MVP |
+| 23 | [**MVP Workflow — Flux Location Complet**](./23-mvp-workflow.md) | **User Stories MVP (Sprint 3-5), schema changes, routes** |
+
+### Guides techniques
+
+| # | Document | Description |
+|---|----------|-------------|
 | 12 | [Checklist & Results Report](./12-checklist-results-report.md) | PRD quality checklist |
-| 13 | [Next Steps](./13-next-steps.md) | Roadmap, V2 considerations, SaaS evolution |
+| 13 | [Next Steps](./13-next-steps.md) | Roadmap, post-MVP, V2 considerations |
+| 14 | [Claude Code Setup Guide](./14-claude-code-setup-guide.md) | Skills, orchestrateur, CLAUDE.md, best practices |
+| 15 | [Strategie de Tests](./15-testing-strategy.md) | Vitest (unit), Playwright (E2E), patterns, CI/CD |
+| 16 | [Workflow Dev d'une US](./16-workflow-developpement-us.md) | Etape par etape du premier prompt au push |
+| 17 | [Orchestration Avancee](./17-claude-code-advanced-orchestration.md) | Subagents, Tasks, hooks, compound engineering |
+| 18 | [Securite & Compliance](./18-security-compliance.md) | Rate limiting, RLS, nLPD, audit trail, headers |
+| 19 | [Performance & Scalabilite](./19-performance-scalability.md) | Caching, pagination, storage, compression |
+| 20 | [Operations & Observabilite](./20-ops-observability.md) | Logging structure, health check, metriques |
+| 21 | [Navigation PRD pour Claude](./21-prd-navigation-strategy.md) | 3 couches de context, routing table |
+| 22 | [Flow de Developpement](./22-development-flow-summary.md) | Le one-pager a garder ouvert pendant le dev |
+
+### Ressources
+
+| # | Document | Description |
+|---|----------|-------------|
+| — | [Schema Drizzle](./schema.ts) | Schema complet de la base de donnees (21 tables) |
 | — | [Change Log](./change-log.md) | Version history |
-| — | [Schema Drizzle](./schema.ts) | Schéma complet de la base de données (21 tables) |
-| — | [**Claude Code Setup Guide**](./14-claude-code-setup-guide.md) | Skills, orchestrateur, CLAUDE.md, best practices |
-| — | [**Stratégie de Tests**](./15-testing-strategy.md) | Vitest (unit), Playwright (E2E), patterns, CI/CD |
-| — | [**Workflow Dev d'une US**](./16-workflow-developpement-us.md) | Étape par étape du premier prompt au push |
-| — | [**Orchestration Avancée**](./17-claude-code-advanced-orchestration.md) | Subagents, Tasks, hooks block-at-commit, compound engineering |
-| — | [**Sécurité & Compliance**](./18-security-compliance.md) | Rate limiting, RLS, nLPD, audit trail, migrations, headers |
-| — | [**Performance & Scalabilité**](./19-performance-scalability.md) | Caching, pagination, storage, compression, Error Boundaries |
-| — | [**Opérations & Observabilité**](./20-ops-observability.md) | Logging structuré, health check, métriques, export, rollback |
-| — | [**Navigation PRD pour Claude**](./21-prd-navigation-strategy.md) | 3 couches de context, routing table, chargement sélectif |
-| — | [**🚀 Flow de Développement**](./22-development-flow-summary.md) | Le one-pager à garder ouvert pendant tout le dev |
-| — | [Prompt Maquettes](./prompt-maquettes-locafleet.md) | Prompts pour la génération de maquettes UI |
-| — | [Railway Setup](./railway-setup.md) | Guide de déploiement Railway |
+| — | [Prompt Maquettes](./prompt-maquettes-locafleet.md) | Prompts pour la generation de maquettes UI |
+| — | [Railway Setup](./railway-setup.md) | Guide de deploiement Railway |
