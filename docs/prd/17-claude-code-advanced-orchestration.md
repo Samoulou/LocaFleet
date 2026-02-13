@@ -194,7 +194,7 @@ Then show me the task list and wait for my approval before starting any work.
 
 **Usage :**
 ```
-/sprint 8-epic-3-clients-contracts
+/sprint 23-mvp-workflow
 ```
 
 **Ce qui se passe :**

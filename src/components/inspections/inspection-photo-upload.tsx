@@ -4,7 +4,7 @@ import { useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { ImagePlus, Trash2, Upload, Loader2 } from "lucide-react";
+import { Camera, ImagePlus, Trash2, Upload, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -75,6 +75,7 @@ export function InspectionPhotoUpload({
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<string>("other");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = useCallback(
     async (files: FileList | File[]) => {
@@ -218,6 +219,16 @@ export function InspectionPhotoUpload({
               type="button"
               variant="outline"
               size="sm"
+              onClick={() => cameraInputRef.current?.click()}
+              disabled={photos.length >= MAX_PHOTOS}
+            >
+              <Camera className="mr-1 size-4" />
+              {t("takePhoto")}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
               onClick={() => fileInputRef.current?.click()}
               disabled={photos.length >= MAX_PHOTOS}
             >
@@ -233,6 +244,20 @@ export function InspectionPhotoUpload({
         type="file"
         accept="image/jpeg,image/png,image/webp"
         multiple
+        className="hidden"
+        onChange={(e) => {
+          if (e.target.files) {
+            handleFiles(e.target.files);
+            e.target.value = "";
+          }
+        }}
+      />
+
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
         className="hidden"
         onChange={(e) => {
           if (e.target.files) {

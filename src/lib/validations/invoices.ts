@@ -66,3 +66,16 @@ export const invoiceListParamsSchema = z.object({
 });
 
 export type InvoiceListParams = z.infer<typeof invoiceListParamsSchema>;
+
+// ============================================================================
+// Update Invoice Status
+// ============================================================================
+
+export const updateInvoiceStatusSchema = z.object({
+  invoiceId: z.string().uuid("L'identifiant de la facture est invalide"),
+  newStatus: z.enum(["invoiced", "cancelled"], {
+    errorMap: () => ({ message: "Le nouveau statut est invalide" }),
+  }),
+});
+
+export type UpdateInvoiceStatusData = z.infer<typeof updateInvoiceStatusSchema>;

@@ -7,6 +7,7 @@ import type {
   vehicleCategories,
   vehicles,
   clients,
+  clientDocuments,
   rentalContracts,
   invoices,
   payments,
@@ -30,6 +31,7 @@ export type SelectPayment = typeof payments.$inferSelect;
 export type SelectInspection = typeof inspections.$inferSelect;
 export type SelectInspectionPhoto = typeof inspectionPhotos.$inferSelect;
 export type SelectInspectionDamage = typeof inspectionDamages.$inferSelect;
+export type SelectClientDocument = typeof clientDocuments.$inferSelect;
 
 // ============================================================================
 // INSERT types (required fields for creating a row)
@@ -65,3 +67,99 @@ export type InspectionType = SelectInspection["type"];
 export type ActionResult<T = void> =
   | { success: true; data: T }
   | { success: false; error: string };
+
+// ============================================================================
+// Client domain types
+// ============================================================================
+
+export type ClientListItem = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  licenseNumber: string | null;
+  isTrusted: boolean;
+  contractCount: number;
+  createdAt: Date;
+};
+
+export type ContractSummary = {
+  id: string;
+  vehicleName: string;
+  startDate: Date;
+  endDate: Date;
+  status: string;
+  totalAmount: string | null;
+};
+
+export type ClientDetail = SelectClient & {
+  documents: SelectClientDocument[];
+  recentContracts: ContractSummary[];
+};
+
+export type ClientKPIs = {
+  totalClients: number;
+  trustedClients: number;
+  activeRentals: number;
+};
+
+// ============================================================================
+// Invoice detail types
+// ============================================================================
+
+export type InvoiceLineItem = {
+  description: string;
+  quantity: number;
+  unitPrice: string;
+  totalPrice: string;
+  type: "base_rental" | "option" | "excess_km" | "damages";
+};
+
+export type InvoiceDetail = {
+  id: string;
+  invoiceNumber: string;
+  status: InvoiceStatus;
+  subtotal: string;
+  taxRate: string;
+  taxAmount: string;
+  totalAmount: string;
+  lineItems: InvoiceLineItem[];
+  invoicePdfUrl: string | null;
+  issuedAt: Date | null;
+  dueDate: string | null;
+  notes: string | null;
+  createdAt: Date;
+  // Related entities
+  client: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+  };
+  vehicle: {
+    id: string;
+    brand: string;
+    model: string;
+    plateNumber: string;
+  };
+  contract: {
+    id: string;
+    contractNumber: string | null;
+    startDate: Date;
+    endDate: Date;
+  };
+  // Payments
+  payments: {
+    id: string;
+    amount: string;
+    method: string;
+    reference: string | null;
+    paidAt: Date;
+    notes: string | null;
+    createdAt: Date;
+  }[];
+  totalPaid: number;
+  balance: number;
+};

@@ -135,6 +135,77 @@ export type UpdateDepartureInspectionData = z.infer<
 >;
 
 // ============================================================================
+// submitReturnInspectionSchema
+// ============================================================================
+
+export const submitReturnInspectionSchema = z
+  .object({
+    inspectionId: z.string().uuid("L'identifiant de l'inspection est invalide"),
+    contractId: z.string().uuid("L'identifiant du contrat est invalide"),
+    mileage: z.coerce
+      .number({
+        invalid_type_error: "Le kilométrage doit être un nombre",
+      })
+      .int("Le kilométrage doit être un entier")
+      .min(0, "Le kilométrage ne peut pas être négatif"),
+    departureMileage: z.coerce
+      .number({
+        invalid_type_error: "Le kilométrage de départ doit être un nombre",
+      })
+      .int("Le kilométrage de départ doit être un entier")
+      .min(0, "Le kilométrage de départ ne peut pas être négatif"),
+    fuelLevel: z.enum(fuelLevelValues, {
+      errorMap: () => ({ message: "Le niveau de carburant est invalide" }),
+    }),
+    exteriorCleanliness: z.enum(cleanlinessValues, {
+      errorMap: () => ({
+        message: "La propreté extérieure est invalide",
+      }),
+    }),
+    interiorCleanliness: z.enum(cleanlinessValues, {
+      errorMap: () => ({
+        message: "La propreté intérieure est invalide",
+      }),
+    }),
+    agentNotes: z
+      .string()
+      .max(5000, "Les notes ne peuvent pas dépasser 5000 caractères")
+      .optional()
+      .transform((v) => (v === "" ? undefined : v?.trim())),
+    mechanicRemarks: z
+      .string()
+      .max(
+        5000,
+        "Les remarques mécanicien ne peuvent pas dépasser 5000 caractères"
+      )
+      .optional()
+      .transform((v) => (v === "" ? undefined : v?.trim())),
+    clientSignatureUrl: z
+      .string()
+      .min(1, "La signature du client est obligatoire au retour"),
+    damages: z.array(inspectionDamageSchema).default([]),
+  })
+  .refine((data) => data.mileage >= data.departureMileage, {
+    message:
+      "Le kilométrage de retour ne peut pas être inférieur au kilométrage de départ",
+    path: ["mileage"],
+  });
+
+export type SubmitReturnInspectionData = z.infer<
+  typeof submitReturnInspectionSchema
+>;
+
+// ============================================================================
+// updateReturnInspectionSchema
+// ============================================================================
+
+export const updateReturnInspectionSchema = submitReturnInspectionSchema;
+
+export type UpdateReturnInspectionData = z.infer<
+  typeof updateReturnInspectionSchema
+>;
+
+// ============================================================================
 // saveInspectionPhotoSchema
 // ============================================================================
 

@@ -33,24 +33,26 @@
 | FR-03.6 | Statuts de contrat : brouillon, actif, terminé, annulé | Must |
 | FR-03.7 | Modification d'un contrat en cours (extension, changement véhicule) | Should |
 
-### FR-04: États des lieux
-| ID | Requirement | Priority |
-|----|------------|----------|
-| FR-04.1 | Constat de départ avec photos et commentaires | Must |
-| FR-04.2 | Constat de retour avec photos et commentaires | Must |
-| FR-04.3 | Documentation des dégâts par photos + commentaires texte | Must |
-| FR-04.4 | Comparatif visuel avant/après | Must |
-| FR-04.5 | Signature électronique du client sur l'état des lieux | Must |
-| FR-04.6 | Génération PDF de l'état des lieux | Should |
+### FR-04: Etats des lieux
+| ID | Requirement | Priority | MVP ? |
+|----|------------|----------|-------|
+| FR-04.1 | Constat de depart avec photos et commentaires | Must | ✅ MVP |
+| FR-04.2 | Constat de retour avec photos et commentaires | Must | ✅ MVP |
+| FR-04.3 | Documentation des degats par photos + commentaires texte | Must | ✅ MVP |
+| FR-04.4 | Prise de photos en direct depuis la camera de la tablette (capture native navigateur) | Must | ✅ MVP |
+| FR-04.5 | Signature electronique du client sur l'etat des lieux | Must | ✅ MVP |
+| FR-04.6 | Comparatif visuel avant/apres (constat retour vs depart) | Must | ✅ MVP |
+| FR-04.7 | Stockage photos dans Supabase Storage (compression WebP) | Must | ✅ MVP |
+| FR-04.8 | Generation PDF de l'etat des lieux | Should | Post-MVP |
 
-### FR-05: Planning
-| ID | Requirement | Priority |
-|----|------------|----------|
-| FR-05.1 | Vue calendrier des réservations par véhicule | Must |
-| FR-05.2 | Détection automatique des conflits de disponibilité | Must |
-| FR-05.3 | Alertes pour les retours prévus (aujourd'hui, en retard) | Must |
-| FR-05.4 | Vue Gantt ou timeline par véhicule | Should |
-| FR-05.5 | Filtrage par catégorie de véhicule, statut, période | Must |
+### FR-05: Planning *(Post-MVP)*
+| ID | Requirement | Priority | MVP ? |
+|----|------------|----------|-------|
+| FR-05.1 | Vue calendrier des reservations par vehicule | Should | Post-MVP |
+| FR-05.2 | Detection automatique des conflits de disponibilite | Should | Post-MVP |
+| FR-05.3 | Alertes pour les retours prevus (aujourd'hui, en retard) | Should | Post-MVP |
+| FR-05.4 | Vue Gantt ou timeline par vehicule (planby) | Should | Post-MVP |
+| FR-05.5 | Filtrage par categorie de vehicule, statut, periode | Should | Post-MVP |
 
 ### FR-06: Facturation & Paiements
 | ID | Requirement | Priority |
@@ -63,22 +65,23 @@
 | FR-06.6 | Génération de facture PDF | Must |
 | FR-06.7 | Génération de lien ou référence pour suivi de paiement externe | Could |
 
-### FR-07: Dashboard
-| ID | Requirement | Priority |
-|----|------------|----------|
-| FR-07.1 | Taux d'occupation de la flotte (global et par catégorie) | Must |
-| FR-07.2 | Chiffre d'affaires par période (jour, semaine, mois, année) | Must |
-| FR-07.3 | Top véhicules les plus / moins loués | Must |
-| FR-07.4 | Alertes en cours (retours, maintenance, paiements en attente) | Must |
-| FR-07.5 | Indicateurs clés en temps réel (KPIs cards) | Must |
+### FR-07: Dashboard *(Post-MVP)*
+| ID | Requirement | Priority | MVP ? |
+|----|------------|----------|-------|
+| FR-07.1 | Taux d'occupation de la flotte (global et par categorie) | Should | Post-MVP |
+| FR-07.2 | Chiffre d'affaires par periode (jour, semaine, mois, annee) | Should | Post-MVP |
+| FR-07.3 | Top vehicules les plus / moins loues | Should | Post-MVP |
+| FR-07.4 | Alertes en cours (retours, maintenance, paiements en attente) | Should | Post-MVP |
+| FR-07.5 | Indicateurs cles en temps reel (KPIs cards) | Should | Post-MVP |
 
 ### FR-08: Notifications
-| ID | Requirement | Priority |
-|----|------------|----------|
-| FR-08.1 | Email automatique au mécanicien lors d'une entrée maintenance | Must |
-| FR-08.2 | Email de confirmation de réservation au client | Must |
-| FR-08.3 | Templates email configurables | Should |
-| FR-08.4 | Historique des emails envoyés | Should |
+| ID | Requirement | Priority | MVP ? |
+|----|------------|----------|-------|
+| FR-08.1 | Email CG au client trusted avec lien approbation | Must | ✅ MVP |
+| FR-08.2 | Email digicode au client apres approbation CG | Must | ✅ MVP |
+| FR-08.3 | Email au mecanicien si remarques au constat de retour | Must | ✅ MVP |
+| FR-08.4 | Templates email configurables | Should | Post-MVP |
+| FR-08.5 | Historique des emails envoyes | Should | Post-MVP |
 
 ## 2.2 Non-Functional Requirements
 

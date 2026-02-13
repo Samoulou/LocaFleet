@@ -43,6 +43,8 @@ export type ContractDetail = {
   returnLocation: string | null;
   notes: string | null;
   createdAt: Date;
+  archivedAt: Date | null;
+  actualReturnDate: Date | null;
   // Client info
   client: {
     id: string;
@@ -104,6 +106,8 @@ export async function getContractById(
         returnLocation: rentalContracts.returnLocation,
         notes: rentalContracts.notes,
         createdAt: rentalContracts.createdAt,
+        archivedAt: rentalContracts.archivedAt,
+        actualReturnDate: rentalContracts.actualReturnDate,
         // Client fields
         clientId: clients.id,
         clientFirstName: clients.firstName,
@@ -187,6 +191,8 @@ export async function getContractById(
         returnLocation: row.returnLocation,
         notes: row.notes,
         createdAt: row.createdAt,
+        archivedAt: row.archivedAt,
+        actualReturnDate: row.actualReturnDate,
         client: {
           id: row.clientId,
           firstName: row.clientFirstName,

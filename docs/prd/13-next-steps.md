@@ -1,53 +1,40 @@
 # 13. Next Steps
 
-## Immediate Actions (Pre-Sprint 1) — Bloquants
+## MVP — Reste a faire
 
-1. **Écrire le schéma Drizzle complet** — Toutes les tables, relations, enums, indexes
-2. **Créer les comptes** — Supabase, Railway, Resend, GitHub repo
-3. **Créer le repo GitHub** — avec structure Next.js 15 + App Router
-4. **Initialiser le projet** — Next.js 15 + shadcn/ui + Tailwind + Drizzle + Better Auth
-5. **Configurer CI/CD** — GitHub Actions → Railway auto-deploy
-6. **Setup Sentry** — Error tracking dès le premier jour
-7. **Décider du nom définitif** — "LocaFleet" est un placeholder
+| US | Description | Effort est. | Dependances |
+|----|-------------|-------------|-------------|
+| MVP-4 | Email CG + page approbation publique | 5h | MVP-3 ✅ |
+| MVP-5 | Generation digicode + notification | 3h | MVP-4 |
+| MVP-7 | Constat de retour (photos tablette live) | 5h | MVP-6 ✅ |
+| MVP-8 | Validation retour + archivage automatique | 4h | MVP-7 |
+| MVP-9 | Page CRUD clients autonome | 5h | MVP-2 ✅ |
+| — | Mise a jour constat de depart (camera native) | 2h | MVP-6 ✅ |
 
-## V1.0 Delivery — Sprints 1-11
+**Total estime restant : ~24h**
 
-| Sprint | Epic | Deliverable |
-|--------|------|-------------|
-| 1-2 | Epic 1 — Foundation | Auth, layout sidebar, i18n, seed data |
-| 2-4 | Epic 2 — Fleet | Véhicules CRUD, catégories, maintenance, photos |
-| 4-6 | Epic 3 — Clients & Contracts | Clients, wizard contrat, PDF, tarification |
-| 6-8 | Epic 4 — Inspections (MVP) & Planning | Constats simples, Gantt planby, conflits dispo |
-| 8-10 | Epic 5 — Billing & Dashboard | Dossiers, quittancement, KPIs, charts |
-| 10-11 | Epic 6 — Notifications | Email mécanicien, confirmation client |
+## Post-MVP — Backlog
 
-## V1.1 — Quick Wins Post-Launch
-
-| Feature | Description | Effort |
-|---------|-------------|--------|
-| Inspection V1.1 | Formulaire structuré 4 sections, photos par position, sidebar departure state | M |
-| Templates email configurables | Admin peut modifier les textes des emails | S |
-| Centre de notifications in-app | Bell icon + liste de notifications | M |
-| Export CSV | Export des listes (véhicules, clients, contrats, factures) | S |
-| Dark mode | Toggle dark/light theme | S |
-| Audit log viewer | Interface pour consulter les logs d'audit | M |
+| Feature | Description | Effort est. |
+|---------|-------------|-------------|
+| Planning Gantt (planby) | Timeline horizontale par vehicule, detection conflits | 6-8h |
+| Dashboard KPIs | Taux d'occupation, CA, alertes, charts Recharts | 4-6h |
+| Notifications avancees | Alertes maintenance, rappels retour, templates configurables | 4-6h |
+| Export PDF contrat | Generation PDF contrat avec @react-pdf/renderer | 4h |
+| Inspection V1.1 | Formulaire structure 4 sections, photos par position, sidebar departure state | 6h |
+| Export CSV | Export des listes (vehicules, clients, contrats, factures) | 3h |
 
 ## V2 — Portal Client (Online Booking)
 
-> Transformation du back-office en plateforme avec un front-end client.
-
 | Feature | Description |
 |---------|-------------|
-| Portail de réservation en ligne | Le client peut voir les véhicules disponibles et réserver |
-| Création de compte client | Inscription, login, profil |
-| Paiement en ligne | Intégration Stripe Checkout pour paiement client |
+| Portail de reservation en ligne | Le client peut voir les vehicules disponibles et reserver |
+| Creation de compte client | Inscription, login, profil |
+| Paiement en ligne | Integration Stripe Checkout pour paiement client |
 | Confirmation et rappels automatiques | Workflow email complet |
-| Évaluation post-location | Le client peut laisser un avis |
-| API publique | Endpoints REST via Hono (déjà préparé) pour intégrations tierces |
+| API publique | Endpoints REST via Hono pour integrations tierces |
 
 ## V3 — Multi-Tenant SaaS
-
-> Ouvrir la plateforme à d'autres loueurs indépendants.
 
 | Feature | Description |
 |---------|-------------|
@@ -55,25 +42,12 @@
 | Billing SaaS | Abonnement mensuel via Stripe Subscriptions |
 | Sous-domaine par tenant | `mon-entreprise.locafleet.ch` |
 | Admin panel super-admin | Gestion de tous les tenants |
-| Personnalisation branding | Logo, couleurs, nom par tenant |
-| Migration hosting | Évaluer Coolify + Infomaniak pour données en Suisse |
-
-## Technical Debt to Address
-
-| Item | Priority | When |
-|------|----------|------|
-| Tests E2E (Playwright) | High | Post V1 launch |
-| Optimiser les requêtes complexes (Drizzle joins) | Medium | Ongoing |
-| CDN pour les images | Medium | V1.1 |
-| Documentation API (Hono endpoints) | Low | V2 |
 
 ## Key Risks & Mitigations
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Volume de photos (constats multiples) | Medium | Compression côté client, limiter à 10 photos/constat, Supabase image transforms |
-| Performance PDF generation (gros contrats) | Medium | Générer via Hono API Route en background, pas en Server Action |
-| Adoption par l'équipe de V1ls | High | Impliquer V1ls dès le sprint 2, feedback loops courts, valider les maquettes |
-| Scope creep | High | Strict priorisation Must/Should, inspection en 2 phases |
-| Conformité RGPD (données clients) | Medium | Privacy by design, soft delete, droit à l'effacement implémenté dès V1 |
-| planby limitations | Low | Si planby ne suffit pas, fallback sur custom CSS Grid + date-fns |
+| Volume de photos (constats multiples) | Medium | Compression WebP cote client, limiter a 10 photos/constat, Supabase image transforms |
+| Performance PDF generation | Medium | Generer via Hono API Route en background |
+| Camera compatibility tablettes | Low | `capture="environment"` est supporte par tous les navigateurs modernes, fallback vers selection fichier |
+| Scope creep | High | MVP scope fixe, tout le reste va dans le backlog post-MVP |

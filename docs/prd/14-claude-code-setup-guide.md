@@ -298,42 +298,25 @@ description: >
 
 @src/db/schema.ts
 
-## Tables by Epic
+## Tables (21 tables)
 
-### Epic 1 — Foundation
-- `tenants` (id, name, slug, settings)
-- `users` (id, tenantId, email, name, role, isActive)
-- `sessions`, `accounts`, `verifications` (Better Auth managed)
+### Foundation
+- `tenants`, `users`, `sessions`, `accounts`, `verifications`
 
-### Epic 2 — Fleet
-- `vehicles` (id, tenantId, categoryId, brand, model, plateNumber, status, mileage, fuelType...)
-- `vehicle_categories` (id, tenantId, name, dailyRate, weeklyRate)
-- `vehicle_photos` (id, vehicleId, url, isCover, sortOrder)
-- `maintenance_records` (id, tenantId, vehicleId, type, status, urgency, mechanicEmail...)
+### Fleet
+- `vehicles`, `vehicle_categories`, `vehicle_photos`, `maintenance_records`
 
-### Epic 3 — Clients & Contracts
-- `clients` (id, tenantId, firstName, lastName, phone, email, licenseNumber...)
-- `client_documents` (id, clientId, type, url)
-- `rental_options` (id, tenantId, name, dailyPrice, isPerDay)
-- `rental_contracts` (id, tenantId, contractNumber, clientId, vehicleId, status, startDate, endDate, dailyRate, totalAmount, depositAmount, depositStatus...)
-- `contract_options` (id, contractId, name, dailyPrice, totalPrice)
+### Clients & Contracts
+- `clients`, `client_documents`, `rental_options`, `rental_contracts`, `contract_options`
 
-### Epic 4 — Inspections
-- `inspections` (id, tenantId, contractId, vehicleId, type[departure|return], mileage, fuelLevel, exteriorCleanliness, interiorCleanliness, clientSignatureUrl...)
-- `inspection_photos` (id, inspectionId, url, position[front|back|left|right|other])
-- `inspection_damages` (id, inspectionId, zone, type, severity, isPreExisting)
+### Inspections
+- `inspections`, `inspection_photos`, `inspection_damages`
 
-### Epic 5 — Billing
-- `invoices` (id, tenantId, contractId, invoiceNumber, status, totalAmount, lineItems[jsonb]...)
-- `payments` (id, tenantId, invoiceId, amount, method[cash|card|bank_transfer], paidAt)
-- `rental_dossiers` (id, tenantId, contractId, invoiceId, status, clientName, vehicleInfo...)
+### Billing
+- `invoices`, `payments`, `rental_dossiers`
 
-### Epic 6 — Notifications
-- `email_logs` (id, tenantId, type, status, recipientEmail, subject, resendId...)
-- `notifications` (id, tenantId, userId, type, title, message, isRead)
-
-### Cross-epic
-- `audit_logs` (id, tenantId, userId, action, entityType, entityId, changes[jsonb])
+### Notifications & Audit
+- `email_logs`, `notifications`, `audit_logs`
 
 ## Key Enums
 vehicle_status: available | rented | maintenance | out_of_service
@@ -542,7 +525,7 @@ Next.js 15 (App Router) + Drizzle ORM + Supabase (PostgreSQL 16) + Better Auth +
 - UI specs: `docs/prd/3-user-interface-design-goals.md`
 
 ## MANDATORY WORKFLOW — DO NOT SKIP
-1. For ANY User Story implementation: READ the relevant epic file in `docs/prd/` FIRST
+1. For ANY User Story implementation: READ `docs/prd/23-mvp-workflow.md` FIRST
 2. For ANY DB operation: READ `src/db/schema.ts` FIRST — never guess column names
 3. For ANY UI component: READ `docs/prd/3-user-interface-design-goals.md` FIRST
 4. ALWAYS plan before coding. Propose files to create/modify, wait for approval.

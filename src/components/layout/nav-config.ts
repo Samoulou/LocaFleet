@@ -39,7 +39,6 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/clients",
         icon: Users,
         resource: "clients",
-        disabled: true,
       },
       {
         key: "contracts",

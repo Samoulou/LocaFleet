@@ -1,6 +1,7 @@
 # 23. MVP Workflow — Flux Location Complet
 
-> Ce document **remplace** les Epics 3, 4, 5 et 6 pour la phase MVP. Ces anciens Epics restent comme référence pour les features post-MVP (planning, dashboard avancé, notifications avancées).
+> **Source de verite unique** pour le scope MVP. Les anciens fichiers Epic (6 a 11) ont ete supprimes.
+> Pour le backlog post-MVP, voir [5-epic-list.md](./5-epic-list.md#phase-4--post-mvp-backlog).
 
 ---
 
@@ -172,13 +173,13 @@ index("contracts_cg_token_idx").on(table.cgApprovalToken),
 
 ## 4. User Stories MVP — Ordre d'implémentation
 
-> Les Epics 1 et 2 sont déjà implémentés. Les US ci-dessous constituent le **Sprint 3** et le **Sprint 4**, dans cet ordre exact.
+> Les Phases 1 (Foundation) et 2 (Fleet) sont completes.
 
 ### Sprint 3 — Contrat & Facturation
 
 ---
 
-#### US-MVP-1 : Formulaire création contrat depuis la fiche véhicule
+#### US-MVP-1 : Formulaire creation contrat depuis la fiche vehicule ✅ DONE
 
 **As a** admin
 **I want** to click a vehicle and create a rental contract
@@ -235,7 +236,7 @@ And I see a summary with an "Approuver" button
 
 ---
 
-#### US-MVP-2 : Autocomplete client + modal création rapide
+#### US-MVP-2 : Autocomplete client + modal creation rapide ✅ DONE
 
 **As a** admin
 **I want** to search for an existing client or create one on the fly
@@ -276,7 +277,7 @@ And the "Client connu" toggle reflects the new client's isTrusted value
 
 ---
 
-#### US-MVP-3 : Approbation contrat + génération facture automatique
+#### US-MVP-3 : Approbation contrat + generation facture automatique ✅ DONE
 
 **As a** admin
 **I want** to approve a draft contract and have an invoice auto-generated
@@ -413,7 +414,7 @@ Then the digicode is marked as expired
 
 ---
 
-#### US-MVP-6 : Constat de départ (état des lieux sortie)
+#### US-MVP-6 : Constat de depart (etat des lieux sortie) ✅ DONE
 
 **As a** admin
 **I want** to create a departure inspection for a contract
@@ -460,7 +461,7 @@ Then they can edit it (add photos, modify damages, update notes)
 
 ---
 
-#### US-MVP-7 : Constat de retour (état des lieux retour)
+#### US-MVP-7 : Constat de retour (état des lieux retour) ✅ DONE
 
 **As a** admin
 **I want** to create a return inspection
@@ -499,7 +500,65 @@ With the vehicle info, photos, and remarks
 
 ---
 
-#### US-MVP-8 : Validation retour + archivage automatique
+#### US-MVP-10 : Capture photo tablette native + compression WebP ✅ DONE
+
+**As a** admin sur le terrain avec une tablette
+**I want** to take photos directly from the tablet camera during an inspection
+**So that** I can quickly document the vehicle condition without switching apps or uploading from the gallery
+
+**Contexte :** Le composant `InspectionPhotoUpload` existe déjà avec upload fichier + drag & drop. Cette US ajoute la capture caméra native et la compression côté client, conformément à FR-04.4 et la spec UI section 3.7.
+
+**Modifications :**
+
+| Composant | Changement |
+|-----------|------------|
+| `InspectionPhotoUpload` | Ajouter un bouton "Prendre une photo" avec `<input type="file" accept="image/*" capture="environment">` séparé du bouton upload existant |
+| `InspectionPhotoUpload` | Compression WebP côté client via `browser-image-compression` avant upload (max 1920px, qualité 0.8) |
+| `InspectionPhotoUpload` | Fallback : si pas de caméra, le bouton ouvre la sélection fichier classique |
+
+**Comportement attendu :**
+
+1. **Deux boutons distincts** dans la zone photo :
+   - "Prendre une photo" (icône caméra) → ouvre directement la caméra arrière de la tablette
+   - "Ajouter photo" (icône image) → ouvre le sélecteur de fichiers / galerie (existant)
+
+2. **Compression automatique** avant upload :
+   - Toutes les photos (caméra ou galerie) passent par `browser-image-compression`
+   - Redimensionnement max 1920px côté le plus long
+   - Conversion WebP, qualité 0.8
+   - Résultat < 1 MB par photo
+
+3. **Preview immédiate** après capture (déjà implémenté via `URL.createObjectURL`)
+
+**Acceptance Criteria :**
+```gherkin
+Given I'm on the departure or return inspection form on a tablet
+When I tap "Prendre une photo"
+Then the tablet's rear camera opens natively (via capture="environment")
+And after taking the photo, it appears as a thumbnail in the grid
+
+Given I take a 8 MB JPEG photo from the camera
+When the photo is processed before upload
+Then it is compressed to WebP format
+And the uploaded file is less than 1 MB
+And the visual quality is acceptable (1920px max, quality 0.8)
+
+Given my device has no camera (desktop browser)
+When I click the camera button
+Then it falls back to the standard file picker
+And the upload still works normally
+
+Given I already uploaded 10 photos
+When I try to take another photo
+Then I see an error message "Nombre maximum de photos atteint"
+And the camera does not open
+```
+
+**Effort :** 2h | **Priority :** 🔴
+
+---
+
+#### US-MVP-8 : Validation retour + archivage automatique ✅ DONE
 
 **As a** admin
 **I want** to validate the return inspection and auto-archive the contract
@@ -546,7 +605,7 @@ And the invoice is updated with a damages line item
 
 ---
 
-#### US-MVP-9 : Page CRUD clients autonome
+#### US-MVP-9 : Page CRUD clients autonome ✅ DONE
 
 **As a** admin
 **I want** a dedicated clients page to manage all clients
@@ -580,54 +639,141 @@ And I can upload/view their documents (license, ID)
 
 ---
 
-## 5. Résumé Sprint Planning
+#### US-MVP-11 : Page détail facture
 
-### Sprint 3 — Contrat & Facturation (~22h)
+**As a** admin / comptable
+**I want** to view the full detail of an invoice on a dedicated page
+**So that** I can review line items, payment history, and take actions (mark as paid, download PDF) without leaving the billing context
 
-| US | Description | Effort | Dépendances |
-|----|-------------|--------|-------------|
-| MVP-1 | Form contrat depuis véhicule | 6h | Epic 2 ✅ |
-| MVP-2 | Autocomplete client + modal | 4h | — |
-| MVP-3 | Approbation + facture auto | 4h | MVP-1, MVP-2 |
-| MVP-4 | Email CG + page publique | 5h | MVP-3 |
-| MVP-5 | Digicode + notification | 3h | MVP-4 |
+**Route :** `/invoices/[id]`
 
-### Sprint 4 — Inspections & Archivage (~15h)
+**Layout (Pattern B — Fiche détail) :**
 
-| US | Description | Effort | Dépendances |
-|----|-------------|--------|-------------|
-| MVP-6 | Constat de départ | 6h | MVP-3 |
-| MVP-7 | Constat de retour | 5h | MVP-6 |
-| MVP-8 | Validation retour + archivage | 4h | MVP-7 |
+```
+┌─────────────────────────────────────────────────────────┐
+│  ← Retour aux factures     FAC-2026-0012   [Badge statut]│
+│                                                          │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐        │
+│  │ Client      │ │ Véhicule    │ │ Contrat     │        │
+│  │ Nom Prénom  │ │ Marque Modèle│ │ N° contrat  │        │
+│  │ Email       │ │ Immat       │ │ Période     │        │
+│  │ ↗ fiche     │ │ ↗ fiche     │ │ ↗ fiche     │        │
+│  └─────────────┘ └─────────────┘ └─────────────┘        │
+│                                                          │
+│  ┌─ Lignes de facturation ───────────────────────────┐   │
+│  │ Description          │ Qté │ Prix unit │ Total    │   │
+│  │ Location (X jours)   │  X  │ XX CHF   │ XXX CHF  │   │
+│  │ Option GPS           │  1  │ 5 CHF    │  25 CHF  │   │
+│  │ Km supplémentaires   │ 120 │ 0.35 CHF │  42 CHF  │   │
+│  │ Franchise dégâts     │  1  │ 200 CHF  │ 200 CHF  │   │
+│  ├───────────────────────────────────────────────────┤   │
+│  │ Sous-total                          │ 1'267.00 CHF│   │
+│  │ TVA (0%)                            │     0.00 CHF│   │
+│  │ TOTAL                               │ 1'267.00 CHF│   │
+│  └───────────────────────────────────────────────────┘   │
+│                                                          │
+│  ┌─ Historique paiements ────────────────────────────┐   │
+│  │ Date       │ Montant  │ Méthode │ Référence       │   │
+│  │ 12.01.2026 │ 500 CHF  │ Carte   │ TXN-123         │   │
+│  │ 15.01.2026 │ 767 CHF  │ Virement│ REF-456         │   │
+│  ├───────────────────────────────────────────────────┤   │
+│  │ Payé: 1'267 CHF / 1'267 CHF          Solde: 0 CHF│   │
+│  └───────────────────────────────────────────────────┘   │
+│                                                          │
+│  ┌─ Notes ───────────────────────────────────────────┐   │
+│  │ Texte libre admin (si renseigné)                  │   │
+│  └───────────────────────────────────────────────────┘   │
+│                                                          │
+│  Actions sidebar droite :                                │
+│  [Marquer comme facturé] (si pending)                    │
+│  [Enregistrer paiement] (si pending/invoiced)            │
+│  [Télécharger PDF]                                       │
+│  [Voir contrat ↗]                                        │
+└─────────────────────────────────────────────────────────┘
+```
 
-### Sprint 5 — Polish & Post-MVP
+**Sections :**
 
-| US | Description | Effort | Dépendances |
-|----|-------------|--------|-------------|
-| MVP-9 | Page CRUD clients | 5h | MVP-2 |
-| — | Planning planby (ex-Epic 4) | 6-8h | MVP-8 |
-| — | Dashboard KPIs (ex-Epic 5) | 4-6h | MVP-8 |
-| — | Notifications avancées (ex-Epic 6) | 4-6h | MVP-8 |
+1. **Header** : N° facture + badge statut (pending/invoiced/paid/cancelled) + date émission
+2. **3 cards en ligne** : Client (nom, email, tel, lien ↗) | Véhicule (marque, modèle, immat, lien ↗) | Contrat (n° contrat, période location, lien ↗)
+3. **Lignes de facturation** : table des `lineItems` (jsonb) — description, quantité, prix unitaire, total par ligne. Footer avec sous-total, TVA, total
+4. **Historique des paiements** : table des `payments` liés — date, montant, méthode, référence. Footer avec total payé vs total dû et solde restant
+5. **Notes** : champ `notes` de la facture (lecture seule)
+6. **Actions** (sidebar droite ou boutons header) :
+   - "Marquer comme facturé" (status pending → invoiced)
+   - "Enregistrer un paiement" (ouvre dialog : montant, méthode, référence, date)
+   - "Télécharger PDF" (si `invoicePdfUrl` existe)
+   - "Voir le contrat" (lien vers `/contracts/[contractId]`)
+
+**Server Actions requises :**
+- `getInvoiceById(invoiceId)` — fetch facture + client + contrat + véhicule + paiements (tenant-scoped)
+- `updateInvoiceStatus(invoiceId, newStatus)` — transition de statut avec validation
+- `recordPayment(invoiceId, { amount, method, reference, paidAt })` — enregistrer un paiement, auto-marquer `paid` si solde = 0
+
+**Acceptance Criteria :**
+```gherkin
+Given I navigate to /invoices/[id]
+Then I see the full invoice detail with line items, totals and payment history
+And amounts are formatted in CHF with Swiss formatting (1'250.00 CHF)
+
+Given the invoice has payments recorded
+Then I see the payment history table with date, amount, method, reference
+And I see the total paid vs total due with remaining balance
+
+Given the invoice status is "pending"
+When I click "Marquer comme facturé"
+Then the status changes to "invoiced"
+And the badge updates accordingly
+
+Given the invoice status is "pending" or "invoiced"
+When I click "Enregistrer un paiement"
+Then a dialog opens to enter amount, method, reference, date
+And after saving, the payment appears in the history
+And if total paid >= total due, the status auto-changes to "paid"
+
+Given I click on the client/vehicle/contract card
+Then I am navigated to the corresponding detail page
+```
+
+**Effort :** 5h | **Priority :** 🟡
 
 ---
 
-## 6. Impact sur les docs existants
+## 5. Résumé Sprint Planning
 
-### Docs à adapter
+### Sprint 3 — Contrat & Facturation ✅ COMPLETE
 
-| Doc | Changement |
-|-----|-----------|
-| `schema.ts` | Ajouter les champs §3, mettre à jour l'enum contract_status |
-| Epic 3 (`8-epic-3-clients-contracts.md`) | **Superseded** par ce doc pour le MVP. Garder comme référence pour features avancées (pagination clients, filtres avancés, export) |
-| Epic 4 (`9-epic-4-inspections-planning.md`) | Inspections → intégrées ici (US-MVP-6/7/8). Planning → **post-MVP** |
-| Epic 5 (`10-epic-5-billing-dashboard.md`) | Facture auto → intégrée ici (US-MVP-3). Dashboard → **post-MVP** |
-| Epic 6 (`11-epic-6-notifications-email.md`) | Email CG + digicode → intégrés ici (US-MVP-4/5). Email mécanicien → intégré (US-MVP-7). Reste → **post-MVP** |
-| CLAUDE.md | Ajouter la référence à ce doc comme doc principal pour les Sprint 3-4 |
-| Orchestrateur | Routing pour US-MVP-* → charge ce doc + schema + security |
+| US | Description | Statut |
+|----|-------------|--------|
+| MVP-1 | Form contrat depuis vehicule | ✅ Done |
+| MVP-2 | Autocomplete client + modal | ✅ Done |
+| MVP-3 | Approbation + facture auto | ✅ Done |
+| MVP-4 | Email CG + page publique | ❌ A faire |
+| MVP-5 | Digicode + notification | ❌ A faire |
 
-### Docs inchangés
+### Sprint 4 — Inspections & Archivage 🔄 EN COURS
 
-Les docs 18 (sécurité), 19 (performance), 20 (ops) s'appliquent tels quels. Toutes les règles (tenantId, audit, rate limiting, pagination, logging) sont toujours valides.
+| US | Description | Statut |
+|----|-------------|--------|
+| MVP-6 | Constat de depart | ✅ Done |
+| MVP-7 | Constat de retour | ❌ A faire |
+| MVP-10 | Capture photo tablette + compression WebP | ❌ A faire |
+| MVP-8 | Validation retour + archivage | ❌ A faire |
+
+### Sprint 5 — Clients, Facturation & Polish
+
+| US | Description | Statut |
+|----|-------------|--------|
+| MVP-9 | Page CRUD clients | ❌ A faire |
+| MVP-11 | Page detail facture | ❌ A faire |
+
+---
+
+## 6. Notes
+
+- Les anciens fichiers Epic (6 a 11) ont ete supprimes. Ce document est la **source de verite unique** pour le scope MVP.
+- Les features post-MVP (planning, dashboard KPIs, notifications avancees) sont listees dans [5-epic-list.md](./5-epic-list.md#phase-4--post-mvp-backlog).
+- Les guides techniques (securite, performance, ops, tests) s'appliquent tels quels. Toutes les regles (tenantId, audit, rate limiting, pagination, logging) restent valides.
 
 ---
 
@@ -641,6 +787,7 @@ Les docs 18 (sécurité), 19 (performance), 20 (ops) s'appliquent tels quels. To
 /contracts/[id]                    # Fiche contrat (résumé, approbation, inspections)
 /contracts/[id]/inspection/departure  # Formulaire constat de départ
 /contracts/[id]/inspection/return     # Formulaire constat de retour
+/invoices/[id]                     # Fiche facture (US-MVP-11)
 /clients                           # Liste clients (US-MVP-9)
 /clients/[id]                      # Fiche client
 /cg/approve/[token]                # 🌐 PAGE PUBLIQUE (pas de layout dashboard, pas d'auth)

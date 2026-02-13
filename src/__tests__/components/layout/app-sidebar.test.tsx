@@ -8,16 +8,15 @@ vi.mock("next-intl", () => ({
   useLocale: () => "fr",
   useTranslations: () => {
     const translations: Record<string, string> = {
-      "navigation.dashboard": "Tableau de bord",
       "navigation.vehicles": "Véhicules",
       "navigation.clients": "Clients",
       "navigation.contracts": "Contrats",
-      "navigation.planning": "Planning",
-      "navigation.dossiers": "Dossiers",
+      "navigation.invoices": "Factures",
       "navigation.maintenance": "Maintenance",
       "navigation.settings": "Paramètres",
       "sidebar.collapse": "Réduire le menu",
       "sidebar.expand": "Agrandir le menu",
+      "sidebar.comingSoon": "Bientôt",
       "sidebar.profile": "Profil",
       "rbac.roles.admin": "Administrateur",
       "rbac.roles.agent": "Agent",
@@ -62,28 +61,28 @@ describe("AppSidebar", () => {
     localStorage.clear();
   });
 
-  it("admin sees all 8 nav items including Settings", () => {
+  it("admin sees all 6 nav items including Settings", () => {
     renderSidebar(makeUser({ role: "admin" }));
-    expect(screen.getByText("Tableau de bord")).toBeInTheDocument();
     expect(screen.getByText("Véhicules")).toBeInTheDocument();
     expect(screen.getByText("Clients")).toBeInTheDocument();
     expect(screen.getByText("Contrats")).toBeInTheDocument();
-    expect(screen.getByText("Planning")).toBeInTheDocument();
-    expect(screen.getByText("Dossiers")).toBeInTheDocument();
+    expect(screen.getByText("Factures")).toBeInTheDocument();
     expect(screen.getByText("Maintenance")).toBeInTheDocument();
     expect(screen.getByText("Paramètres")).toBeInTheDocument();
   });
 
-  it("agent sees 7 items (no Settings)", () => {
+  it("agent sees 5 items (no Settings)", () => {
     renderSidebar(makeUser({ role: "agent" }));
-    expect(screen.getByText("Tableau de bord")).toBeInTheDocument();
     expect(screen.getByText("Véhicules")).toBeInTheDocument();
+    expect(screen.getByText("Clients")).toBeInTheDocument();
+    expect(screen.getByText("Contrats")).toBeInTheDocument();
     expect(screen.queryByText("Paramètres")).not.toBeInTheDocument();
   });
 
-  it("viewer sees 7 items (no Settings)", () => {
+  it("viewer sees 5 items (no Settings)", () => {
     renderSidebar(makeUser({ role: "viewer" }));
-    expect(screen.getByText("Tableau de bord")).toBeInTheDocument();
+    expect(screen.getByText("Véhicules")).toBeInTheDocument();
+    expect(screen.getByText("Clients")).toBeInTheDocument();
     expect(screen.queryByText("Paramètres")).not.toBeInTheDocument();
   });
 
@@ -98,14 +97,14 @@ describe("AppSidebar", () => {
     renderSidebar(makeUser());
 
     // Initially expanded — text labels should be visible
-    expect(screen.getByText("Tableau de bord")).toBeInTheDocument();
+    expect(screen.getByText("Véhicules")).toBeInTheDocument();
 
     // Click collapse
     const collapseBtn = screen.getByLabelText("Réduire le menu");
     await user.click(collapseBtn);
 
     // After collapse, the text labels should be hidden (but icons remain)
-    expect(screen.queryByText("Tableau de bord")).not.toBeInTheDocument();
+    expect(screen.queryByText("Véhicules")).not.toBeInTheDocument();
     expect(screen.getByLabelText("Agrandir le menu")).toBeInTheDocument();
   });
 });
