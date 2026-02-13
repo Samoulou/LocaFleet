@@ -876,5 +876,39 @@
       "documentUploaded": "Document added",
       "documentDeleted": "Document deleted"
     }
+  },
+  "invoices": {
+    "breadcrumb": {
+      "backToList": "Invoices"
+    },
+    "detail": {
+      "backToList": "Back to invoices",
+      "markAsInvoiced": "Mark as invoiced",
+      "downloadPdf": "Download PDF",
+      "viewContract": "View contract",
+      "issuedAt": "Issued on {date}",
+      "statusUpdated": "Invoice status updated",
+      "clientCard": "Client",
+      "vehicleCard": "Vehicle",
+      "contractCard": "Contract",
+      "viewProfile": "View details",
+      "lineItemsTitle": "Line items",
+      "colDescription": "Description",
+      "colQuantity": "Qty",
+      "colUnitPrice": "Unit price",
+      "colTotal": "Total",
+      "subtotal": "Subtotal",
+      "tax": "Tax ({rate}%)",
+      "total": "TOTAL",
+      "paymentsTitle": "Payment history",
+      "colDate": "Date",
+      "colAmount": "Amount",
+      "colMethod": "Method",
+      "colReference": "Reference",
+      "noPayments": "No payments recorded",
+      "paidSummary": "Total paid: {paid} / {total}",
+      "balance": "Balance: {amount}",
+      "notesTitle": "Notes"
+    }
   }
 }

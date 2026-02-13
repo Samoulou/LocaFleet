@@ -103,3 +103,63 @@ export type ClientKPIs = {
   trustedClients: number;
   activeRentals: number;
 };
+
+// ============================================================================
+// Invoice detail types
+// ============================================================================
+
+export type InvoiceLineItem = {
+  description: string;
+  quantity: number;
+  unitPrice: string;
+  totalPrice: string;
+  type: "base_rental" | "option" | "excess_km" | "damages";
+};
+
+export type InvoiceDetail = {
+  id: string;
+  invoiceNumber: string;
+  status: InvoiceStatus;
+  subtotal: string;
+  taxRate: string;
+  taxAmount: string;
+  totalAmount: string;
+  lineItems: InvoiceLineItem[];
+  invoicePdfUrl: string | null;
+  issuedAt: Date | null;
+  dueDate: string | null;
+  notes: string | null;
+  createdAt: Date;
+  // Related entities
+  client: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+  };
+  vehicle: {
+    id: string;
+    brand: string;
+    model: string;
+    plateNumber: string;
+  };
+  contract: {
+    id: string;
+    contractNumber: string | null;
+    startDate: Date;
+    endDate: Date;
+  };
+  // Payments
+  payments: {
+    id: string;
+    amount: string;
+    method: string;
+    reference: string | null;
+    paidAt: Date;
+    notes: string | null;
+    createdAt: Date;
+  }[];
+  totalPaid: number;
+  balance: number;
+};

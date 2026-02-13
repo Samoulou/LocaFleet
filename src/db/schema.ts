@@ -750,6 +750,11 @@ export const payments = pgTable(
   (table) => [
     index("payments_tenant_idx").on(table.tenantId),
     index("payments_invoice_idx").on(table.invoiceId),
+    index("payments_invoice_tenant_paid_idx").on(
+      table.invoiceId,
+      table.tenantId,
+      table.paidAt
+    ),
   ]
 );
 

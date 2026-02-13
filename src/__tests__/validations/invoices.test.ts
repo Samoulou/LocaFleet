@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   closeContractSchema,
   invoiceListParamsSchema,
+  updateInvoiceStatusSchema,
 } from "@/lib/validations/invoices";
 
 const VALID_UUID = "550e8400-e29b-41d4-a716-446655440000";
@@ -230,5 +231,80 @@ describe("invoiceListParamsSchema", () => {
         expect(result.data.status).toBe(status);
       }
     }
+  });
+});
+
+// ============================================================================
+// updateInvoiceStatusSchema
+// ============================================================================
+
+describe("updateInvoiceStatusSchema", () => {
+  it("accepts valid input with newStatus 'invoiced'", () => {
+    const result = updateInvoiceStatusSchema.safeParse({
+      invoiceId: VALID_UUID,
+      newStatus: "invoiced",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.invoiceId).toBe(VALID_UUID);
+      expect(result.data.newStatus).toBe("invoiced");
+    }
+  });
+
+  it("accepts valid input with newStatus 'cancelled'", () => {
+    const result = updateInvoiceStatusSchema.safeParse({
+      invoiceId: VALID_UUID,
+      newStatus: "cancelled",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.invoiceId).toBe(VALID_UUID);
+      expect(result.data.newStatus).toBe("cancelled");
+    }
+  });
+
+  it("rejects non-uuid invoiceId", () => {
+    const result = updateInvoiceStatusSchema.safeParse({
+      invoiceId: "not-a-uuid",
+      newStatus: "invoiced",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find((i) => i.path[0] === "invoiceId");
+      expect(err?.message).toContain("invalide");
+    }
+  });
+
+  it("rejects invalid newStatus 'paid'", () => {
+    const result = updateInvoiceStatusSchema.safeParse({
+      invoiceId: VALID_UUID,
+      newStatus: "paid",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find((i) => i.path[0] === "newStatus");
+      expect(err?.message).toContain("invalide");
+    }
+  });
+
+  it("rejects invalid newStatus 'pending'", () => {
+    const result = updateInvoiceStatusSchema.safeParse({
+      invoiceId: VALID_UUID,
+      newStatus: "pending",
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects invalid newStatus 'foo'", () => {
+    const result = updateInvoiceStatusSchema.safeParse({
+      invoiceId: VALID_UUID,
+      newStatus: "foo",
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects empty object", () => {
+    const result = updateInvoiceStatusSchema.safeParse({});
+    expect(result.success).toBe(false);
   });
 });

@@ -461,7 +461,7 @@ Then they can edit it (add photos, modify damages, update notes)
 
 ---
 
-#### US-MVP-7 : Constat de retour (état des lieux retour)
+#### US-MVP-7 : Constat de retour (état des lieux retour) ✅ DONE
 
 **As a** admin
 **I want** to create a return inspection
@@ -500,7 +500,7 @@ With the vehicle info, photos, and remarks
 
 ---
 
-#### US-MVP-10 : Capture photo tablette native + compression WebP
+#### US-MVP-10 : Capture photo tablette native + compression WebP ✅ DONE
 
 **As a** admin sur le terrain avec une tablette
 **I want** to take photos directly from the tablet camera during an inspection
@@ -558,7 +558,7 @@ And the camera does not open
 
 ---
 
-#### US-MVP-8 : Validation retour + archivage automatique
+#### US-MVP-8 : Validation retour + archivage automatique ✅ DONE
 
 **As a** admin
 **I want** to validate the return inspection and auto-archive the contract
@@ -605,7 +605,7 @@ And the invoice is updated with a damages line item
 
 ---
 
-#### US-MVP-9 : Page CRUD clients autonome
+#### US-MVP-9 : Page CRUD clients autonome ✅ DONE
 
 **As a** admin
 **I want** a dedicated clients page to manage all clients
