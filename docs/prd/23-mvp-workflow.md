@@ -500,6 +500,64 @@ With the vehicle info, photos, and remarks
 
 ---
 
+#### US-MVP-10 : Capture photo tablette native + compression WebP
+
+**As a** admin sur le terrain avec une tablette
+**I want** to take photos directly from the tablet camera during an inspection
+**So that** I can quickly document the vehicle condition without switching apps or uploading from the gallery
+
+**Contexte :** Le composant `InspectionPhotoUpload` existe déjà avec upload fichier + drag & drop. Cette US ajoute la capture caméra native et la compression côté client, conformément à FR-04.4 et la spec UI section 3.7.
+
+**Modifications :**
+
+| Composant | Changement |
+|-----------|------------|
+| `InspectionPhotoUpload` | Ajouter un bouton "Prendre une photo" avec `<input type="file" accept="image/*" capture="environment">` séparé du bouton upload existant |
+| `InspectionPhotoUpload` | Compression WebP côté client via `browser-image-compression` avant upload (max 1920px, qualité 0.8) |
+| `InspectionPhotoUpload` | Fallback : si pas de caméra, le bouton ouvre la sélection fichier classique |
+
+**Comportement attendu :**
+
+1. **Deux boutons distincts** dans la zone photo :
+   - "Prendre une photo" (icône caméra) → ouvre directement la caméra arrière de la tablette
+   - "Ajouter photo" (icône image) → ouvre le sélecteur de fichiers / galerie (existant)
+
+2. **Compression automatique** avant upload :
+   - Toutes les photos (caméra ou galerie) passent par `browser-image-compression`
+   - Redimensionnement max 1920px côté le plus long
+   - Conversion WebP, qualité 0.8
+   - Résultat < 1 MB par photo
+
+3. **Preview immédiate** après capture (déjà implémenté via `URL.createObjectURL`)
+
+**Acceptance Criteria :**
+```gherkin
+Given I'm on the departure or return inspection form on a tablet
+When I tap "Prendre une photo"
+Then the tablet's rear camera opens natively (via capture="environment")
+And after taking the photo, it appears as a thumbnail in the grid
+
+Given I take a 8 MB JPEG photo from the camera
+When the photo is processed before upload
+Then it is compressed to WebP format
+And the uploaded file is less than 1 MB
+And the visual quality is acceptable (1920px max, quality 0.8)
+
+Given my device has no camera (desktop browser)
+When I click the camera button
+Then it falls back to the standard file picker
+And the upload still works normally
+
+Given I already uploaded 10 photos
+When I try to take another photo
+Then I see an error message "Nombre maximum de photos atteint"
+And the camera does not open
+```
+
+**Effort :** 2h | **Priority :** 🔴
+
+---
+
 #### US-MVP-8 : Validation retour + archivage automatique
 
 **As a** admin
@@ -599,6 +657,7 @@ And I can upload/view their documents (license, ID)
 |----|-------------|--------|
 | MVP-6 | Constat de depart | ✅ Done |
 | MVP-7 | Constat de retour | ❌ A faire |
+| MVP-10 | Capture photo tablette + compression WebP | ❌ A faire |
 | MVP-8 | Validation retour + archivage | ❌ A faire |
 
 ### Sprint 5 — Clients & Polish

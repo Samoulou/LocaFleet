@@ -12,6 +12,7 @@ import {
   FileText,
   MapPin,
   ClipboardCheck,
+  ClipboardList,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -150,12 +151,20 @@ export function ContractDetail({ contract }: ContractDetailProps) {
             </Button>
           )}
           {contract.status === "active" && (
-            <Button variant="outline" asChild>
-              <Link href={`/contracts/${contract.id}/inspection/departure`}>
-                <ClipboardCheck className="mr-2 size-4" />
-                {t("viewInspection")}
-              </Link>
-            </Button>
+            <>
+              <Button variant="outline" asChild>
+                <Link href={`/contracts/${contract.id}/inspection/departure`}>
+                  <ClipboardCheck className="mr-2 size-4" />
+                  {t("viewInspection")}
+                </Link>
+              </Button>
+              <Button asChild>
+                <Link href={`/contracts/${contract.id}/inspection/return`}>
+                  <ClipboardList className="mr-2 size-4" />
+                  {t("returnInspection")}
+                </Link>
+              </Button>
+            </>
           )}
         </div>
       </div>

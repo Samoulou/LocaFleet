@@ -548,7 +548,8 @@
       "backToContracts": "Retour aux contrats",
       "notes": "Notes",
       "departureInspection": "Constat de départ",
-      "viewInspection": "Voir le constat"
+      "viewInspection": "Voir le constat",
+      "returnInspection": "Constat de retour"
     },
     "status": {
       "draft": "Brouillon",
@@ -615,6 +616,7 @@
       "photosSection": "Photos du véhicule",
       "photos": "Photos",
       "addPhoto": "Ajouter",
+      "takePhoto": "Photo",
       "dropzone": "Glissez des photos ici ou cliquez pour parcourir",
       "dropzoneFormats": "JPEG, PNG ou WebP — max. 10 Mo",
       "invalidFileType": "Type de fichier non supporté",
@@ -671,12 +673,40 @@
       "signatureSection": "Signature du client",
       "clientSignature": "Signature",
       "optional": "Optionnel",
+      "required": "(obligatoire)",
       "clearSignature": "Effacer",
       "submitButton": "Valider le constat",
       "updateButton": "Enregistrer les modifications",
       "submitting": "Enregistrement...",
       "submitSuccess": "Constat de départ validé — contrat activé",
       "updateSuccess": "Constat de départ mis à jour",
+      "noDraft": "Impossible de soumettre : brouillon non créé"
+    },
+    "return": {
+      "createTitle": "Constat de retour",
+      "editTitle": "Modifier le constat de retour",
+      "createDescription": "Documentez l'état du véhicule au retour du client",
+      "editDescription": "Modifiez les informations du constat de retour",
+      "vehicleSection": "Véhicule & kilométrage",
+      "departureMileage": "Km départ",
+      "returnMileage": "Km retour",
+      "photosSection": "Photos du véhicule",
+      "damagesSection": "Dommages",
+      "departureDamagesLabel": "Dommages constatés au départ",
+      "readOnly": "Lecture seule",
+      "newDamagesLabel": "Nouveaux dommages",
+      "newBadge": "Nouveau",
+      "noNewDamages": "Aucun nouveau dommage constaté",
+      "mechanicRemarksSection": "Remarques mécanicien",
+      "mechanicRemarksPlaceholder": "Signalez ici tout problème mécanique constaté...",
+      "mechanicEmailCallout": "Un email sera envoyé au mécanicien avec ces remarques et les informations du véhicule.",
+      "signatureRequired": "La signature du client est obligatoire pour le constat de retour",
+      "submitButton": "Valider le constat",
+      "updateButton": "Enregistrer les modifications",
+      "cancelButton": "Annuler",
+      "submitting": "Enregistrement...",
+      "submitSuccess": "Constat de retour validé",
+      "updateSuccess": "Constat de retour mis à jour",
       "noDraft": "Impossible de soumettre : brouillon non créé"
     }
   }

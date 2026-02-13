@@ -625,6 +625,7 @@ export const inspections = pgTable(
     clientSignatureUrl: text("client_signature_url"),
     clientAgreed: boolean("client_agreed").default(false),
     agentNotes: text("agent_notes"),
+    mechanicRemarks: text("mechanic_remarks"),
     inspectionPdfUrl: text("inspection_pdf_url"),
     conductedAt: timestamp("conducted_at").defaultNow().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),

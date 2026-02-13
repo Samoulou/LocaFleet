@@ -548,7 +548,8 @@
       "backToContracts": "Back to contracts",
       "notes": "Notes",
       "departureInspection": "Departure inspection",
-      "viewInspection": "View inspection"
+      "viewInspection": "View inspection",
+      "returnInspection": "Return inspection"
     },
     "status": {
       "draft": "Draft",
@@ -615,6 +616,7 @@
       "photosSection": "Vehicle Photos",
       "photos": "Photos",
       "addPhoto": "Add",
+      "takePhoto": "Photo",
       "dropzone": "Drag photos here or click to browse",
       "dropzoneFormats": "JPEG, PNG or WebP — max. 10 MB",
       "invalidFileType": "Unsupported file type",
@@ -671,12 +673,40 @@
       "signatureSection": "Client Signature",
       "clientSignature": "Signature",
       "optional": "Optional",
+      "required": "(required)",
       "clearSignature": "Clear",
       "submitButton": "Submit inspection",
       "updateButton": "Save changes",
       "submitting": "Saving...",
       "submitSuccess": "Departure inspection submitted — contract activated",
       "updateSuccess": "Departure inspection updated",
+      "noDraft": "Cannot submit: draft not created"
+    },
+    "return": {
+      "createTitle": "Return Inspection",
+      "editTitle": "Edit Return Inspection",
+      "createDescription": "Document the vehicle condition upon return",
+      "editDescription": "Edit the return inspection details",
+      "vehicleSection": "Vehicle & mileage",
+      "departureMileage": "Departure km",
+      "returnMileage": "Return km",
+      "photosSection": "Vehicle Photos",
+      "damagesSection": "Damages",
+      "departureDamagesLabel": "Damages noted at departure",
+      "readOnly": "Read-only",
+      "newDamagesLabel": "New damages",
+      "newBadge": "New",
+      "noNewDamages": "No new damages noted",
+      "mechanicRemarksSection": "Mechanic Remarks",
+      "mechanicRemarksPlaceholder": "Report any mechanical issues found...",
+      "mechanicEmailCallout": "An email will be sent to the mechanic with these remarks and the vehicle information.",
+      "signatureRequired": "Client signature is required for the return inspection",
+      "submitButton": "Submit inspection",
+      "updateButton": "Save changes",
+      "cancelButton": "Cancel",
+      "submitting": "Saving...",
+      "submitSuccess": "Return inspection submitted",
+      "updateSuccess": "Return inspection updated",
       "noDraft": "Cannot submit: draft not created"
     }
   }
