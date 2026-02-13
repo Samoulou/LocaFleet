@@ -48,6 +48,7 @@ Phase 4 (Post-MVP)       ░░░░░░░░░░░░░░░░░░�
 | MVP-7 | Constat de retour (etat des lieux retour) | ❌ A faire |
 | MVP-8 | Validation retour + archivage automatique | ❌ A faire |
 | MVP-9 | Page CRUD clients autonome | ❌ A faire |
+| MVP-11 | Page detail facture | ❌ A faire |
 
 **Bonus deja implemente :**
 - Liste des contrats avec filtres par statut

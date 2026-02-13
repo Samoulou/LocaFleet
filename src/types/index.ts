@@ -7,6 +7,7 @@ import type {
   vehicleCategories,
   vehicles,
   clients,
+  clientDocuments,
   rentalContracts,
   invoices,
   payments,
@@ -30,6 +31,7 @@ export type SelectPayment = typeof payments.$inferSelect;
 export type SelectInspection = typeof inspections.$inferSelect;
 export type SelectInspectionPhoto = typeof inspectionPhotos.$inferSelect;
 export type SelectInspectionDamage = typeof inspectionDamages.$inferSelect;
+export type SelectClientDocument = typeof clientDocuments.$inferSelect;
 
 // ============================================================================
 // INSERT types (required fields for creating a row)
@@ -65,3 +67,39 @@ export type InspectionType = SelectInspection["type"];
 export type ActionResult<T = void> =
   | { success: true; data: T }
   | { success: false; error: string };
+
+// ============================================================================
+// Client domain types
+// ============================================================================
+
+export type ClientListItem = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  licenseNumber: string | null;
+  isTrusted: boolean;
+  contractCount: number;
+  createdAt: Date;
+};
+
+export type ContractSummary = {
+  id: string;
+  vehicleName: string;
+  startDate: Date;
+  endDate: Date;
+  status: string;
+  totalAmount: string | null;
+};
+
+export type ClientDetail = SelectClient & {
+  documents: SelectClientDocument[];
+  recentContracts: ContractSummary[];
+};
+
+export type ClientKPIs = {
+  totalClients: number;
+  trustedClients: number;
+  activeRentals: number;
+};

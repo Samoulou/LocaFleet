@@ -443,6 +443,9 @@ export const clients = pgTable(
       table.firstName
     ),
     index("clients_email_idx").on(table.tenantId, table.email),
+    index("clients_first_name_idx").on(table.tenantId, table.firstName),
+    index("clients_created_at_idx").on(table.tenantId, table.createdAt),
+    index("clients_is_trusted_idx").on(table.tenantId, table.isTrusted),
   ]
 );
 

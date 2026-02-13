@@ -605,8 +605,8 @@ Tâche 8 (Test): Tests E2E parcours complet                     → dépend de T
 Colle ceci dans Claude Code pour démarrer :
 
 ```
-Crée une agent team "locafleet US-MVP-10 : Constat de retour (état des lieux retour)" pour implémenter la feature suivante :
-US-MVP-10 : Constat de retour (état des lieux retour) dans le docs/prd/23-mvp-workflow.md
+Crée une agent team "locafleet US-MVP-9 : Page CRUD clients autonome" pour implémenter la feature suivante :
+US-MVP-9 : Page CRUD clients autonome dans le docs/prd/23-mvp-workflow.md
 
 Lis d'abord :
 - prd/23-mvp-workflow.md (la US concernée)

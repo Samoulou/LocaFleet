@@ -794,7 +794,16 @@
       "notes": "Notes",
       "createdAt": "Créé le",
       "updatedAt": "Modifié le",
-      "notSpecified": "Non spécifié"
+      "notSpecified": "Non spécifié",
+      "tabContracts": "Contrats",
+      "tabDocuments": "Documents",
+      "tabNotes": "Notes",
+      "cardInfo": "Informations",
+      "cardLicenseDocs": "Permis & Documents",
+      "cardStats": "Statistiques",
+      "totalContracts": "Total contrats",
+      "activeContracts": "Contrats actifs",
+      "memberSince": "Client depuis"
     },
     "form": {
       "createTitle": "Nouveau client",

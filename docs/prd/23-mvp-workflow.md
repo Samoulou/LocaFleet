@@ -639,6 +639,106 @@ And I can upload/view their documents (license, ID)
 
 ---
 
+#### US-MVP-11 : Page détail facture
+
+**As a** admin / comptable
+**I want** to view the full detail of an invoice on a dedicated page
+**So that** I can review line items, payment history, and take actions (mark as paid, download PDF) without leaving the billing context
+
+**Route :** `/invoices/[id]`
+
+**Layout (Pattern B — Fiche détail) :**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  ← Retour aux factures     FAC-2026-0012   [Badge statut]│
+│                                                          │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐        │
+│  │ Client      │ │ Véhicule    │ │ Contrat     │        │
+│  │ Nom Prénom  │ │ Marque Modèle│ │ N° contrat  │        │
+│  │ Email       │ │ Immat       │ │ Période     │        │
+│  │ ↗ fiche     │ │ ↗ fiche     │ │ ↗ fiche     │        │
+│  └─────────────┘ └─────────────┘ └─────────────┘        │
+│                                                          │
+│  ┌─ Lignes de facturation ───────────────────────────┐   │
+│  │ Description          │ Qté │ Prix unit │ Total    │   │
+│  │ Location (X jours)   │  X  │ XX CHF   │ XXX CHF  │   │
+│  │ Option GPS           │  1  │ 5 CHF    │  25 CHF  │   │
+│  │ Km supplémentaires   │ 120 │ 0.35 CHF │  42 CHF  │   │
+│  │ Franchise dégâts     │  1  │ 200 CHF  │ 200 CHF  │   │
+│  ├───────────────────────────────────────────────────┤   │
+│  │ Sous-total                          │ 1'267.00 CHF│   │
+│  │ TVA (0%)                            │     0.00 CHF│   │
+│  │ TOTAL                               │ 1'267.00 CHF│   │
+│  └───────────────────────────────────────────────────┘   │
+│                                                          │
+│  ┌─ Historique paiements ────────────────────────────┐   │
+│  │ Date       │ Montant  │ Méthode │ Référence       │   │
+│  │ 12.01.2026 │ 500 CHF  │ Carte   │ TXN-123         │   │
+│  │ 15.01.2026 │ 767 CHF  │ Virement│ REF-456         │   │
+│  ├───────────────────────────────────────────────────┤   │
+│  │ Payé: 1'267 CHF / 1'267 CHF          Solde: 0 CHF│   │
+│  └───────────────────────────────────────────────────┘   │
+│                                                          │
+│  ┌─ Notes ───────────────────────────────────────────┐   │
+│  │ Texte libre admin (si renseigné)                  │   │
+│  └───────────────────────────────────────────────────┘   │
+│                                                          │
+│  Actions sidebar droite :                                │
+│  [Marquer comme facturé] (si pending)                    │
+│  [Enregistrer paiement] (si pending/invoiced)            │
+│  [Télécharger PDF]                                       │
+│  [Voir contrat ↗]                                        │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Sections :**
+
+1. **Header** : N° facture + badge statut (pending/invoiced/paid/cancelled) + date émission
+2. **3 cards en ligne** : Client (nom, email, tel, lien ↗) | Véhicule (marque, modèle, immat, lien ↗) | Contrat (n° contrat, période location, lien ↗)
+3. **Lignes de facturation** : table des `lineItems` (jsonb) — description, quantité, prix unitaire, total par ligne. Footer avec sous-total, TVA, total
+4. **Historique des paiements** : table des `payments` liés — date, montant, méthode, référence. Footer avec total payé vs total dû et solde restant
+5. **Notes** : champ `notes` de la facture (lecture seule)
+6. **Actions** (sidebar droite ou boutons header) :
+   - "Marquer comme facturé" (status pending → invoiced)
+   - "Enregistrer un paiement" (ouvre dialog : montant, méthode, référence, date)
+   - "Télécharger PDF" (si `invoicePdfUrl` existe)
+   - "Voir le contrat" (lien vers `/contracts/[contractId]`)
+
+**Server Actions requises :**
+- `getInvoiceById(invoiceId)` — fetch facture + client + contrat + véhicule + paiements (tenant-scoped)
+- `updateInvoiceStatus(invoiceId, newStatus)` — transition de statut avec validation
+- `recordPayment(invoiceId, { amount, method, reference, paidAt })` — enregistrer un paiement, auto-marquer `paid` si solde = 0
+
+**Acceptance Criteria :**
+```gherkin
+Given I navigate to /invoices/[id]
+Then I see the full invoice detail with line items, totals and payment history
+And amounts are formatted in CHF with Swiss formatting (1'250.00 CHF)
+
+Given the invoice has payments recorded
+Then I see the payment history table with date, amount, method, reference
+And I see the total paid vs total due with remaining balance
+
+Given the invoice status is "pending"
+When I click "Marquer comme facturé"
+Then the status changes to "invoiced"
+And the badge updates accordingly
+
+Given the invoice status is "pending" or "invoiced"
+When I click "Enregistrer un paiement"
+Then a dialog opens to enter amount, method, reference, date
+And after saving, the payment appears in the history
+And if total paid >= total due, the status auto-changes to "paid"
+
+Given I click on the client/vehicle/contract card
+Then I am navigated to the corresponding detail page
+```
+
+**Effort :** 5h | **Priority :** 🟡
+
+---
+
 ## 5. Résumé Sprint Planning
 
 ### Sprint 3 — Contrat & Facturation ✅ COMPLETE
@@ -660,11 +760,12 @@ And I can upload/view their documents (license, ID)
 | MVP-10 | Capture photo tablette + compression WebP | ❌ A faire |
 | MVP-8 | Validation retour + archivage | ❌ A faire |
 
-### Sprint 5 — Clients & Polish
+### Sprint 5 — Clients, Facturation & Polish
 
 | US | Description | Statut |
 |----|-------------|--------|
 | MVP-9 | Page CRUD clients | ❌ A faire |
+| MVP-11 | Page detail facture | ❌ A faire |
 
 ---
 
@@ -686,6 +787,7 @@ And I can upload/view their documents (license, ID)
 /contracts/[id]                    # Fiche contrat (résumé, approbation, inspections)
 /contracts/[id]/inspection/departure  # Formulaire constat de départ
 /contracts/[id]/inspection/return     # Formulaire constat de retour
+/invoices/[id]                     # Fiche facture (US-MVP-11)
 /clients                           # Liste clients (US-MVP-9)
 /clients/[id]                      # Fiche client
 /cg/approve/[token]                # 🌐 PAGE PUBLIQUE (pas de layout dashboard, pas d'auth)
