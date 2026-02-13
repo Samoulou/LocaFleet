@@ -706,7 +706,7 @@ export const SEED_PAYMENTS = [
     invoiceId: SEED_INVOICES[6].id, // FAC-2026-0007 (paid)
     processedByUserId: SEED_USERS[0].id,
     amount: "225.00",
-    method: "bank_transfer" as const,
+    method: "invoice" as const,
     reference: "VIR-2026-00387",
     paidAt: "2026-02-10T09:00:00.000Z",
   },
@@ -868,7 +868,7 @@ export const seedPaymentSchema = z.object({
   id: z.string().uuid(),
   invoiceId: z.string().uuid(),
   amount: decimalString,
-  method: z.enum(["cash", "card", "bank_transfer"]),
+  method: z.enum(["cash_departure", "cash_return", "invoice", "card"]),
 });
 
 export const seedDossierSchema = z.object({
