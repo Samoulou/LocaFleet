@@ -443,6 +443,9 @@ export const clients = pgTable(
       table.firstName
     ),
     index("clients_email_idx").on(table.tenantId, table.email),
+    index("clients_first_name_idx").on(table.tenantId, table.firstName),
+    index("clients_created_at_idx").on(table.tenantId, table.createdAt),
+    index("clients_is_trusted_idx").on(table.tenantId, table.isTrusted),
   ]
 );
 
@@ -625,6 +628,7 @@ export const inspections = pgTable(
     clientSignatureUrl: text("client_signature_url"),
     clientAgreed: boolean("client_agreed").default(false),
     agentNotes: text("agent_notes"),
+    mechanicRemarks: text("mechanic_remarks"),
     inspectionPdfUrl: text("inspection_pdf_url"),
     conductedAt: timestamp("conducted_at").defaultNow().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -746,6 +750,11 @@ export const payments = pgTable(
   (table) => [
     index("payments_tenant_idx").on(table.tenantId),
     index("payments_invoice_idx").on(table.invoiceId),
+    index("payments_invoice_tenant_paid_idx").on(
+      table.invoiceId,
+      table.tenantId,
+      table.paidAt
+    ),
   ]
 );
 

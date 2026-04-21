@@ -42,19 +42,21 @@ describe("hasPermission", () => {
   });
 
   // --- agent ---
-  it("agent can CRUD vehicles, clients, contracts, inspections", () => {
-    const resources: Resource[] = [
-      "vehicles",
-      "clients",
-      "contracts",
-      "inspections",
-    ];
+  it("agent can CRUD vehicles, contracts, inspections", () => {
+    const resources: Resource[] = ["vehicles", "contracts", "inspections"];
     const actions: Action[] = ["create", "read", "update", "delete"];
 
     for (const resource of resources) {
       for (const action of actions) {
         expect(hasPermission("agent", resource, action)).toBe(true);
       }
+    }
+  });
+
+  it("agent can CRUD clients", () => {
+    const actions: Action[] = ["create", "read", "update", "delete"];
+    for (const action of actions) {
+      expect(hasPermission("agent", "clients", action)).toBe(true);
     }
   });
 

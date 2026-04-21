@@ -4,6 +4,7 @@ import { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Eraser } from "lucide-react";
 
 export type SignaturePadHandle = {
@@ -13,10 +14,16 @@ export type SignaturePadHandle = {
 type SignaturePadProps = {
   existingSignatureUrl?: string | null;
   disabled?: boolean;
+  required?: boolean;
+  onSignatureChange?: (isEmpty: boolean) => void;
+  error?: boolean;
 };
 
 export const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(
-  function SignaturePad({ existingSignatureUrl, disabled }, ref) {
+  function SignaturePad(
+    { existingSignatureUrl, disabled, required, onSignatureChange, error },
+    ref
+  ) {
     const t = useTranslations("inspections.departure");
     const sigRef = useRef<SignatureCanvas>(null);
 
@@ -42,6 +49,12 @@ export const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(
 
     function handleClear() {
       sigRef.current?.clear();
+      onSignatureChange?.(true);
+    }
+
+    function handleEnd() {
+      if (!sigRef.current) return;
+      onSignatureChange?.(sigRef.current.isEmpty());
     }
 
     return (
@@ -49,9 +62,15 @@ export const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-slate-700">
             {t("clientSignature")}
-            <span className="ml-1 text-xs font-normal text-slate-400">
-              ({t("optional")})
-            </span>
+            {required ? (
+              <span className="ml-1 text-xs font-normal text-red-600">
+                * {t("required")}
+              </span>
+            ) : (
+              <span className="ml-1 text-xs font-normal text-slate-400">
+                ({t("optional")})
+              </span>
+            )}
           </span>
           {!disabled && (
             <Button
@@ -65,9 +84,15 @@ export const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(
             </Button>
           )}
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white">
+        <div
+          className={cn(
+            "rounded-lg border bg-white",
+            error ? "border-red-300" : "border-slate-200"
+          )}
+        >
           <SignatureCanvas
             ref={sigRef}
+            onEnd={handleEnd}
             canvasProps={{
               className: "w-full h-[200px] rounded-lg",
               style: {

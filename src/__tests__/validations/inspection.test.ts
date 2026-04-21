@@ -2,6 +2,8 @@ import { describe, it, expect } from "vitest";
 import {
   createDraftInspectionSchema,
   submitDepartureInspectionSchema,
+  submitReturnInspectionSchema,
+  updateReturnInspectionSchema,
   inspectionDamageSchema,
   saveInspectionPhotoSchema,
   deleteInspectionPhotoSchema,
@@ -419,6 +421,233 @@ describe("deleteInspectionPhotoSchema", () => {
     if (!result.success) {
       const err = result.error.issues.find((i) => i.path[0] === "inspectionId");
       expect(err?.message).toContain("invalide");
+    }
+  });
+});
+
+// ============================================================================
+// submitReturnInspectionSchema
+// ============================================================================
+
+describe("submitReturnInspectionSchema", () => {
+  const VALID_RETURN_FULL = {
+    inspectionId: VALID_UUID,
+    contractId: VALID_UUID_2,
+    mileage: 50000,
+    departureMileage: 45000,
+    fuelLevel: "half" as const,
+    exteriorCleanliness: "clean" as const,
+    interiorCleanliness: "dirty" as const,
+    clientSignatureUrl: "data:image/png;base64,abc123",
+    mechanicRemarks: "Pneus avant usés",
+    agentNotes: "RAS retour",
+    damages: [
+      {
+        zone: "rear" as const,
+        type: "dent" as const,
+        severity: "medium" as const,
+        description: "Bosse pare-chocs",
+        isPreExisting: false,
+      },
+    ],
+  };
+
+  const VALID_RETURN_MINIMAL = {
+    inspectionId: VALID_UUID,
+    contractId: VALID_UUID_2,
+    mileage: 50000,
+    departureMileage: 45000,
+    fuelLevel: "half" as const,
+    exteriorCleanliness: "clean" as const,
+    interiorCleanliness: "clean" as const,
+    clientSignatureUrl: "data:image/png;base64,sig",
+  };
+
+  it("accepts valid full input", () => {
+    const result = submitReturnInspectionSchema.safeParse(VALID_RETURN_FULL);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.inspectionId).toBe(VALID_UUID);
+      expect(result.data.contractId).toBe(VALID_UUID_2);
+      expect(result.data.mileage).toBe(50000);
+      expect(result.data.departureMileage).toBe(45000);
+      expect(result.data.fuelLevel).toBe("half");
+      expect(result.data.clientSignatureUrl).toBe(
+        "data:image/png;base64,abc123"
+      );
+      expect(result.data.mechanicRemarks).toBe("Pneus avant usés");
+      expect(result.data.damages).toHaveLength(1);
+    }
+  });
+
+  it("accepts valid minimal input (without mechanicRemarks)", () => {
+    const result = submitReturnInspectionSchema.safeParse(VALID_RETURN_MINIMAL);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.mechanicRemarks).toBeUndefined();
+      expect(result.data.agentNotes).toBeUndefined();
+      expect(result.data.damages).toEqual([]);
+    }
+  });
+
+  it("rejects without clientSignatureUrl (required for return)", () => {
+    const { clientSignatureUrl: _sig, ...withoutSignature } =
+      VALID_RETURN_MINIMAL;
+    const result = submitReturnInspectionSchema.safeParse(withoutSignature);
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects empty clientSignatureUrl", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      clientSignatureUrl: "",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find(
+        (i) => i.path[0] === "clientSignatureUrl"
+      );
+      expect(err?.message).toContain("signature");
+    }
+  });
+
+  it("rejects mileage less than departureMileage", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      mileage: 40000, // less than departureMileage 45000
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find((i) => i.path.includes("mileage"));
+      expect(err?.message).toContain("inférieur au kilométrage de départ");
+    }
+  });
+
+  it("accepts mileage equal to departureMileage", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      mileage: 45000,
+      departureMileage: 45000,
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects invalid contractId", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      contractId: "not-a-uuid",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find((i) => i.path[0] === "contractId");
+      expect(err?.message).toContain("invalide");
+    }
+  });
+
+  it("rejects negative mileage", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      mileage: -100,
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find((i) => i.path[0] === "mileage");
+      expect(err?.message).toContain("négatif");
+    }
+  });
+
+  it("rejects float mileage", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      mileage: 50000.5,
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find((i) => i.path[0] === "mileage");
+      expect(err?.message).toContain("entier");
+    }
+  });
+
+  it("rejects invalid fuelLevel", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      fuelLevel: "super_full",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find((i) => i.path[0] === "fuelLevel");
+      expect(err?.message).toContain("invalide");
+    }
+  });
+
+  it("rejects mechanicRemarks exceeding 5000 characters", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      mechanicRemarks: "x".repeat(5001),
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find(
+        (i) => i.path[0] === "mechanicRemarks"
+      );
+      expect(err?.message).toContain("5000 caractères");
+    }
+  });
+
+  it("transforms empty mechanicRemarks to undefined", () => {
+    const result = submitReturnInspectionSchema.safeParse({
+      ...VALID_RETURN_MINIMAL,
+      mechanicRemarks: "",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.mechanicRemarks).toBeUndefined();
+    }
+  });
+});
+
+// ============================================================================
+// updateReturnInspectionSchema
+// ============================================================================
+
+describe("updateReturnInspectionSchema", () => {
+  const VALID_UPDATE_INPUT = {
+    inspectionId: VALID_UUID,
+    contractId: VALID_UUID_2,
+    mileage: 50000,
+    departureMileage: 45000,
+    fuelLevel: "half" as const,
+    exteriorCleanliness: "clean" as const,
+    interiorCleanliness: "clean" as const,
+    clientSignatureUrl: "data:image/png;base64,updated-sig",
+  };
+
+  it("accepts valid input", () => {
+    const result = updateReturnInspectionSchema.safeParse(VALID_UPDATE_INPUT);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.mileage).toBe(50000);
+      expect(result.data.clientSignatureUrl).toBe(
+        "data:image/png;base64,updated-sig"
+      );
+    }
+  });
+
+  it("rejects without signature", () => {
+    const { clientSignatureUrl: _sig, ...withoutSig } = VALID_UPDATE_INPUT;
+    const result = updateReturnInspectionSchema.safeParse(withoutSig);
+    expect(result.success).toBe(false);
+  });
+
+  it("rejects mileage less than departureMileage", () => {
+    const result = updateReturnInspectionSchema.safeParse({
+      ...VALID_UPDATE_INPUT,
+      mileage: 30000,
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const err = result.error.issues.find((i) => i.path.includes("mileage"));
+      expect(err?.message).toContain("inférieur au kilométrage de départ");
     }
   });
 });

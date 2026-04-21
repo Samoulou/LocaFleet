@@ -15,6 +15,12 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
+// Mock Next.js cache
+vi.mock("next/cache", () => ({
+  revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
+}));
+
 // Mock environment variables
 vi.stubEnv("DATABASE_URL", "postgresql://test:test@localhost:5432/test");
 vi.stubEnv("DIRECT_URL", "postgresql://test:test@localhost:5432/test");
@@ -37,6 +43,21 @@ vi.mock("@/db", () => {
     );
   return { db: mockDb };
 });
+
+// Mock Supabase server client
+vi.mock("@/lib/supabase-server", () => ({
+  getSupabaseServerClient: vi.fn().mockReturnValue({
+    storage: {
+      from: vi.fn().mockReturnValue({
+        upload: vi.fn().mockResolvedValue({ error: null }),
+        remove: vi.fn().mockResolvedValue({ error: null }),
+        createSignedUrl: vi.fn().mockResolvedValue({
+          data: { signedUrl: "https://example.com/signed/file.pdf" },
+        }),
+      }),
+    },
+  }),
+}));
 
 // Mock Better Auth
 vi.mock("@/lib/auth", () => ({

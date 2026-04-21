@@ -318,7 +318,7 @@ export function DepartureInspectionForm({
                     "flex h-9 flex-1 items-center justify-center rounded-md border text-sm font-medium transition-colors",
                     exteriorCleanliness === val
                       ? val === "clean"
-                        ? "border-emerald-300 bg-emerald-100 text-emerald-700"
+                        ? "border-green-300 bg-green-100 text-green-700"
                         : "border-red-300 bg-red-100 text-red-700"
                       : "border-slate-200 bg-white text-slate-400 hover:border-slate-300"
                   )}
@@ -342,7 +342,7 @@ export function DepartureInspectionForm({
                     "flex h-9 flex-1 items-center justify-center rounded-md border text-sm font-medium transition-colors",
                     interiorCleanliness === val
                       ? val === "clean"
-                        ? "border-emerald-300 bg-emerald-100 text-emerald-700"
+                        ? "border-green-300 bg-green-100 text-green-700"
                         : "border-red-300 bg-red-100 text-red-700"
                       : "border-slate-200 bg-white text-slate-400 hover:border-slate-300"
                   )}

@@ -12,10 +12,14 @@ import {
   FileText,
   MapPin,
   ClipboardCheck,
+  ClipboardList,
+  Archive,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ContractStatusBadge } from "@/components/contracts/contract-status-badge";
+import { ValidateReturnDialog } from "@/components/contracts/validate-return-dialog";
 import { approveContract } from "@/actions/approve-contract";
 import { cn, formatCHF } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
@@ -70,6 +74,9 @@ export function ContractDetail({ contract }: ContractDetailProps) {
   const tInvoiceStatus = useTranslations("contracts.invoiceStatus");
   const router = useRouter();
   const [approving, setApproving] = useState(false);
+  const [validateReturnOpen, setValidateReturnOpen] = useState(false);
+
+  const isCompleted = contract.status === "completed";
 
   const paymentMethodKey = contract.paymentMethod as
     | "cash_departure"
@@ -135,30 +142,74 @@ export function ContractDetail({ contract }: ContractDetailProps) {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {contract.status === "draft" && (
-            <Button onClick={handleApprove} disabled={approving}>
-              {approving ? t("approving") : t("approveButton")}
-            </Button>
-          )}
-          {(contract.status === "approved" ||
-            contract.status === "pending_cg") && (
-            <Button asChild>
-              <Link href={`/contracts/${contract.id}/inspection/departure`}>
-                <ClipboardCheck className="mr-2 size-4" />
-                {t("departureInspection")}
-              </Link>
-            </Button>
-          )}
-          {contract.status === "active" && (
-            <Button variant="outline" asChild>
-              <Link href={`/contracts/${contract.id}/inspection/departure`}>
-                <ClipboardCheck className="mr-2 size-4" />
-                {t("viewInspection")}
-              </Link>
-            </Button>
+          {!isCompleted && (
+            <>
+              {contract.status === "draft" && (
+                <Button onClick={handleApprove} disabled={approving}>
+                  {approving ? t("approving") : t("approveButton")}
+                </Button>
+              )}
+              {(contract.status === "approved" ||
+                contract.status === "pending_cg") && (
+                <Button asChild>
+                  <Link href={`/contracts/${contract.id}/inspection/departure`}>
+                    <ClipboardCheck className="mr-2 size-4" />
+                    {t("departureInspection")}
+                  </Link>
+                </Button>
+              )}
+              {contract.status === "active" && (
+                <>
+                  <Button variant="outline" asChild>
+                    <Link
+                      href={`/contracts/${contract.id}/inspection/departure`}
+                    >
+                      <ClipboardCheck className="mr-2 size-4" />
+                      {t("viewInspection")}
+                    </Link>
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <Link href={`/contracts/${contract.id}/inspection/return`}>
+                      <ClipboardList className="mr-2 size-4" />
+                      {t("returnInspection")}
+                    </Link>
+                  </Button>
+                  <Button onClick={() => setValidateReturnOpen(true)}>
+                    <Archive className="mr-2 size-4" />
+                    {t("validateReturn")}
+                  </Button>
+                </>
+              )}
+            </>
           )}
         </div>
       </div>
+
+      {/* Archive info card (when completed) */}
+      {isCompleted && contract.archivedAt && (
+        <Card className="bg-slate-50 border-slate-200">
+          <CardContent className="flex items-start gap-3 py-4">
+            <Info className="size-5 text-slate-500 mt-0.5 shrink-0" />
+            <div className="space-y-0.5">
+              <p className="text-sm font-medium text-slate-700">
+                {t("archiveInfo")}
+              </p>
+              <p className="text-sm text-slate-500">
+                {t("archivedAt", {
+                  date: formatDateShort(contract.archivedAt),
+                })}
+              </p>
+              {contract.actualReturnDate && (
+                <p className="text-sm text-slate-500">
+                  {t("actualReturnDate", {
+                    date: formatDateShort(contract.actualReturnDate),
+                  })}
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* 3 cards row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -384,6 +435,13 @@ export function ContractDetail({ contract }: ContractDetailProps) {
           </CardContent>
         </Card>
       )}
+
+      {/* Validate Return Dialog */}
+      <ValidateReturnDialog
+        contractId={contract.id}
+        open={validateReturnOpen}
+        onOpenChange={setValidateReturnOpen}
+      />
     </div>
   );
 }

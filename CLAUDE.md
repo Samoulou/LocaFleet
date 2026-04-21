@@ -52,7 +52,7 @@ Next.js 15 (App Router) + Drizzle ORM + Supabase (PostgreSQL 16) + Better Auth +
 - Run `node scripts/pre-commit-check.js` before committing
 
 ## Important Files
-- Schema: `src/db/schema.ts` (21 tables, single source of truth)
+- Schema: `src/db/schema.ts` (23 tables, 23 enums, single source of truth)
 - Auth: `src/lib/auth.ts` (Better Auth config)
 - PRD: `docs/prd/` (product requirements, UI specs, user stories)
 - UI specs: `docs/prd/3-user-interface-design-goals.md`

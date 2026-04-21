@@ -1,6 +1,17 @@
 "use server";
 
-import { eq, and, or, ilike, gte, lt, count, desc, sql } from "drizzle-orm";
+import {
+  eq,
+  and,
+  or,
+  ilike,
+  gte,
+  lt,
+  count,
+  desc,
+  sql,
+  isNull,
+} from "drizzle-orm";
 import { db } from "@/db";
 import {
   rentalContracts,
@@ -9,26 +20,25 @@ import {
   rentalDossiers,
   vehicles,
   clients,
+  payments,
 } from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import {
   closeContractSchema,
   invoiceListParamsSchema,
+  updateInvoiceStatusSchema,
 } from "@/lib/validations/invoices";
 import { createAuditLog } from "@/actions/audit-logs";
-import type { ActionResult, InvoiceStatus } from "@/types";
+import type {
+  ActionResult,
+  InvoiceStatus,
+  InvoiceDetail,
+  InvoiceLineItem,
+} from "@/types";
 
 // ============================================================================
 // Types
 // ============================================================================
-
-type InvoiceLineItem = {
-  description: string;
-  quantity: number;
-  unitPrice: string;
-  totalPrice: string;
-  type: "base_rental" | "option" | "excess_km" | "damages";
-};
 
 type DbLike = {
   select: typeof db.select;
@@ -727,6 +737,293 @@ export async function getInvoiceStatusCounts(): Promise<
       success: false,
       error:
         "Une erreur est survenue lors du chargement des compteurs de factures",
+    };
+  }
+}
+
+// ============================================================================
+// getInvoiceById
+// ============================================================================
+
+export async function getInvoiceById(
+  invoiceId: string
+): Promise<ActionResult<InvoiceDetail>> {
+  try {
+    const currentUser = await requirePermission("invoices", "read");
+
+    // 1. Fetch invoice + payments in parallel (both tenant-scoped)
+    const [invoiceRows, invoicePayments] = await Promise.all([
+      db
+        .select({
+          // Invoice fields
+          id: invoices.id,
+          invoiceNumber: invoices.invoiceNumber,
+          status: invoices.status,
+          subtotal: invoices.subtotal,
+          taxRate: invoices.taxRate,
+          taxAmount: invoices.taxAmount,
+          totalAmount: invoices.totalAmount,
+          lineItems: invoices.lineItems,
+          invoicePdfUrl: invoices.invoicePdfUrl,
+          issuedAt: invoices.issuedAt,
+          dueDate: invoices.dueDate,
+          notes: invoices.notes,
+          createdAt: invoices.createdAt,
+          // Client fields
+          clientId: clients.id,
+          clientFirstName: clients.firstName,
+          clientLastName: clients.lastName,
+          clientEmail: clients.email,
+          clientPhone: clients.phone,
+          // Contract fields
+          contractId: rentalContracts.id,
+          contractNumber: rentalContracts.contractNumber,
+          contractStartDate: rentalContracts.startDate,
+          contractEndDate: rentalContracts.endDate,
+          // Vehicle fields
+          vehicleId: vehicles.id,
+          vehicleBrand: vehicles.brand,
+          vehicleModel: vehicles.model,
+          vehiclePlateNumber: vehicles.plateNumber,
+        })
+        .from(invoices)
+        .innerJoin(
+          clients,
+          and(
+            eq(invoices.clientId, clients.id),
+            eq(clients.tenantId, currentUser.tenantId),
+            isNull(clients.deletedAt)
+          )
+        )
+        .innerJoin(
+          rentalContracts,
+          and(
+            eq(invoices.contractId, rentalContracts.id),
+            eq(rentalContracts.tenantId, currentUser.tenantId)
+          )
+        )
+        .innerJoin(
+          vehicles,
+          and(
+            eq(rentalContracts.vehicleId, vehicles.id),
+            eq(vehicles.tenantId, currentUser.tenantId),
+            isNull(vehicles.deletedAt)
+          )
+        )
+        .where(
+          and(
+            eq(invoices.id, invoiceId),
+            eq(invoices.tenantId, currentUser.tenantId)
+          )
+        ),
+      db
+        .select({
+          id: payments.id,
+          amount: payments.amount,
+          method: payments.method,
+          reference: payments.reference,
+          paidAt: payments.paidAt,
+          notes: payments.notes,
+          createdAt: payments.createdAt,
+        })
+        .from(payments)
+        .where(
+          and(
+            eq(payments.invoiceId, invoiceId),
+            eq(payments.tenantId, currentUser.tenantId)
+          )
+        )
+        .orderBy(desc(payments.paidAt)),
+    ]);
+
+    const row = invoiceRows[0];
+    if (!row) {
+      return { success: false, error: "Cette facture n'existe pas" };
+    }
+
+    // 3. Calculate totals
+    const totalPaid = invoicePayments.reduce(
+      (sum, p) => sum + parseFloat(p.amount),
+      0
+    );
+    const balance = parseFloat(row.totalAmount) - totalPaid;
+
+    // 4. Cast lineItems from jsonb
+    const lineItems = (row.lineItems ?? []) as InvoiceLineItem[];
+
+    return {
+      success: true,
+      data: {
+        id: row.id,
+        invoiceNumber: row.invoiceNumber,
+        status: row.status,
+        subtotal: row.subtotal,
+        taxRate: row.taxRate ?? "0",
+        taxAmount: row.taxAmount ?? "0",
+        totalAmount: row.totalAmount,
+        lineItems,
+        invoicePdfUrl: row.invoicePdfUrl,
+        issuedAt: row.issuedAt,
+        dueDate: row.dueDate,
+        notes: row.notes,
+        createdAt: row.createdAt,
+        client: {
+          id: row.clientId,
+          firstName: row.clientFirstName,
+          lastName: row.clientLastName,
+          email: row.clientEmail,
+          phone: row.clientPhone,
+        },
+        vehicle: {
+          id: row.vehicleId,
+          brand: row.vehicleBrand,
+          model: row.vehicleModel,
+          plateNumber: row.vehiclePlateNumber,
+        },
+        contract: {
+          id: row.contractId,
+          contractNumber: row.contractNumber,
+          startDate: row.contractStartDate,
+          endDate: row.contractEndDate,
+        },
+        payments: invoicePayments,
+        totalPaid,
+        balance,
+      },
+    };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "getInvoiceById error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error: "Une erreur est survenue lors du chargement de la facture",
+    };
+  }
+}
+
+// ============================================================================
+// updateInvoiceStatus
+// ============================================================================
+
+const ALLOWED_TRANSITIONS: Record<string, InvoiceStatus[]> = {
+  pending: ["invoiced", "cancelled"],
+  invoiced: ["cancelled"],
+};
+
+export async function updateInvoiceStatus(
+  input: unknown
+): Promise<ActionResult<{ id: string }>> {
+  try {
+    const currentUser = await requirePermission("invoices", "update");
+
+    // 1. Validate input
+    const parsed = updateInvoiceStatusSchema.safeParse(input);
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: parsed.error.issues[0]?.message ?? "Données invalides",
+      };
+    }
+
+    const { invoiceId, newStatus } = parsed.data;
+
+    // 2. Transaction: SELECT + validate + UPDATE (avoids TOCTOU race)
+    const result = await db.transaction(async (tx) => {
+      // Fetch current invoice inside transaction (tenant-scoped)
+      const [invoice] = await tx
+        .select({
+          id: invoices.id,
+          status: invoices.status,
+          contractId: invoices.contractId,
+        })
+        .from(invoices)
+        .where(
+          and(
+            eq(invoices.id, invoiceId),
+            eq(invoices.tenantId, currentUser.tenantId)
+          )
+        );
+
+      if (!invoice) {
+        return { success: false as const, error: "Cette facture n'existe pas" };
+      }
+
+      // Validate transition
+      const allowed = ALLOWED_TRANSITIONS[invoice.status];
+      if (!allowed || !allowed.includes(newStatus)) {
+        return {
+          success: false as const,
+          error: `Transition de statut non autorisée : ${invoice.status} → ${newStatus}`,
+        };
+      }
+
+      // Update invoice status
+      await tx
+        .update(invoices)
+        .set({
+          status: newStatus,
+          updatedAt: new Date(),
+        })
+        .where(
+          and(
+            eq(invoices.id, invoiceId),
+            eq(invoices.tenantId, currentUser.tenantId)
+          )
+        );
+
+      // If cancelled, update the associated dossier too
+      if (newStatus === "cancelled") {
+        await tx
+          .update(rentalDossiers)
+          .set({
+            status: "open",
+            updatedAt: new Date(),
+          })
+          .where(
+            and(
+              eq(rentalDossiers.contractId, invoice.contractId),
+              eq(rentalDossiers.tenantId, currentUser.tenantId)
+            )
+          );
+      }
+
+      // Audit log
+      await createAuditLog(
+        {
+          tenantId: currentUser.tenantId,
+          userId: currentUser.id,
+          action: "invoice_status_updated",
+          entityType: "invoice",
+          entityId: invoiceId,
+          changes: {
+            previousStatus: invoice.status,
+            newStatus,
+          },
+        },
+        tx
+      );
+
+      return { success: true as const, data: { id: invoiceId } };
+    });
+
+    return result;
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "updateInvoiceStatus error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error:
+        "Une erreur est survenue lors de la mise à jour du statut de la facture",
     };
   }
 }
