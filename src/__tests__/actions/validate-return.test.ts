@@ -6,6 +6,11 @@ import {
   getReturnValidationPreview,
 } from "@/actions/validate-return";
 
+vi.mock("@/lib/number-utils", () => ({
+  ContractError: class extends Error {},
+  generateNextDossierNumber: vi.fn().mockResolvedValue("DOS-2026-0001"),
+}));
+
 // ============================================================================
 // Constants
 // ============================================================================
@@ -39,8 +44,10 @@ const VALID_INPUT = { contractId: CONTRACT_ID };
 const ACTIVE_CONTRACT = {
   id: CONTRACT_ID,
   tenantId: TENANT_ID,
+  clientId: "c0000000-0000-4000-8000-000000000001",
   vehicleId: VEHICLE_ID,
   status: "active",
+  startDate: new Date("2026-01-01"),
   departureMileage: 10000,
   returnMileage: 10500,
   includedKmPerDay: 100,
@@ -48,6 +55,8 @@ const ACTIVE_CONTRACT = {
   totalDays: 3,
   baseAmount: "255.00",
   optionsAmount: "30.00",
+  contractPdfUrl: null,
+  paymentMethod: "cash_departure",
 };
 
 const ACTIVE_CONTRACT_NO_KM = {

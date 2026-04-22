@@ -27,8 +27,20 @@ vi.mock("@/lib/auth-client", () => ({
   signOut: vi.fn(),
 }));
 
+// Mock i18n navigation
+vi.mock("@/i18n/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    refresh: vi.fn(),
+  }),
+  usePathname: () => "/",
+  Link: ({ children }: { children: React.ReactNode }) => children,
+}));
+
 import { SidebarProvider } from "@/components/layout/sidebar-context";
 import { AppTopbar } from "@/components/layout/app-topbar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 function makeUser(overrides: Partial<DisplayUser> = {}): DisplayUser {
   return {
@@ -42,9 +54,11 @@ function makeUser(overrides: Partial<DisplayUser> = {}): DisplayUser {
 
 function renderTopbar(user: DisplayUser) {
   return render(
-    <SidebarProvider>
-      <AppTopbar user={user} />
-    </SidebarProvider>
+    <TooltipProvider>
+      <SidebarProvider>
+        <AppTopbar user={user} />
+      </SidebarProvider>
+    </TooltipProvider>
   );
 }
 

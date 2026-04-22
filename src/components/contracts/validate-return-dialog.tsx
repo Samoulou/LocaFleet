@@ -45,7 +45,7 @@ export function ValidateReturnDialog({
   const router = useRouter();
 
   const [preview, setPreview] = useState<ReturnValidationPreview | null>(null);
-  const [loadingPreview, setLoadingPreview] = useState(false);
+  const [loadingPreview, setLoadingPreview] = useState(true);
   const [validating, setValidating] = useState(false);
   const [damagesAmount, setDamagesAmount] = useState("0");
 
@@ -54,26 +54,21 @@ export function ValidateReturnDialog({
     if (!open) return;
 
     let cancelled = false;
-    setLoadingPreview(true);
-    setPreview(null);
-    setDamagesAmount("0");
 
     getReturnValidationPreview(contractId).then((result) => {
       if (cancelled) return;
       if (result.success) {
         setPreview(result.data);
-        setLoadingPreview(false);
       } else {
-        setLoadingPreview(false);
-        onOpenChange(false);
         toast.error(result.error);
       }
+      setLoadingPreview(false);
     });
 
     return () => {
       cancelled = true;
     };
-  }, [open, contractId, onOpenChange]);
+  }, [open, contractId]);
 
   async function handleValidate() {
     setValidating(true);

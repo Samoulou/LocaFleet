@@ -8,6 +8,8 @@ import {
   updateUserRoleSchema,
   toggleUserActiveSchema,
 } from "@/lib/validations/users";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult, UserRole } from "@/types";
 
 export type UserListItem = {
@@ -81,7 +83,7 @@ export async function updateUserRole(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -108,6 +110,8 @@ export async function updateUserRole(
       return { success: false, error: "Utilisateur introuvable" };
     }
 
+    revalidatePath("/settings");
+
     return { success: true, data: undefined };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -131,7 +135,7 @@ export async function toggleUserActive(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -157,6 +161,8 @@ export async function toggleUserActive(
     if (!updated) {
       return { success: false, error: "Utilisateur introuvable" };
     }
+
+    revalidatePath("/settings");
 
     return { success: true, data: undefined };
   } catch (err) {

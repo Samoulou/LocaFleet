@@ -13,6 +13,9 @@ import {
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { approveContractSchema } from "@/lib/validations/approve-contract";
 import { createAuditLog } from "@/actions/audit-logs";
+import { ContractError, generateNextInvoiceNumber } from "@/lib/number-utils";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -26,53 +29,6 @@ type InvoiceLineItem = {
   totalPrice: string;
   type: "base_rental" | "option";
 };
-
-type DbLike = {
-  select: typeof db.select;
-  insert: typeof db.insert;
-  update: typeof db.update;
-  execute: typeof db.execute;
-};
-
-// ============================================================================
-// ContractError — business logic error (not auth)
-// ============================================================================
-
-class ContractError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "ContractError";
-  }
-}
-
-// ============================================================================
-// generateNextInvoiceNumber — internal helper (same pattern as invoices.ts)
-// ============================================================================
-
-async function generateNextInvoiceNumber(
-  tenantId: string,
-  tx: DbLike
-): Promise<string> {
-  const currentYear = new Date().getFullYear();
-  const prefix = `FAC-${currentYear}-`;
-
-  const result = await tx.execute(
-    sql`SELECT ${invoices.invoiceNumber} FROM ${invoices}
-        WHERE ${invoices.tenantId} = ${tenantId}
-        ORDER BY ${invoices.createdAt} DESC
-        LIMIT 1
-        FOR UPDATE`
-  );
-
-  const lastNumber = result[0]?.invoice_number as string | undefined;
-  if (lastNumber && lastNumber.startsWith(prefix)) {
-    const seqStr = lastNumber.slice(prefix.length);
-    const nextSeq = parseInt(seqStr, 10) + 1;
-    return `${prefix}${String(nextSeq).padStart(4, "0")}`;
-  }
-
-  return `${prefix}0001`;
-}
 
 // ============================================================================
 // approveContract
@@ -91,7 +47,7 @@ export async function approveContract(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -320,6 +276,9 @@ export async function approveContract(
         tx
       );
     });
+
+    revalidatePath("/contracts");
+    revalidatePath(`/contracts/${parsed.data.contractId}`);
 
     return {
       success: true,

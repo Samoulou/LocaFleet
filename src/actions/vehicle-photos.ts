@@ -10,6 +10,8 @@ import {
   setCoverPhotoSchema,
 } from "@/lib/validations/vehicle-photos";
 import { getSupabaseServerClient } from "@/lib/supabase-server";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -97,7 +99,7 @@ export async function saveVehiclePhoto(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -159,6 +161,9 @@ export async function saveVehiclePhoto(
       return newPhoto;
     });
 
+    revalidatePath("/vehicles");
+    revalidatePath(`/vehicles/${vehicleId}`);
+
     return { success: true, data: { id: created.id } };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -189,7 +194,7 @@ export async function deleteVehiclePhoto(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -297,6 +302,9 @@ export async function deleteVehiclePhoto(
       }
     });
 
+    revalidatePath("/vehicles");
+    revalidatePath(`/vehicles/${vehicleId}`);
+
     return { success: true, data: undefined };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -327,7 +335,7 @@ export async function setCoverPhoto(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -390,6 +398,9 @@ export async function setCoverPhoto(
           )
         );
     });
+
+    revalidatePath("/vehicles");
+    revalidatePath(`/vehicles/${vehicleId}`);
 
     return { success: true, data: undefined };
   } catch (err) {

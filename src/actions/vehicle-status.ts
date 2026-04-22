@@ -9,6 +9,8 @@ import {
   ALLOWED_TRANSITIONS,
 } from "@/lib/validations/vehicle-status";
 import { createAuditLog } from "@/actions/audit-logs";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult, VehicleStatus } from "@/types";
 
 // ============================================================================
@@ -26,7 +28,7 @@ export async function changeVehicleStatus(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -153,6 +155,9 @@ export async function changeVehicleStatus(
         });
       }
     });
+
+    revalidatePath("/vehicles");
+    revalidatePath(`/vehicles/${vehicleId}`);
 
     return {
       success: true,

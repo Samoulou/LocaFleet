@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { vehicles, clients, rentalContracts } from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { globalSearchSchema } from "@/lib/validations/search";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult } from "@/types";
 
 export type SearchResultItem = {
@@ -31,7 +32,7 @@ export async function globalSearch(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 

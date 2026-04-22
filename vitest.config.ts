@@ -10,6 +10,11 @@ export default defineConfig({
     setupFiles: ["./src/__tests__/setup.ts"],
     include: ["src/**/*.{test,spec}.{js,ts,jsx,tsx}"],
     exclude: ["node_modules", "e2e"],
+    server: {
+      deps: {
+        inline: ["next-intl"],
+      },
+    },
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
@@ -25,6 +30,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "next/navigation": path.resolve(__dirname, "./node_modules/next/navigation.js"),
     },
   },
 });

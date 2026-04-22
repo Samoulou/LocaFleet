@@ -2,6 +2,7 @@
 
 import { eq, and, sql } from "drizzle-orm";
 import { z } from "zod";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import { Resend } from "resend";
 import { db } from "@/db";
 import {
@@ -25,6 +26,7 @@ import {
 } from "@/lib/validations/inspection";
 import { createAuditLog } from "@/actions/audit-logs";
 import { getSupabaseServerClient } from "@/lib/supabase-server";
+import { revalidatePath } from "next/cache";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -133,7 +135,7 @@ export async function createDraftInspection(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -236,7 +238,7 @@ export async function submitDepartureInspection(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -375,6 +377,8 @@ export async function submitDepartureInspection(
       );
     });
 
+    revalidatePath(`/contracts/${contractId}`);
+
     return { success: true, data: { inspectionId } };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -408,7 +412,7 @@ export async function updateDepartureInspection(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -541,6 +545,8 @@ export async function updateDepartureInspection(
       );
     });
 
+    revalidatePath(`/contracts/${contractId}`);
+
     return { success: true, data: { inspectionId } };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -665,7 +671,7 @@ export async function createReturnDraftInspection(
     if (!parsedContractId.success) {
       return {
         success: false,
-        error: parsedContractId.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsedContractId.error),
       };
     }
 
@@ -930,7 +936,7 @@ export async function submitReturnInspection(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -1083,6 +1089,8 @@ export async function submitReturnInspection(
       });
     }
 
+    revalidatePath(`/contracts/${contractId}`);
+
     return { success: true, data: { inspectionId, warning } };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -1117,7 +1125,7 @@ export async function updateReturnInspection(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -1276,6 +1284,8 @@ export async function updateReturnInspection(
       });
     }
 
+    revalidatePath(`/contracts/${contractId}`);
+
     return { success: true, data: { inspectionId, warning } };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -1425,7 +1435,7 @@ export async function saveInspectionPhoto(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -1502,7 +1512,7 @@ export async function deleteInspectionPhoto(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 

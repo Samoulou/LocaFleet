@@ -437,11 +437,14 @@ export function ContractDetail({ contract }: ContractDetailProps) {
       )}
 
       {/* Validate Return Dialog */}
-      <ValidateReturnDialog
-        contractId={contract.id}
-        open={validateReturnOpen}
-        onOpenChange={setValidateReturnOpen}
-      />
+      {validateReturnOpen && (
+        <ValidateReturnDialog
+          key={contract.id}
+          contractId={contract.id}
+          open={validateReturnOpen}
+          onOpenChange={setValidateReturnOpen}
+        />
+      )}
     </div>
   );
 }

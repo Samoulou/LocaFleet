@@ -7,6 +7,8 @@ import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { createMaintenanceSchema } from "@/lib/validations/maintenance";
 import { closeMaintenanceSchema } from "@/lib/validations/close-maintenance";
 import { createAuditLog } from "@/actions/audit-logs";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -24,7 +26,7 @@ export async function createMaintenanceRecord(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -121,6 +123,9 @@ export async function createMaintenanceRecord(
       );
     });
 
+    revalidatePath("/vehicles");
+    revalidatePath(`/vehicles/${vehicleId}`);
+
     return {
       success: true,
       data: { id: maintenanceId },
@@ -155,7 +160,7 @@ export async function closeMaintenanceRecord(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -164,6 +169,7 @@ export async function closeMaintenanceRecord(
     // 2. Transaction: fetch, validate, close record, restore vehicle, audit
     let recordNotFound = false;
     let alreadyCompleted = false;
+    let vehicleId = "";
 
     await db.transaction(async (tx) => {
       // Fetch maintenance record inside transaction (tenant-scoped)
@@ -185,6 +191,8 @@ export async function closeMaintenanceRecord(
         recordNotFound = true;
         return;
       }
+
+      vehicleId = record.vehicleId;
 
       if (record.status === "completed") {
         alreadyCompleted = true;
@@ -275,6 +283,11 @@ export async function closeMaintenanceRecord(
         success: false,
         error: "Cette maintenance est déjà clôturée",
       };
+    }
+
+    revalidatePath("/vehicles");
+    if (vehicleId) {
+      revalidatePath(`/vehicles/${vehicleId}`);
     }
 
     return {

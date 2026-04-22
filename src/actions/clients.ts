@@ -14,6 +14,7 @@ import {
 } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import { db } from "@/db";
 import {
   clients,
@@ -126,7 +127,7 @@ export async function listClients(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Parametres invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -429,12 +430,14 @@ export async function getClientKPIs(): Promise<ActionResult<ClientKPIs>> {
     const currentUser = await requirePermission("clients", "read");
     const { tenantId } = currentUser;
 
-    // Single query for all 3 KPIs
+    // Single query for all 3 KPIs — use COUNT(DISTINCT clients.id) to avoid
+    // LEFT JOIN inflation when a client has multiple contracts.
     const [kpiResult] = await db
       .select({
-        totalClients: count().as("total_clients"),
+        totalClients:
+          sql<number>`COUNT(DISTINCT ${clients.id})`.mapWith(Number),
         trustedClients:
-          sql<number>`COUNT(*) FILTER (WHERE ${clients.isTrusted} = true)`.mapWith(
+          sql<number>`COUNT(DISTINCT ${clients.id}) FILTER (WHERE ${clients.isTrusted} = true)`.mapWith(
             Number
           ),
         activeRentals:
@@ -481,7 +484,7 @@ export async function createClient(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Donnees invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -547,7 +550,7 @@ export async function updateClient(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Donnees invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -649,7 +652,13 @@ export async function toggleClientTrusted(
     await db
       .update(clients)
       .set({ isTrusted: newValue, updatedAt: new Date() })
-      .where(eq(clients.id, id));
+      .where(
+        and(
+          eq(clients.id, id),
+          eq(clients.tenantId, tenantId),
+          isNull(clients.deletedAt)
+        )
+      );
 
     revalidatePath("/clients");
     revalidatePath(`/clients/${id}`);
@@ -803,7 +812,7 @@ export async function quickCreateClient(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Donnees invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 

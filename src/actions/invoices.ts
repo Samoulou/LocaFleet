@@ -29,83 +29,19 @@ import {
   updateInvoiceStatusSchema,
 } from "@/lib/validations/invoices";
 import { createAuditLog } from "@/actions/audit-logs";
+import {
+  ContractError,
+  generateNextInvoiceNumber,
+  generateNextDossierNumber,
+} from "@/lib/number-utils";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type {
   ActionResult,
   InvoiceStatus,
   InvoiceDetail,
   InvoiceLineItem,
 } from "@/types";
-
-// ============================================================================
-// Types
-// ============================================================================
-
-type DbLike = {
-  select: typeof db.select;
-  insert: typeof db.insert;
-  update: typeof db.update;
-  execute: typeof db.execute;
-};
-
-// ============================================================================
-// generateNextInvoiceNumber — internal helper
-// ============================================================================
-
-async function generateNextInvoiceNumber(
-  tenantId: string,
-  tx: DbLike
-): Promise<string> {
-  const currentYear = new Date().getFullYear();
-  const prefix = `FAC-${currentYear}-`;
-
-  // FOR UPDATE locks the row to prevent concurrent duplicates
-  const result = await tx.execute(
-    sql`SELECT ${invoices.invoiceNumber} FROM ${invoices}
-        WHERE ${invoices.tenantId} = ${tenantId}
-        ORDER BY ${invoices.createdAt} DESC
-        LIMIT 1
-        FOR UPDATE`
-  );
-
-  const lastNumber = result[0]?.invoice_number as string | undefined;
-  if (lastNumber && lastNumber.startsWith(prefix)) {
-    const seqStr = lastNumber.slice(prefix.length);
-    const nextSeq = parseInt(seqStr, 10) + 1;
-    return `${prefix}${String(nextSeq).padStart(4, "0")}`;
-  }
-
-  return `${prefix}0001`;
-}
-
-// ============================================================================
-// generateNextDossierNumber — internal helper
-// ============================================================================
-
-async function generateNextDossierNumber(
-  tenantId: string,
-  tx: DbLike
-): Promise<string> {
-  const currentYear = new Date().getFullYear();
-  const prefix = `DOS-${currentYear}-`;
-
-  // FOR UPDATE locks the row to prevent concurrent duplicates
-  const result = await tx.execute(
-    sql`SELECT ${rentalDossiers.dossierNumber} FROM ${rentalDossiers}
-        WHERE ${rentalDossiers.tenantId} = ${tenantId}
-        ORDER BY ${rentalDossiers.createdAt} DESC
-        LIMIT 1
-        FOR UPDATE`
-  );
-
-  const lastNumber = result[0]?.dossier_number as string | undefined;
-  if (lastNumber && lastNumber.startsWith(prefix)) {
-    const seqStr = lastNumber.slice(prefix.length);
-    const nextSeq = parseInt(seqStr, 10) + 1;
-    return `${prefix}${String(nextSeq).padStart(4, "0")}`;
-  }
-
-  return `${prefix}0001`;
-}
 
 // ============================================================================
 // closeContractAndGenerateInvoice
@@ -122,7 +58,7 @@ export async function closeContractAndGenerateInvoice(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -427,6 +363,10 @@ export async function closeContractAndGenerateInvoice(
       );
     });
 
+    revalidatePath("/contracts");
+    revalidatePath(`/contracts/${parsed.data.contractId}`);
+    revalidatePath("/invoices");
+
     return {
       success: true,
       data: { invoiceId, contractId: parsed.data.contractId },
@@ -446,17 +386,6 @@ export async function closeContractAndGenerateInvoice(
       success: false,
       error: "Une erreur est survenue lors de la clôture du contrat",
     };
-  }
-}
-
-// ============================================================================
-// ContractError — business logic error (not auth)
-// ============================================================================
-
-class ContractError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "ContractError";
   }
 }
 
@@ -532,7 +461,7 @@ export async function listInvoices(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -926,7 +855,7 @@ export async function updateInvoiceStatus(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -1010,6 +939,11 @@ export async function updateInvoiceStatus(
 
       return { success: true as const, data: { id: invoiceId } };
     });
+
+    if (result.success) {
+      revalidatePath("/invoices");
+      revalidatePath(`/invoices/${invoiceId}`);
+    }
 
     return result;
   } catch (err) {

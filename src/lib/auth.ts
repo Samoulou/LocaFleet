@@ -2,8 +2,10 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import * as schema from "@/db/schema";
+import { users } from "@/db/schema";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -82,12 +84,23 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     return null;
   }
 
+  // Verify user is still active in DB (session may be stale after deactivation)
+  const [dbUser] = await db
+    .select({ isActive: users.isActive })
+    .from(users)
+    .where(eq(users.id, user.id))
+    .limit(1);
+
+  if (!dbUser?.isActive) {
+    return null;
+  }
+
   return {
     id: user.id,
     tenantId,
     role: role as CurrentUser["role"],
     email: user.email,
     name: user.name,
-    isActive,
+    isActive: dbUser.isActive,
   };
 }

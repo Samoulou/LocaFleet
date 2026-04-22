@@ -75,6 +75,7 @@ export const NAV_SECTIONS: NavSection[] = [
 ];
 
 export function isItemVisible(item: NavItem, role: Role): boolean {
+  if (item.disabled) return false;
   if (item.adminOnly && role !== "admin") return false;
   if (item.resource && !hasPermission(role, item.resource, "read")) {
     return false;

@@ -9,6 +9,8 @@ import {
   updateCategorySchema,
 } from "@/lib/validations/categories";
 import { z } from "zod";
+import { getZodErrorMessage } from "@/lib/validations/utils";
+import { revalidatePath } from "next/cache";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -87,7 +89,7 @@ export async function createCategory(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -123,6 +125,8 @@ export async function createCategory(
       })
       .returning({ id: vehicleCategories.id });
 
+    revalidatePath("/settings/categories");
+
     return { success: true, data: { id: created.id } };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -153,7 +157,7 @@ export async function updateCategory(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -214,6 +218,8 @@ export async function updateCategory(
     if (!updated) {
       return { success: false, error: "Cette catégorie n'existe pas" };
     }
+
+    revalidatePath("/settings/categories");
 
     return { success: true, data: { id: updated.id } };
   } catch (err) {
@@ -290,6 +296,8 @@ export async function deleteCategory(id: string): Promise<ActionResult<void>> {
           eq(vehicleCategories.tenantId, currentUser.tenantId)
         )
       );
+
+    revalidatePath("/settings/categories");
 
     return { success: true, data: undefined };
   } catch (err) {

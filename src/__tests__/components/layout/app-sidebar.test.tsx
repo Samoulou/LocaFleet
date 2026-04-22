@@ -61,17 +61,17 @@ describe("AppSidebar", () => {
     localStorage.clear();
   });
 
-  it("admin sees all 6 nav items including Settings", () => {
+  it("admin sees 5 visible nav items (disabled hidden)", () => {
     renderSidebar(makeUser({ role: "admin" }));
     expect(screen.getByText("Véhicules")).toBeInTheDocument();
     expect(screen.getByText("Clients")).toBeInTheDocument();
     expect(screen.getByText("Contrats")).toBeInTheDocument();
     expect(screen.getByText("Factures")).toBeInTheDocument();
-    expect(screen.getByText("Maintenance")).toBeInTheDocument();
+    expect(screen.queryByText("Maintenance")).not.toBeInTheDocument();
     expect(screen.getByText("Paramètres")).toBeInTheDocument();
   });
 
-  it("agent sees 5 items (no Settings)", () => {
+  it("agent sees 4 items (no Settings, disabled hidden)", () => {
     renderSidebar(makeUser({ role: "agent" }));
     expect(screen.getByText("Véhicules")).toBeInTheDocument();
     expect(screen.getByText("Clients")).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe("AppSidebar", () => {
     expect(screen.queryByText("Paramètres")).not.toBeInTheDocument();
   });
 
-  it("viewer sees 5 items (no Settings)", () => {
+  it("viewer sees 4 items (no Settings, disabled hidden)", () => {
     renderSidebar(makeUser({ role: "viewer" }));
     expect(screen.getByText("Véhicules")).toBeInTheDocument();
     expect(screen.getByText("Clients")).toBeInTheDocument();

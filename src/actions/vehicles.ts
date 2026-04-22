@@ -28,6 +28,8 @@ import {
   vehicleUpdateSchema,
 } from "@/lib/validations/vehicle-form";
 import { z } from "zod";
+import { getZodErrorMessage } from "@/lib/validations/utils";
+import { revalidatePath } from "next/cache";
 import type { ActionResult, VehicleStatus } from "@/types";
 
 export type VehicleListItem = {
@@ -81,7 +83,7 @@ export async function listVehicles(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -278,7 +280,7 @@ export async function createVehicle(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -337,6 +339,8 @@ export async function createVehicle(
       })
       .returning({ id: vehicles.id });
 
+    revalidatePath("/vehicles");
+
     return { success: true, data: { id: created.id } };
   } catch (err) {
     if (err instanceof AuthorizationError) {
@@ -367,7 +371,7 @@ export async function updateVehicle(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -453,6 +457,9 @@ export async function updateVehicle(
     if (!updated) {
       return { success: false, error: "Ce véhicule n'existe pas" };
     }
+
+    revalidatePath("/vehicles");
+    revalidatePath(`/vehicles/${id}`);
 
     return { success: true, data: { id: updated.id } };
   } catch (err) {

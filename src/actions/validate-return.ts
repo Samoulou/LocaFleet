@@ -8,10 +8,15 @@ import {
   inspectionDamages,
   invoices,
   vehicles,
+  rentalDossiers,
+  clients,
 } from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { validateReturnSchema } from "@/lib/validations/validate-return";
 import { createAuditLog } from "@/actions/audit-logs";
+import { generateNextDossierNumber } from "@/lib/number-utils";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -108,7 +113,7 @@ export async function validateReturn(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -122,8 +127,10 @@ export async function validateReturn(
         .select({
           id: rentalContracts.id,
           tenantId: rentalContracts.tenantId,
+          clientId: rentalContracts.clientId,
           vehicleId: rentalContracts.vehicleId,
           status: rentalContracts.status,
+          startDate: rentalContracts.startDate,
           departureMileage: rentalContracts.departureMileage,
           returnMileage: rentalContracts.returnMileage,
           includedKmPerDay: rentalContracts.includedKmPerDay,
@@ -131,6 +138,8 @@ export async function validateReturn(
           totalDays: rentalContracts.totalDays,
           baseAmount: rentalContracts.baseAmount,
           optionsAmount: rentalContracts.optionsAmount,
+          contractPdfUrl: rentalContracts.contractPdfUrl,
+          paymentMethod: rentalContracts.paymentMethod,
         })
         .from(rentalContracts)
         .where(
@@ -287,7 +296,81 @@ export async function validateReturn(
           );
       }
 
-      // 9. Update vehicle: available + mileage
+      // 9. Create or update rental dossier
+      const [existingDossier] = await tx
+        .select({ id: rentalDossiers.id })
+        .from(rentalDossiers)
+        .where(
+          and(
+            eq(rentalDossiers.contractId, contractId),
+            eq(rentalDossiers.tenantId, currentUser.tenantId)
+          )
+        );
+
+      if (!existingDossier) {
+        const [client] = await tx
+          .select({
+            firstName: clients.firstName,
+            lastName: clients.lastName,
+          })
+          .from(clients)
+          .where(
+            and(
+              eq(clients.id, contract.clientId),
+              eq(clients.tenantId, currentUser.tenantId)
+            )
+          );
+
+        const [vehicle] = await tx
+          .select({
+            brand: vehicles.brand,
+            model: vehicles.model,
+            plateNumber: vehicles.plateNumber,
+          })
+          .from(vehicles)
+          .where(
+            and(
+              eq(vehicles.id, contract.vehicleId),
+              eq(vehicles.tenantId, currentUser.tenantId)
+            )
+          );
+
+        const dossierNumber = await generateNextDossierNumber(
+          currentUser.tenantId,
+          tx
+        );
+
+        const formatDate = (d: Date) => {
+          const day = String(d.getDate()).padStart(2, "0");
+          const month = String(d.getMonth() + 1).padStart(2, "0");
+          const year = d.getFullYear();
+          return `${day}.${month}.${year}`;
+        };
+
+        const rentalPeriod = `${formatDate(contract.startDate)} — ${formatDate(now)}`;
+        const clientName = client
+          ? `${client.firstName} ${client.lastName}`
+          : "Client inconnu";
+        const vehicleInfo = vehicle
+          ? `${vehicle.brand} ${vehicle.model} (${vehicle.plateNumber})`
+          : "Véhicule inconnu";
+
+        await tx.insert(rentalDossiers).values({
+          tenantId: currentUser.tenantId,
+          contractId,
+          invoiceId: existingInvoice?.id ?? null,
+          dossierNumber,
+          status:
+            contract.paymentMethod === "cash_departure" ? "paid" : "to_invoice",
+          clientName,
+          vehicleInfo,
+          rentalPeriod,
+          totalAmount: totalAmount.toFixed(2),
+          contractPdfUrl: contract.contractPdfUrl,
+        });
+      }
+
+      // 10. Update vehicle: available + mileage
       await tx
         .update(vehicles)
         .set({
@@ -302,7 +385,7 @@ export async function validateReturn(
           )
         );
 
-      // 10. Audit log
+      // 11. Audit log
       await createAuditLog(
         {
           tenantId: currentUser.tenantId,
@@ -336,6 +419,10 @@ export async function validateReturn(
         error: "Une erreur inattendue est survenue lors de la validation",
       };
     }
+
+    revalidatePath("/contracts");
+    revalidatePath(`/contracts/${contractId}`);
+    revalidatePath("/invoices");
 
     return { success: true, data: resultData };
   } catch (err) {

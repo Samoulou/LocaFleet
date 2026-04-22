@@ -6,6 +6,8 @@ import { invoices, payments, rentalDossiers } from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { processPaymentSchema } from "@/lib/validations/payment";
 import { createAuditLog } from "@/actions/audit-logs";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -23,7 +25,7 @@ export async function processPayment(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -129,6 +131,9 @@ export async function processPayment(
         tx
       );
     });
+
+    revalidatePath("/invoices");
+    revalidatePath(`/invoices/${invoiceId}`);
 
     return {
       success: true,

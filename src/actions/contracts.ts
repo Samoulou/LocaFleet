@@ -27,6 +27,9 @@ import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import { createContractSchema } from "@/lib/validations/contracts";
 import { computeRentalDays } from "@/lib/utils";
 import { createAuditLog } from "@/actions/audit-logs";
+import { ContractError, generateNextContractNumber } from "@/lib/number-utils";
+import { revalidatePath } from "next/cache";
+import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult, ContractStatus } from "@/types";
 
 // ============================================================================
@@ -48,17 +51,6 @@ export type RentalOptionItem = {
   dailyPrice: string;
   isPerDay: boolean | null;
 };
-
-// ============================================================================
-// ContractError — business logic error (not auth)
-// ============================================================================
-
-class ContractError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "ContractError";
-  }
-}
 
 // ============================================================================
 // getClientsForTenant
@@ -150,39 +142,6 @@ export async function getRentalOptionsForTenant(): Promise<
 // generateNextContractNumber — internal helper
 // ============================================================================
 
-type DbLike = {
-  select: typeof db.select;
-  insert: typeof db.insert;
-  update: typeof db.update;
-  execute: typeof db.execute;
-};
-
-async function generateNextContractNumber(
-  tenantId: string,
-  tx: DbLike
-): Promise<string> {
-  const currentYear = new Date().getFullYear();
-  const prefix = `CTR-${currentYear}-`;
-
-  // FOR UPDATE locks the row to prevent concurrent duplicates
-  const result = await tx.execute(
-    sql`SELECT ${rentalContracts.contractNumber} FROM ${rentalContracts}
-        WHERE ${rentalContracts.tenantId} = ${tenantId}
-        ORDER BY ${rentalContracts.createdAt} DESC
-        LIMIT 1
-        FOR UPDATE`
-  );
-
-  const lastNumber = result[0]?.contract_number as string | undefined;
-  if (lastNumber && lastNumber.startsWith(prefix)) {
-    const seqStr = lastNumber.slice(prefix.length);
-    const nextSeq = parseInt(seqStr, 10) + 1;
-    return `${prefix}${String(nextSeq).padStart(4, "0")}`;
-  }
-
-  return `${prefix}0001`;
-}
-
 // ============================================================================
 // createDraftContract
 // ============================================================================
@@ -198,7 +157,7 @@ export async function createDraftContract(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.issues[0]?.message ?? "Données invalides",
+        error: getZodErrorMessage(parsed.error),
       };
     }
 
@@ -443,6 +402,8 @@ export async function createDraftContract(
         tx
       );
     });
+
+    revalidatePath("/contracts");
 
     return {
       success: true,
