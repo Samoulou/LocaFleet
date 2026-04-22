@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
@@ -62,6 +63,19 @@ export type CurrentUser = {
   isActive: boolean;
 };
 
+// Request-scoped cache: deduplicates DB active-status checks within a single
+// request (e.g. layout + multiple server actions) without persisting across
+// requests. Zero stale-data risk.
+const verifyUserActive = cache(async (userId: string): Promise<boolean> => {
+  const [dbUser] = await db
+    .select({ isActive: users.isActive })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  return dbUser?.isActive ?? false;
+});
+
 export async function getCurrentUser(): Promise<CurrentUser | null> {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -85,13 +99,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
   }
 
   // Verify user is still active in DB (session may be stale after deactivation)
-  const [dbUser] = await db
-    .select({ isActive: users.isActive })
-    .from(users)
-    .where(eq(users.id, user.id))
-    .limit(1);
-
-  if (!dbUser?.isActive) {
+  if (!(await verifyUserActive(user.id))) {
     return null;
   }
 
@@ -101,6 +109,6 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     role: role as CurrentUser["role"],
     email: user.email,
     name: user.name,
-    isActive: dbUser.isActive,
+    isActive,
   };
 }
