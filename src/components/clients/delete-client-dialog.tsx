@@ -57,7 +57,7 @@ export function DeleteClientDialog({
           <AlertDialogDescription>
             {t("deleteDialog.description")}
             {clientName && (
-              <span className="mt-1 block font-medium text-slate-900">
+              <span className="mt-1 block font-medium text-foreground">
                 {clientName}
               </span>
             )}

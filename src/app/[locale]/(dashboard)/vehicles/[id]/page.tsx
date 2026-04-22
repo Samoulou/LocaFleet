@@ -60,12 +60,12 @@ export default async function VehicleDetailPage({
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1 text-sm text-slate-500">
-        <Link href="/vehicles" className="hover:text-slate-700">
+      <nav className="flex items-center gap-1 text-sm text-muted-foreground">
+        <Link href="/vehicles" className="hover:text-foreground">
           {t("title")}
         </Link>
         <ChevronRight className="size-4" />
-        <span className="font-medium text-slate-900">
+        <span className="font-medium text-foreground">
           {vehicle.brand} {vehicle.model}
         </span>
       </nav>
@@ -74,12 +74,12 @@ export default async function VehicleDetailPage({
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold text-foreground">
               {vehicle.brand} {vehicle.model}
             </h1>
             <VehicleStatusBadge status={vehicle.status} />
           </div>
-          <p className="mt-1 text-sm text-slate-500">{vehicle.plateNumber}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{vehicle.plateNumber}</p>
         </div>
         <div className="flex items-center gap-2">
           {canCreateContract && (

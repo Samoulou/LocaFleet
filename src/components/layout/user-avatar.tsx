@@ -15,7 +15,7 @@ type UserAvatarProps = {
 export function UserAvatar({ name, className }: UserAvatarProps) {
   return (
     <Avatar className={className}>
-      <AvatarFallback className="bg-blue-100 text-blue-700 text-sm font-medium">
+      <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
         {getInitials(name)}
       </AvatarFallback>
     </Avatar>

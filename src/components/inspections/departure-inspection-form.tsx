@@ -190,7 +190,7 @@ export function DepartureInspectionForm({
   if (draftLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="size-8 animate-spin text-slate-400" />
+        <Loader2 className="size-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -209,20 +209,20 @@ export function DepartureInspectionForm({
           {/* Read-only vehicle info */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div>
-              <Label className="text-xs text-slate-500">{t("brand")}</Label>
-              <p className="font-medium text-slate-900">
+              <Label className="text-xs text-muted-foreground">{t("brand")}</Label>
+              <p className="font-medium text-foreground">
                 {contract.vehicle.brand} {contract.vehicle.model}
               </p>
             </div>
             <div>
-              <Label className="text-xs text-slate-500">{t("plate")}</Label>
-              <p className="font-medium text-slate-900">
+              <Label className="text-xs text-muted-foreground">{t("plate")}</Label>
+              <p className="font-medium text-foreground">
                 {contract.vehicle.plateNumber}
               </p>
             </div>
             <div>
-              <Label className="text-xs text-slate-500">{t("client")}</Label>
-              <p className="font-medium text-slate-900">
+              <Label className="text-xs text-muted-foreground">{t("client")}</Label>
+              <p className="font-medium text-foreground">
                 {contract.client.firstName} {contract.client.lastName}
               </p>
             </div>
@@ -282,7 +282,7 @@ export function DepartureInspectionForm({
         </CardHeader>
         <CardContent>
           {damages.length === 0 ? (
-            <p className="text-sm text-slate-500">{t("noDamages")}</p>
+            <p className="text-sm text-muted-foreground">{t("noDamages")}</p>
           ) : (
             <div className="space-y-3">
               {damages.map((damage, i) => (
@@ -318,9 +318,9 @@ export function DepartureInspectionForm({
                     "flex h-9 flex-1 items-center justify-center rounded-md border text-sm font-medium transition-colors",
                     exteriorCleanliness === val
                       ? val === "clean"
-                        ? "border-green-300 bg-green-100 text-green-700"
-                        : "border-red-300 bg-red-100 text-red-700"
-                      : "border-slate-200 bg-white text-slate-400 hover:border-slate-300"
+                        ? "border-green-500/30 bg-green-500/10 text-green-500"
+                        : "border-red-500/30 bg-red-500/10 text-red-500"
+                      : "border-border bg-background text-muted-foreground hover:border-border"
                   )}
                 >
                   {t(`cleanliness.${val}`)}
@@ -342,9 +342,9 @@ export function DepartureInspectionForm({
                     "flex h-9 flex-1 items-center justify-center rounded-md border text-sm font-medium transition-colors",
                     interiorCleanliness === val
                       ? val === "clean"
-                        ? "border-green-300 bg-green-100 text-green-700"
-                        : "border-red-300 bg-red-100 text-red-700"
-                      : "border-slate-200 bg-white text-slate-400 hover:border-slate-300"
+                        ? "border-green-500/30 bg-green-500/10 text-green-500"
+                        : "border-red-500/30 bg-red-500/10 text-red-500"
+                      : "border-border bg-background text-muted-foreground hover:border-border"
                   )}
                 >
                   {t(`cleanliness.${val}`)}

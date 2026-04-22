@@ -38,12 +38,12 @@ export default async function ClientDetailPage({
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1 text-sm text-slate-500">
-        <Link href="/clients" className="hover:text-slate-700">
+      <nav className="flex items-center gap-1 text-sm text-muted-foreground">
+        <Link href="/clients" className="hover:text-foreground">
           {t("title")}
         </Link>
         <ChevronRight className="size-4" />
-        <span className="font-medium text-slate-900">
+        <span className="font-medium text-foreground">
           {client.firstName} {client.lastName}
         </span>
       </nav>

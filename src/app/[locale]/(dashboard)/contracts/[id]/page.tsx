@@ -28,12 +28,12 @@ export default async function ContractDetailPage({
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1 text-sm text-slate-500">
-        <Link href="/vehicles" className="hover:text-slate-700">
+      <nav className="flex items-center gap-1 text-sm text-muted-foreground">
+        <Link href="/vehicles" className="hover:text-foreground">
           {t("detail.backToContracts")}
         </Link>
         <ChevronRight className="size-4" />
-        <span className="font-medium text-slate-900">
+        <span className="font-medium text-foreground">
           {contract.contractNumber}
         </span>
       </nav>

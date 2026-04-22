@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 
 const AVATAR_COLORS = [
-  { bg: "bg-blue-100", text: "text-blue-700" },
-  { bg: "bg-green-100", text: "text-green-700" },
-  { bg: "bg-amber-100", text: "text-amber-700" },
-  { bg: "bg-violet-100", text: "text-violet-700" },
+  { bg: "bg-primary/10", text: "text-primary" },
+  { bg: "bg-green-500/10", text: "text-green-500" },
+  { bg: "bg-amber-500/10", text: "text-amber-500" },
+  { bg: "bg-violet-500/10", text: "text-violet-500" },
   { bg: "bg-rose-100", text: "text-rose-700" },
 ];
 

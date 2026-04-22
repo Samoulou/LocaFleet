@@ -127,11 +127,11 @@ function DatePicker({
           endMonth={toDate}
         />
         {showTime && (
-          <div className="border-t border-slate-200 p-3 space-y-3">
+          <div className="border-t border-border p-3 space-y-3">
             <div className="flex items-center gap-2">
-              <label className="text-sm text-slate-600 min-w-12">Heure</label>
+              <label className="text-sm text-muted-foreground min-w-12">Heure</label>
               <select
-                className="h-9 rounded-md border border-slate-200 bg-white px-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                className="h-9 rounded-md border border-border bg-background px-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 value={
                   pendingDate
                     ? String(pendingDate.getHours()).padStart(2, "0")
@@ -146,9 +146,9 @@ function DatePicker({
                   </option>
                 ))}
               </select>
-              <span className="text-slate-400">:</span>
+              <span className="text-muted-foreground">:</span>
               <select
-                className="h-9 rounded-md border border-slate-200 bg-white px-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                className="h-9 rounded-md border border-border bg-background px-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 value={
                   pendingDate
                     ? String(pendingDate.getMinutes()).padStart(2, "0")

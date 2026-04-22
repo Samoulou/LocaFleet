@@ -29,7 +29,7 @@ export function FuelLevelGauge({
 
   return (
     <div className="space-y-2">
-      <span className="text-sm font-medium text-slate-700">
+      <span className="text-sm font-medium text-foreground">
         {t("fuelLevel")}
       </span>
       <div className="flex gap-1">
@@ -45,11 +45,11 @@ export function FuelLevelGauge({
                 "flex h-10 flex-1 items-center justify-center rounded-md border text-sm font-medium transition-colors",
                 isActive
                   ? i <= 1
-                    ? "border-red-300 bg-red-100 text-red-700"
+                    ? "border-red-500/30 bg-red-500/10 text-red-500"
                     : i === 2
-                      ? "border-amber-300 bg-amber-100 text-amber-700"
-                      : "border-emerald-300 bg-emerald-100 text-emerald-700"
-                  : "border-slate-200 bg-white text-slate-400 hover:border-slate-300 hover:bg-slate-50",
+                      ? "border-amber-500/30 bg-amber-500/10 text-amber-500"
+                      : "border-emerald-500/30 bg-emerald-500/10 text-emerald-500"
+                  : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted",
                 disabled && "cursor-not-allowed opacity-50"
               )}
             >

@@ -15,8 +15,8 @@ export default async function CategoriesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">{t("title")}</h1>
-          <p className="mt-1 text-sm text-slate-500">{t("subtitle")}</p>
+          <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
         <CategoryDialog />
       </div>
@@ -27,14 +27,14 @@ export default async function CategoriesPage() {
           <p className="text-sm text-red-700">{result.error}</p>
         </div>
       ) : result.data.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
-          <div className="flex size-12 items-center justify-center rounded-full bg-slate-100">
-            <Tags className="size-6 text-slate-400" />
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
+          <div className="flex size-12 items-center justify-center rounded-full bg-muted">
+            <Tags className="size-6 text-muted-foreground" />
           </div>
-          <h3 className="mt-4 text-sm font-medium text-slate-900">
+          <h3 className="mt-4 text-sm font-medium text-foreground">
             {t("emptyState.title")}
           </h3>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             {t("emptyState.description")}
           </p>
           <div className="mt-4">

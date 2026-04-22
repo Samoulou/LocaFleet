@@ -35,7 +35,7 @@ export function DataTablePagination({
 
   return (
     <div className="flex items-center justify-between px-2 py-4">
-      <p className="text-sm text-slate-500">
+      <p className="text-sm text-muted-foreground">
         Affichage {start} à {end} sur {totalCount}
       </p>
 

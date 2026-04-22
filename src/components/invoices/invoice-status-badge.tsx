@@ -8,33 +8,33 @@ export const INVOICE_STATUS_CONFIG: Record<
 > = {
   pending: {
     label: "En attente",
-    dotClass: "bg-slate-500",
-    badgeClass: "bg-slate-100 text-slate-700 border-slate-200",
+    dotClass: "bg-muted-foreground",
+    badgeClass: "bg-muted text-foreground border-border",
   },
   invoiced: {
     label: "Facturé",
-    dotClass: "bg-blue-500",
-    badgeClass: "bg-blue-50 text-blue-700 border-blue-200",
+    dotClass: "bg-primary/100",
+    badgeClass: "bg-primary/10 text-primary border-primary/20",
   },
   verification: {
     label: "Vérification",
     dotClass: "bg-yellow-500",
-    badgeClass: "bg-yellow-50 text-yellow-700 border-yellow-200",
+    badgeClass: "bg-yellow-500/10 text-yellow-500 border-yellow-500/30",
   },
   paid: {
     label: "Payé",
     dotClass: "bg-green-500",
-    badgeClass: "bg-green-50 text-green-700 border-green-200",
+    badgeClass: "bg-green-500/10 text-green-500 border-green-500/30",
   },
   conflict: {
     label: "Conflit",
     dotClass: "bg-red-500",
-    badgeClass: "bg-red-50 text-red-700 border-red-200",
+    badgeClass: "bg-red-500/10 text-red-500 border-red-500/30",
   },
   cancelled: {
     label: "Annulé",
-    dotClass: "bg-slate-400",
-    badgeClass: "bg-slate-50 text-slate-400 border-slate-200",
+    dotClass: "bg-muted-foreground",
+    badgeClass: "bg-muted text-muted-foreground border-border",
   },
 };
 

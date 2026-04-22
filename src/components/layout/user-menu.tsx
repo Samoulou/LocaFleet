@@ -45,7 +45,7 @@ export function UserMenu({
       <DropdownMenuContent side={side} align={align} className="w-56">
         <div className="px-2 py-1.5">
           <p className="text-sm font-medium truncate">{user.name}</p>
-          <p className="text-xs text-slate-500 truncate">{user.email}</p>
+          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem disabled>

@@ -5,6 +5,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "next-themes";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -59,10 +60,17 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
-          <Toaster position="bottom-right" />
-        </NextIntlClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
+            <Toaster position="bottom-right" />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

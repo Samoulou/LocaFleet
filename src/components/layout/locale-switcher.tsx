@@ -32,7 +32,7 @@ export function LocaleSwitcher() {
           onClick={handleSwitch}
           aria-label={t("language")}
         >
-          <Globe className="size-5 text-slate-500" />
+          <Globe className="size-5 text-muted-foreground" />
           <span className="sr-only">{tooltipLabel}</span>
         </Button>
       </TooltipTrigger>

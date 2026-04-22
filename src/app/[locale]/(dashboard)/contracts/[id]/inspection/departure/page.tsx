@@ -56,26 +56,26 @@ export default async function DepartureInspectionPage({
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1 text-sm text-slate-500">
-        <Link href="/contracts" className="hover:text-slate-700">
+      <nav className="flex items-center gap-1 text-sm text-muted-foreground">
+        <Link href="/contracts" className="hover:text-foreground">
           {t("breadcrumb.contracts")}
         </Link>
         <ChevronRight className="size-4" />
-        <Link href={`/contracts/${id}`} className="hover:text-slate-700">
+        <Link href={`/contracts/${id}`} className="hover:text-foreground">
           {contract.contractNumber}
         </Link>
         <ChevronRight className="size-4" />
-        <span className="font-medium text-slate-900">
+        <span className="font-medium text-foreground">
           {isEditMode ? t("departure.editTitle") : t("departure.createTitle")}
         </span>
       </nav>
 
       {/* Title */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">
+        <h1 className="text-2xl font-bold text-foreground">
           {isEditMode ? t("departure.editTitle") : t("departure.createTitle")}
         </h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 text-sm text-muted-foreground">
           {isEditMode
             ? t("departure.editDescription")
             : t("departure.createDescription")}

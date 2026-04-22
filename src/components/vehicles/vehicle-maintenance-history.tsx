@@ -13,9 +13,9 @@ const maintenanceStatusStyles: Record<
   VehicleMaintenanceHistoryItem["status"],
   string
 > = {
-  open: "bg-amber-50 text-amber-700",
-  in_progress: "bg-blue-50 text-blue-700",
-  completed: "bg-green-50 text-green-700",
+  open: "bg-amber-500/10 text-amber-500",
+  in_progress: "bg-primary/10 text-primary",
+  completed: "bg-green-500/10 text-green-500",
 };
 
 export function VehicleMaintenanceHistory({
@@ -27,10 +27,10 @@ export function VehicleMaintenanceHistory({
   if (records.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="flex size-12 items-center justify-center rounded-full bg-slate-100">
-          <Wrench className="size-6 text-slate-400" />
+        <div className="flex size-12 items-center justify-center rounded-full bg-muted">
+          <Wrench className="size-6 text-muted-foreground" />
         </div>
-        <p className="mt-3 text-sm text-slate-500">{t("empty")}</p>
+        <p className="mt-3 text-sm text-muted-foreground">{t("empty")}</p>
       </div>
     );
   }
@@ -39,59 +39,59 @@ export function VehicleMaintenanceHistory({
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-slate-200">
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+          <tr className="border-b border-border">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("type")}
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("description")}
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("startDate")}
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("endDate")}
             </th>
-            <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("estimatedCost")}
             </th>
-            <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("finalCost")}
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("status")}
             </th>
             {canEdit && (
-              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500">
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 {t("actions")}
               </th>
             )}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-border">
           {records.map((record) => (
-            <tr key={record.id} className="hover:bg-slate-50">
-              <td className="whitespace-nowrap px-4 py-3 text-sm text-slate-700">
+            <tr key={record.id} className="hover:bg-muted">
+              <td className="whitespace-nowrap px-4 py-3 text-sm text-foreground">
                 {t(`types.${record.type}`)}
               </td>
               <td
-                className="max-w-[200px] truncate px-4 py-3 text-sm text-slate-700"
+                className="max-w-[200px] truncate px-4 py-3 text-sm text-foreground"
                 title={record.description}
               >
                 {record.description}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-sm text-slate-500">
+              <td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">
                 {formatDate(record.startDate)}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-sm text-slate-500">
+              <td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">
                 {record.endDate ? formatDate(record.endDate) : "\u2014"}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-right text-sm text-slate-700">
+              <td className="whitespace-nowrap px-4 py-3 text-right text-sm text-foreground">
                 {record.estimatedCost
                   ? formatCHF(Number(record.estimatedCost))
                   : "\u2014"}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-right text-sm font-medium text-slate-900">
+              <td className="whitespace-nowrap px-4 py-3 text-right text-sm font-medium text-foreground">
                 {record.finalCost
                   ? formatCHF(Number(record.finalCost))
                   : "\u2014"}
@@ -111,7 +111,7 @@ export function VehicleMaintenanceHistory({
                   {record.status !== "completed" ? (
                     <CloseMaintenanceDialog maintenanceId={record.id} />
                   ) : (
-                    <span className="text-sm text-slate-400">{"\u2014"}</span>
+                    <span className="text-sm text-muted-foreground">{"\u2014"}</span>
                   )}
                 </td>
               )}

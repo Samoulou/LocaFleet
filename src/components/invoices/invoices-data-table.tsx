@@ -69,7 +69,7 @@ export function InvoicesDataTable({ data }: InvoicesDataTableProps) {
           const { vehicleBrand, vehicleModel, vehiclePlateNumber } =
             row.original;
           if (!vehicleBrand) {
-            return <span className="text-sm text-slate-400">&mdash;</span>;
+            return <span className="text-sm text-muted-foreground">&mdash;</span>;
           }
           return (
             <div className="text-sm">
@@ -77,7 +77,7 @@ export function InvoicesDataTable({ data }: InvoicesDataTableProps) {
                 {vehicleBrand} {vehicleModel}
               </span>
               {vehiclePlateNumber && (
-                <span className="ml-1 text-slate-500">
+                <span className="ml-1 text-muted-foreground">
                   ({vehiclePlateNumber})
                 </span>
               )}
@@ -186,7 +186,7 @@ export function InvoicesDataTable({ data }: InvoicesDataTableProps) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="cursor-pointer hover:bg-slate-50"
+                  className="cursor-pointer hover:bg-muted"
                   onClick={() => router.push(`/invoices/${row.original.id}`)}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -203,7 +203,7 @@ export function InvoicesDataTable({ data }: InvoicesDataTableProps) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-slate-500"
+                  className="h-24 text-center text-muted-foreground"
                 >
                   Aucune facture ne correspond aux filtres
                 </TableCell>

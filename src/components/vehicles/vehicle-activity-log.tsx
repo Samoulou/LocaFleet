@@ -76,7 +76,7 @@ export function VehicleActivityLog({ vehicleId }: VehicleActivityLogProps) {
   if (loading) {
     return (
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-slate-900">{t("title")}</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("title")}</h2>
         <div className="space-y-3">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="flex gap-3">
@@ -94,29 +94,29 @@ export function VehicleActivityLog({ vehicleId }: VehicleActivityLogProps) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-slate-900">{t("title")}</h2>
+      <h2 className="text-lg font-semibold text-foreground">{t("title")}</h2>
 
       {logs.length === 0 ? (
-        <p className="text-sm text-slate-500">{t("empty")}</p>
+        <p className="text-sm text-muted-foreground">{t("empty")}</p>
       ) : (
         <div className="space-y-3">
           {logs.map((log) => {
             const metadata = log.metadata as { reason?: string } | null;
             return (
               <div key={log.id} className="flex gap-3 rounded-lg border p-3">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-slate-100">
-                  <Clock className="size-4 text-slate-500" />
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
+                  <Clock className="size-4 text-muted-foreground" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-slate-900">
+                  <p className="text-sm text-foreground">
                     {getDescription(log)}
                   </p>
                   {metadata?.reason && (
-                    <p className="mt-0.5 text-xs text-slate-500">
+                    <p className="mt-0.5 text-xs text-muted-foreground">
                       {t("reason")}: {metadata.reason}
                     </p>
                   )}
-                  <p className="mt-1 text-xs text-slate-400">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {formatDate(log.createdAt)}
                     {log.userName && (
                       <>

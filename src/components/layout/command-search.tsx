@@ -90,13 +90,13 @@ export function CommandSearch() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-400 hover:bg-slate-100 transition-colors flex-1 max-w-md mx-auto"
+        className="flex items-center gap-2 rounded-lg border border-border bg-muted px-3 py-1.5 text-sm text-muted-foreground hover:bg-accent transition-colors flex-1 max-w-md mx-auto"
       >
         <Search className="size-4" />
         <span className="flex-1 text-left">
           {t("topbar.searchPlaceholder")}
         </span>
-        <kbd className="hidden sm:inline-flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-xs text-slate-400">
+        <kbd className="hidden sm:inline-flex items-center gap-0.5 rounded border border-border bg-background px-1.5 py-0.5 text-xs text-muted-foreground">
           <span className="text-xs">&#8984;</span>K
         </kbd>
       </button>
@@ -110,12 +110,12 @@ export function CommandSearch() {
         <CommandList>
           {loading && (
             <div className="flex items-center justify-center py-6">
-              <Loader2 className="size-4 animate-spin text-slate-400" />
+              <Loader2 className="size-4 animate-spin text-muted-foreground" />
             </div>
           )}
 
           {showMinChars && (
-            <div className="py-6 text-center text-sm text-slate-400">
+            <div className="py-6 text-center text-sm text-muted-foreground">
               {t("topbar.searchMinChars")}
             </div>
           )}
@@ -139,7 +139,7 @@ export function CommandSearch() {
                       <Car className="mr-2 size-4 shrink-0" />
                       <div className="flex flex-col">
                         <span>{item.title}</span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-muted-foreground">
                           {item.subtitle}
                         </span>
                       </div>
@@ -159,7 +159,7 @@ export function CommandSearch() {
                       <Users className="mr-2 size-4 shrink-0" />
                       <div className="flex flex-col">
                         <span>{item.title}</span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-muted-foreground">
                           {item.subtitle}
                         </span>
                       </div>
@@ -179,7 +179,7 @@ export function CommandSearch() {
                       <FileText className="mr-2 size-4 shrink-0" />
                       <div className="flex flex-col">
                         <span>{item.title}</span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-muted-foreground">
                           {item.subtitle}
                         </span>
                       </div>

@@ -11,33 +11,33 @@ const KPI_CONFIG = [
     key: "total" as const,
     label: "Total véhicules",
     icon: Car,
-    cardClass: "border-slate-200 bg-white",
-    iconClass: "text-slate-500 bg-slate-100",
-    valueClass: "text-slate-900",
+    cardClass: "border-border bg-card",
+    iconClass: "text-muted-foreground bg-muted",
+    valueClass: "text-foreground",
   },
   {
     key: "available" as const,
     label: "Disponibles",
     icon: CircleCheck,
-    cardClass: "border-green-200 bg-green-50",
-    iconClass: "text-green-600 bg-green-100",
-    valueClass: "text-green-700",
+    cardClass: "border-green-500/30 bg-card",
+    iconClass: "text-green-500 bg-green-500/10",
+    valueClass: "text-green-500",
   },
   {
     key: "rented" as const,
     label: "En location",
     icon: KeyRound,
-    cardClass: "border-violet-200 bg-violet-50",
-    iconClass: "text-violet-600 bg-violet-100",
-    valueClass: "text-violet-700",
+    cardClass: "border-violet-500/30 bg-card",
+    iconClass: "text-violet-500 bg-violet-500/10",
+    valueClass: "text-violet-500",
   },
   {
     key: "maintenance" as const,
     label: "En maintenance",
     icon: Wrench,
-    cardClass: "border-amber-200 bg-amber-50",
-    iconClass: "text-amber-600 bg-amber-100",
-    valueClass: "text-amber-700",
+    cardClass: "border-amber-500/30 bg-card",
+    iconClass: "text-amber-500 bg-amber-500/10",
+    valueClass: "text-amber-500",
   },
 ] as const;
 
@@ -53,7 +53,7 @@ export function VehicleKpiCards({ kpis }: VehicleKpiCardsProps) {
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-slate-500">{config.label}</p>
+                <p className="text-sm text-muted-foreground">{config.label}</p>
                 <p className={cn("mt-1 text-2xl font-bold", config.valueClass)}>
                   {kpis[config.key]}
                 </p>

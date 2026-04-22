@@ -66,7 +66,7 @@ export function InvoiceDetailContent({ invoice }: InvoiceDetailContentProps) {
             </Button>
           </Link>
           <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900 font-mono">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground font-mono">
               {invoice.invoiceNumber}
             </h2>
             <InvoiceStatusBadge status={invoice.status} />
@@ -126,7 +126,7 @@ export function InvoiceDetailContent({ invoice }: InvoiceDetailContentProps) {
 
       {/* Issued date */}
       {invoice.issuedAt && (
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           {t("issuedAt", { date: formatDate(invoice.issuedAt) })}
         </p>
       )}
@@ -134,21 +134,21 @@ export function InvoiceDetailContent({ invoice }: InvoiceDetailContentProps) {
       {/* 3 Info Cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {/* Client Card */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
+        <div className="rounded-xl border border-border bg-card p-5">
           <div className="mb-3 flex items-center gap-2">
-            <User className="size-4 text-slate-400" />
-            <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
+            <User className="size-4 text-muted-foreground" />
+            <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("clientCard")}
             </span>
           </div>
-          <p className="font-medium text-slate-900">
+          <p className="font-medium text-foreground">
             {invoice.client.firstName} {invoice.client.lastName}
           </p>
-          <p className="mt-1 text-sm text-slate-500">{invoice.client.email}</p>
-          <p className="text-sm text-slate-500">{invoice.client.phone}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{invoice.client.email}</p>
+          <p className="text-sm text-muted-foreground">{invoice.client.phone}</p>
           <Link
             href={`/clients/${invoice.client.id}`}
-            className="mt-3 inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
+            className="mt-3 inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80"
           >
             {t("viewProfile")}
             <ExternalLink className="size-3" />
@@ -156,22 +156,22 @@ export function InvoiceDetailContent({ invoice }: InvoiceDetailContentProps) {
         </div>
 
         {/* Vehicle Card */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
+        <div className="rounded-xl border border-border bg-card p-5">
           <div className="mb-3 flex items-center gap-2">
-            <Car className="size-4 text-slate-400" />
-            <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
+            <Car className="size-4 text-muted-foreground" />
+            <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("vehicleCard")}
             </span>
           </div>
-          <p className="font-medium text-slate-900">
+          <p className="font-medium text-foreground">
             {invoice.vehicle.brand} {invoice.vehicle.model}
           </p>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             {invoice.vehicle.plateNumber}
           </p>
           <Link
             href={`/vehicles/${invoice.vehicle.id}`}
-            className="mt-3 inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
+            className="mt-3 inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80"
           >
             {t("viewProfile")}
             <ExternalLink className="size-3" />
@@ -179,23 +179,23 @@ export function InvoiceDetailContent({ invoice }: InvoiceDetailContentProps) {
         </div>
 
         {/* Contract Card */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
+        <div className="rounded-xl border border-border bg-card p-5">
           <div className="mb-3 flex items-center gap-2">
-            <FileSignature className="size-4 text-slate-400" />
-            <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
+            <FileSignature className="size-4 text-muted-foreground" />
+            <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("contractCard")}
             </span>
           </div>
-          <p className="font-medium text-slate-900">
+          <p className="font-medium text-foreground">
             {invoice.contract.contractNumber ?? "—"}
           </p>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             {formatDate(invoice.contract.startDate)} —{" "}
             {formatDate(invoice.contract.endDate)}
           </p>
           <Link
             href={`/contracts/${invoice.contract.id}`}
-            className="mt-3 inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
+            className="mt-3 inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80"
           >
             {t("viewProfile")}
             <ExternalLink className="size-3" />
@@ -204,79 +204,79 @@ export function InvoiceDetailContent({ invoice }: InvoiceDetailContentProps) {
       </div>
 
       {/* Line Items Table */}
-      <div className="rounded-xl border border-slate-200 bg-white">
-        <div className="border-b border-slate-200 px-5 py-4">
-          <h3 className="text-sm font-semibold text-slate-900">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="border-b border-border px-5 py-4">
+          <h3 className="text-sm font-semibold text-foreground">
             {t("lineItemsTitle")}
           </h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="bg-slate-50">
-                <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+              <tr className="bg-muted">
+                <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("colDescription")}
                 </th>
-                <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500">
+                <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("colQuantity")}
                 </th>
-                <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500">
+                <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("colUnitPrice")}
                 </th>
-                <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500">
+                <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t("colTotal")}
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-border">
               {invoice.lineItems.map((item, idx) => (
-                <tr key={idx} className="hover:bg-slate-50">
-                  <td className="px-5 py-3 text-sm text-slate-900">
+                <tr key={idx} className="hover:bg-muted">
+                  <td className="px-5 py-3 text-sm text-foreground">
                     {item.description}
                   </td>
-                  <td className="px-5 py-3 text-right text-sm text-slate-600">
+                  <td className="px-5 py-3 text-right text-sm text-muted-foreground">
                     {item.quantity}
                   </td>
-                  <td className="px-5 py-3 text-right text-sm text-slate-600">
+                  <td className="px-5 py-3 text-right text-sm text-muted-foreground">
                     {formatCHF(parseFloat(item.unitPrice))}
                   </td>
-                  <td className="px-5 py-3 text-right text-sm font-medium text-slate-900">
+                  <td className="px-5 py-3 text-right text-sm font-medium text-foreground">
                     {formatCHF(parseFloat(item.totalPrice))}
                   </td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-slate-200">
+              <tr className="border-t border-border">
                 <td
                   colSpan={3}
-                  className="px-5 py-2 text-right text-sm text-slate-500"
+                  className="px-5 py-2 text-right text-sm text-muted-foreground"
                 >
                   {t("subtotal")}
                 </td>
-                <td className="px-5 py-2 text-right text-sm text-slate-900">
+                <td className="px-5 py-2 text-right text-sm text-foreground">
                   {formatCHF(parseFloat(invoice.subtotal))}
                 </td>
               </tr>
               <tr>
                 <td
                   colSpan={3}
-                  className="px-5 py-2 text-right text-sm text-slate-500"
+                  className="px-5 py-2 text-right text-sm text-muted-foreground"
                 >
                   {t("tax", { rate: invoice.taxRate })}
                 </td>
-                <td className="px-5 py-2 text-right text-sm text-slate-900">
+                <td className="px-5 py-2 text-right text-sm text-foreground">
                   {formatCHF(parseFloat(invoice.taxAmount))}
                 </td>
               </tr>
-              <tr className="border-t-2 border-slate-300">
+              <tr className="border-t-2 border-border">
                 <td
                   colSpan={3}
-                  className="px-5 py-3 text-right text-sm font-bold text-slate-900"
+                  className="px-5 py-3 text-right text-sm font-bold text-foreground"
                 >
                   {t("total")}
                 </td>
-                <td className="px-5 py-3 text-right text-sm font-bold text-slate-900">
+                <td className="px-5 py-3 text-right text-sm font-bold text-foreground">
                   {formatCHF(parseFloat(invoice.totalAmount))}
                 </td>
               </tr>
@@ -286,58 +286,58 @@ export function InvoiceDetailContent({ invoice }: InvoiceDetailContentProps) {
       </div>
 
       {/* Payments Table */}
-      <div className="rounded-xl border border-slate-200 bg-white">
-        <div className="border-b border-slate-200 px-5 py-4">
-          <h3 className="text-sm font-semibold text-slate-900">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="border-b border-border px-5 py-4">
+          <h3 className="text-sm font-semibold text-foreground">
             {t("paymentsTitle")}
           </h3>
         </div>
 
         {invoice.payments.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12">
-            <CreditCard className="size-8 text-slate-300" />
-            <p className="mt-3 text-sm text-slate-500">{t("noPayments")}</p>
+            <CreditCard className="size-8 text-muted-foreground/50" />
+            <p className="mt-3 text-sm text-muted-foreground">{t("noPayments")}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-slate-50">
-                  <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+                <tr className="bg-muted">
+                  <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     {t("colDate")}
                   </th>
-                  <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500">
+                  <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     {t("colAmount")}
                   </th>
-                  <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+                  <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     {t("colMethod")}
                   </th>
-                  <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+                  <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     {t("colReference")}
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-border">
                 {invoice.payments.map((payment) => (
-                  <tr key={payment.id} className="hover:bg-slate-50">
-                    <td className="px-5 py-3 text-sm text-slate-900">
+                  <tr key={payment.id} className="hover:bg-muted">
+                    <td className="px-5 py-3 text-sm text-foreground">
                       {formatDate(payment.paidAt)}
                     </td>
-                    <td className="px-5 py-3 text-right text-sm font-medium text-slate-900">
+                    <td className="px-5 py-3 text-right text-sm font-medium text-foreground">
                       {formatCHF(parseFloat(payment.amount))}
                     </td>
-                    <td className="px-5 py-3 text-sm text-slate-600">
+                    <td className="px-5 py-3 text-sm text-muted-foreground">
                       {tMethods(payment.method)}
                     </td>
-                    <td className="px-5 py-3 text-sm text-slate-500">
+                    <td className="px-5 py-3 text-sm text-muted-foreground">
                       {payment.reference ?? "—"}
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-slate-300">
-                  <td colSpan={4} className="px-5 py-3 text-sm text-slate-700">
+                <tr className="border-t-2 border-border">
+                  <td colSpan={4} className="px-5 py-3 text-sm text-foreground">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span>
                         {t("paidSummary", {
@@ -359,11 +359,11 @@ export function InvoiceDetailContent({ invoice }: InvoiceDetailContentProps) {
 
       {/* Notes */}
       {invoice.notes && invoice.notes.trim() !== "" && (
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
-          <h3 className="mb-2 text-sm font-semibold text-slate-900">
+        <div className="rounded-xl border border-border bg-card p-5">
+          <h3 className="mb-2 text-sm font-semibold text-foreground">
             {t("notesTitle")}
           </h3>
-          <p className="whitespace-pre-wrap text-sm text-slate-600">
+          <p className="whitespace-pre-wrap text-sm text-muted-foreground">
             {invoice.notes}
           </p>
         </div>

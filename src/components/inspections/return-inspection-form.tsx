@@ -231,7 +231,7 @@ export function ReturnInspectionForm({
   if (draftLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="size-8 animate-spin text-slate-400" />
+        <Loader2 className="size-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -250,26 +250,26 @@ export function ReturnInspectionForm({
           {/* Read-only vehicle info */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div>
-              <Label className="text-xs text-slate-500">
+              <Label className="text-xs text-muted-foreground">
                 {tDeparture("brand")}
               </Label>
-              <p className="font-medium text-slate-900">
+              <p className="font-medium text-foreground">
                 {contract.vehicle.brand} {contract.vehicle.model}
               </p>
             </div>
             <div>
-              <Label className="text-xs text-slate-500">
+              <Label className="text-xs text-muted-foreground">
                 {tDeparture("plate")}
               </Label>
-              <p className="font-medium text-slate-900">
+              <p className="font-medium text-foreground">
                 {contract.vehicle.plateNumber}
               </p>
             </div>
             <div>
-              <Label className="text-xs text-slate-500">
+              <Label className="text-xs text-muted-foreground">
                 {tDeparture("client")}
               </Label>
-              <p className="font-medium text-slate-900">
+              <p className="font-medium text-foreground">
                 {contract.client.firstName} {contract.client.lastName}
               </p>
             </div>
@@ -278,10 +278,10 @@ export function ReturnInspectionForm({
           {/* Km departure (read-only) + km return (editable) + difference */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div>
-              <Label className="text-xs text-slate-500">
+              <Label className="text-xs text-muted-foreground">
                 {t("departureMileage")}
               </Label>
-              <p className="mt-1 font-medium text-slate-900">
+              <p className="mt-1 font-medium text-foreground">
                 {departureMileage.toLocaleString("de-CH")} km
               </p>
             </div>
@@ -300,7 +300,7 @@ export function ReturnInspectionForm({
             </div>
             <div className="flex items-end" aria-live="polite">
               {kmDifference > 0 && (
-                <span className="rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700">
+                <span className="rounded-md border border-primary/20 bg-primary/5 px-3 py-1.5 text-sm font-medium text-primary">
                   + {kmDifference.toLocaleString("de-CH")} km
                 </span>
               )}
@@ -336,15 +336,15 @@ export function ReturnInspectionForm({
         <CardContent className="space-y-6">
           {/* Departure damages (read-only) */}
           {departureDamages.length > 0 && (
-            <div className="space-y-3 rounded-lg border border-slate-200 bg-slate-50/50 p-4">
+            <div className="space-y-3 rounded-lg border border-border bg-muted/50 p-4">
               <div className="mb-3 flex items-center gap-2">
-                <Lock className="size-3.5 text-slate-400" />
-                <span className="text-sm font-medium text-slate-500">
+                <Lock className="size-3.5 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">
                   {t("departureDamagesLabel")}
                 </span>
                 <Badge
                   variant="outline"
-                  className="bg-slate-100 text-xs text-slate-600"
+                  className="bg-muted text-xs text-muted-foreground"
                 >
                   {t("readOnly")}
                 </Badge>
@@ -374,11 +374,11 @@ export function ReturnInspectionForm({
           <div>
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-slate-700">
+                <span className="text-sm font-medium text-foreground">
                   {t("newDamagesLabel")}
                 </span>
                 {damages.length > 0 && (
-                  <Badge className="bg-amber-50 text-xs text-amber-700">
+                  <Badge className="bg-amber-500/10 text-xs text-amber-500">
                     {t("newBadge")}
                   </Badge>
                 )}
@@ -395,13 +395,13 @@ export function ReturnInspectionForm({
             </div>
 
             {damages.length === 0 ? (
-              <p className="text-sm text-slate-500">{t("noNewDamages")}</p>
+              <p className="text-sm text-muted-foreground">{t("noNewDamages")}</p>
             ) : (
               <div className="space-y-3">
                 {damages.map((damage, i) => (
                   <div
                     key={i}
-                    className="rounded-lg border border-amber-200 bg-white"
+                    className="rounded-lg border border-amber-500/30 bg-background"
                   >
                     <DamageEntry
                       value={damage}
@@ -438,9 +438,9 @@ export function ReturnInspectionForm({
                     "flex h-9 flex-1 items-center justify-center rounded-md border text-sm font-medium transition-colors",
                     exteriorCleanliness === val
                       ? val === "clean"
-                        ? "border-green-300 bg-green-100 text-green-700"
-                        : "border-red-300 bg-red-100 text-red-700"
-                      : "border-slate-200 bg-white text-slate-400 hover:border-slate-300"
+                        ? "border-green-500/30 bg-green-500/10 text-green-500"
+                        : "border-red-500/30 bg-red-500/10 text-red-500"
+                      : "border-border bg-background text-muted-foreground hover:border-border"
                   )}
                 >
                   {tDeparture(`cleanliness.${val}`)}
@@ -462,9 +462,9 @@ export function ReturnInspectionForm({
                     "flex h-9 flex-1 items-center justify-center rounded-md border text-sm font-medium transition-colors",
                     interiorCleanliness === val
                       ? val === "clean"
-                        ? "border-green-300 bg-green-100 text-green-700"
-                        : "border-red-300 bg-red-100 text-red-700"
-                      : "border-slate-200 bg-white text-slate-400 hover:border-slate-300"
+                        ? "border-green-500/30 bg-green-500/10 text-green-500"
+                        : "border-red-500/30 bg-red-500/10 text-red-500"
+                      : "border-border bg-background text-muted-foreground hover:border-border"
                   )}
                 >
                   {tDeparture(`cleanliness.${val}`)}
@@ -512,10 +512,10 @@ export function ReturnInspectionForm({
             <div
               role="status"
               aria-live="polite"
-              className="flex items-start gap-2 animate-in fade-in rounded-md border border-blue-200 bg-blue-50 p-3"
+              className="flex items-start gap-2 animate-in fade-in rounded-md border border-primary/20 bg-primary/5 p-3"
             >
-              <Mail className="mt-0.5 size-4 shrink-0 text-blue-700" />
-              <p className="text-sm text-blue-700">
+              <Mail className="mt-0.5 size-4 shrink-0 text-primary" />
+              <p className="text-sm text-primary">
                 {t("mechanicEmailCallout")}
               </p>
             </div>

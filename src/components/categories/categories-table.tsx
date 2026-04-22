@@ -73,7 +73,7 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
             {categories.map((category) => (
               <TableRow key={category.id}>
                 <TableCell className="font-medium">{category.name}</TableCell>
-                <TableCell className="hidden md:table-cell text-slate-500">
+                <TableCell className="hidden md:table-cell text-muted-foreground">
                   {category.description || "—"}
                 </TableCell>
                 <TableCell className="text-right">

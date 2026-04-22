@@ -124,14 +124,14 @@ export function ChangeStatusDialog({
 
         <div className="space-y-4">
           {/* Current status */}
-          <div className="flex items-center gap-2 text-sm text-slate-500">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {t("currentStatus")}:
             <VehicleStatusBadge status={currentStatus} />
           </div>
 
           {/* Rented warning */}
           {isRented && (
-            <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
+            <div className="flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3">
               <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-600" />
               <p className="text-sm text-amber-800">{t("rentedWarning")}</p>
             </div>

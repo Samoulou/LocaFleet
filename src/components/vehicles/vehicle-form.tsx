@@ -124,7 +124,7 @@ export function VehicleForm({
     <form onSubmit={handleSubmit} className="space-y-8" noValidate>
       {/* Identification Section */}
       <fieldset className="space-y-4">
-        <legend className="text-lg font-semibold text-slate-900">
+        <legend className="text-lg font-semibold text-foreground">
           {t("sectionIdentification")}
         </legend>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -219,7 +219,7 @@ export function VehicleForm({
 
       {/* Details Section */}
       <fieldset className="space-y-4">
-        <legend className="text-lg font-semibold text-slate-900">
+        <legend className="text-lg font-semibold text-foreground">
           {t("sectionDetails")}
         </legend>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -361,7 +361,7 @@ export function VehicleForm({
 
       {/* Operational Section */}
       <fieldset className="space-y-4">
-        <legend className="text-lg font-semibold text-slate-900">
+        <legend className="text-lg font-semibold text-foreground">
           {t("sectionOperational")}
         </legend>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -392,7 +392,7 @@ export function VehicleForm({
 
       {/* Notes Section */}
       <fieldset className="space-y-4">
-        <legend className="text-lg font-semibold text-slate-900">
+        <legend className="text-lg font-semibold text-foreground">
           {t("sectionNotes")}
         </legend>
         <div className="space-y-2">

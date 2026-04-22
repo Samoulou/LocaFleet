@@ -42,8 +42,8 @@ export default async function VehiclesPage({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Véhicules</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <h1 className="text-2xl font-bold text-foreground">Véhicules</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             Gérez votre flotte de véhicules
           </p>
         </div>
@@ -70,14 +70,14 @@ export default async function VehiclesPage({
         !params.search &&
         !params.status &&
         !params.category ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
-          <div className="flex size-12 items-center justify-center rounded-full bg-slate-100">
-            <Car className="size-6 text-slate-400" />
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
+          <div className="flex size-12 items-center justify-center rounded-full bg-muted">
+            <Car className="size-6 text-muted-foreground" />
           </div>
-          <h3 className="mt-4 text-sm font-medium text-slate-900">
+          <h3 className="mt-4 text-sm font-medium text-foreground">
             Aucun véhicule
           </h3>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Ajoutez votre premier véhicule pour commencer
           </p>
           <Button asChild className="mt-4" size="sm">

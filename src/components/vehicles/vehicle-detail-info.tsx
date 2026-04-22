@@ -45,17 +45,17 @@ export function VehicleDetailInfo({ vehicle }: VehicleDetailInfoProps) {
   ];
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6">
-      <h2 className="mb-4 text-lg font-semibold text-slate-900">
+    <div className="rounded-xl border border-border bg-background p-6">
+      <h2 className="mb-4 text-lg font-semibold text-foreground">
         {t("vehicleInfo")}
       </h2>
       <dl className="space-y-3">
         {rows.map((row) => (
           <div key={row.label} className="flex justify-between gap-4">
-            <dt className="text-sm text-slate-500">{row.label}</dt>
-            <dd className="text-right text-sm font-medium text-slate-900">
+            <dt className="text-sm text-muted-foreground">{row.label}</dt>
+            <dd className="text-right text-sm font-medium text-foreground">
               {row.value ?? (
-                <span className="text-slate-400">{t("notSpecified")}</span>
+                <span className="text-muted-foreground">{t("notSpecified")}</span>
               )}
             </dd>
           </div>
@@ -63,11 +63,11 @@ export function VehicleDetailInfo({ vehicle }: VehicleDetailInfoProps) {
       </dl>
 
       {vehicle.notes && (
-        <div className="mt-4 border-t border-slate-100 pt-4">
-          <h3 className="mb-2 text-sm font-medium text-slate-500">
+        <div className="mt-4 border-t border-border pt-4">
+          <h3 className="mb-2 text-sm font-medium text-muted-foreground">
             {t("notes")}
           </h3>
-          <p className="whitespace-pre-wrap text-sm text-slate-700">
+          <p className="whitespace-pre-wrap text-sm text-foreground">
             {vehicle.notes}
           </p>
         </div>

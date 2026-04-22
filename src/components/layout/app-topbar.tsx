@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Bell } from "lucide-react";
 import { CommandSearch } from "@/components/layout/command-search";
 import { LocaleSwitcher } from "@/components/layout/locale-switcher";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { MobileSidebar } from "@/components/layout/mobile-sidebar";
 import { UserAvatar } from "@/components/layout/user-avatar";
 import { UserMenu } from "@/components/layout/user-menu";
@@ -18,7 +19,7 @@ export function AppTopbar({ user }: AppTopbarProps) {
   const t = useTranslations();
 
   return (
-    <header className="flex h-14 shrink-0 items-center gap-2 border-b border-slate-200 bg-white px-4">
+    <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background px-4">
       {/* Mobile hamburger */}
       <MobileSidebar user={user} />
 
@@ -30,6 +31,7 @@ export function AppTopbar({ user }: AppTopbarProps) {
       {/* Right side: locale + notifications + user */}
       <div className="flex items-center gap-1">
         <LocaleSwitcher />
+        <ThemeToggle />
 
         <Button
           variant="ghost"
@@ -37,7 +39,7 @@ export function AppTopbar({ user }: AppTopbarProps) {
           className="relative"
           aria-label={t("topbar.notifications")}
         >
-          <Bell className="size-5 text-slate-500" />
+          <Bell className="size-5 text-muted-foreground" />
         </Button>
 
         <UserMenu user={user} side="bottom" align="end">

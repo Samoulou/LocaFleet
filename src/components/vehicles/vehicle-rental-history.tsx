@@ -9,12 +9,12 @@ type VehicleRentalHistoryProps = {
 
 const contractStatusStyles: Record<VehicleRentalHistoryItem["status"], string> =
   {
-    draft: "bg-slate-100 text-slate-600",
-    approved: "bg-blue-50 text-blue-700",
-    pending_cg: "bg-amber-50 text-amber-700",
-    active: "bg-green-50 text-green-700",
-    completed: "bg-slate-100 text-slate-600",
-    cancelled: "bg-red-50 text-red-700",
+    draft: "bg-muted text-muted-foreground",
+    approved: "bg-primary/10 text-primary",
+    pending_cg: "bg-amber-500/10 text-amber-500",
+    active: "bg-green-500/10 text-green-500",
+    completed: "bg-muted text-muted-foreground",
+    cancelled: "bg-red-500/10 text-red-500",
   };
 
 export function VehicleRentalHistory({ rentals }: VehicleRentalHistoryProps) {
@@ -23,10 +23,10 @@ export function VehicleRentalHistory({ rentals }: VehicleRentalHistoryProps) {
   if (rentals.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="flex size-12 items-center justify-center rounded-full bg-slate-100">
-          <FileText className="size-6 text-slate-400" />
+        <div className="flex size-12 items-center justify-center rounded-full bg-muted">
+          <FileText className="size-6 text-muted-foreground" />
         </div>
-        <p className="mt-3 text-sm text-slate-500">{t("empty")}</p>
+        <p className="mt-3 text-sm text-muted-foreground">{t("empty")}</p>
       </div>
     );
   }
@@ -35,45 +35,45 @@ export function VehicleRentalHistory({ rentals }: VehicleRentalHistoryProps) {
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-slate-200">
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+          <tr className="border-b border-border">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("contractNumber")}
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("client")}
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("startDate")}
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("endDate")}
             </th>
-            <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("amount")}
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500">
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {t("status")}
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-border">
           {rentals.map((rental) => (
-            <tr key={rental.id} className="hover:bg-slate-50">
-              <td className="whitespace-nowrap px-4 py-3 text-sm font-medium text-slate-900">
+            <tr key={rental.id} className="hover:bg-muted">
+              <td className="whitespace-nowrap px-4 py-3 text-sm font-medium text-foreground">
                 {rental.contractNumber}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-sm text-slate-700">
+              <td className="whitespace-nowrap px-4 py-3 text-sm text-foreground">
                 {rental.clientFirstName} {rental.clientLastName}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-sm text-slate-500">
+              <td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">
                 {formatDate(rental.startDate)}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-sm text-slate-500">
+              <td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">
                 {rental.actualReturnDate
                   ? formatDate(rental.actualReturnDate)
                   : formatDate(rental.endDate)}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-right text-sm font-medium text-slate-900">
+              <td className="whitespace-nowrap px-4 py-3 text-right text-sm font-medium text-foreground">
                 {formatCHF(Number(rental.totalAmount))}
               </td>
               <td className="whitespace-nowrap px-4 py-3">

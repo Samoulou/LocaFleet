@@ -54,23 +54,23 @@ export function ClientDetailContent({
           />
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-slate-900">
+              <h1 className="text-2xl font-bold text-foreground">
                 {client.firstName} {client.lastName}
               </h1>
               {client.isTrusted && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
                   <BadgeCheck className="size-3" />
                   {t("trustedToggle")}
                 </span>
               )}
             </div>
             {client.companyName && (
-              <p className="mt-0.5 text-sm text-slate-500">
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 <Building2 className="mr-1 inline size-3.5" />
                 {client.companyName}
               </p>
             )}
-            <p className="mt-0.5 text-sm text-slate-500">
+            <p className="mt-0.5 text-sm text-muted-foreground">
               {client.email} &middot; {client.phone}
             </p>
           </div>
@@ -84,33 +84,33 @@ export function ClientDetailContent({
       {/* 3 Summary Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {/* Card 1: Info */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
-          <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-            <Mail className="size-4 text-slate-400" />
+        <div className="rounded-xl border border-border bg-card p-5">
+          <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            <Mail className="size-4 text-muted-foreground" />
             {t("cardInfo")}
           </h3>
           <dl className="mt-3 space-y-2">
             <div>
-              <dt className="text-xs text-slate-500">{t("email")}</dt>
-              <dd className="text-sm text-slate-900">{client.email}</dd>
+              <dt className="text-xs text-muted-foreground">{t("email")}</dt>
+              <dd className="text-sm text-foreground">{client.email}</dd>
             </div>
             <div>
-              <dt className="text-xs text-slate-500">{t("phone")}</dt>
-              <dd className="text-sm text-slate-900">{client.phone}</dd>
+              <dt className="text-xs text-muted-foreground">{t("phone")}</dt>
+              <dd className="text-sm text-foreground">{client.phone}</dd>
             </div>
             {client.address && (
               <div>
-                <dt className="text-xs text-slate-500">
+                <dt className="text-xs text-muted-foreground">
                   <MapPin className="mr-1 inline size-3" />
                   {t("address")}
                 </dt>
-                <dd className="text-sm text-slate-900">{client.address}</dd>
+                <dd className="text-sm text-foreground">{client.address}</dd>
               </div>
             )}
             {client.dateOfBirth && (
               <div>
-                <dt className="text-xs text-slate-500">{t("dateOfBirth")}</dt>
-                <dd className="text-sm text-slate-900">
+                <dt className="text-xs text-muted-foreground">{t("dateOfBirth")}</dt>
+                <dd className="text-sm text-foreground">
                   {formatDate(client.dateOfBirth)}
                 </dd>
               </div>
@@ -119,44 +119,44 @@ export function ClientDetailContent({
         </div>
 
         {/* Card 2: License & Documents */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
-          <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-            <CreditCard className="size-4 text-slate-400" />
+        <div className="rounded-xl border border-border bg-card p-5">
+          <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            <CreditCard className="size-4 text-muted-foreground" />
             {t("cardLicenseDocs")}
           </h3>
           <dl className="mt-3 space-y-2">
             <div>
-              <dt className="text-xs text-slate-500">{t("license")}</dt>
-              <dd className="text-sm text-slate-900">
+              <dt className="text-xs text-muted-foreground">{t("license")}</dt>
+              <dd className="text-sm text-foreground">
                 {client.licenseNumber ?? (
-                  <span className="text-slate-400">{t("notSpecified")}</span>
+                  <span className="text-muted-foreground">{t("notSpecified")}</span>
                 )}
               </dd>
             </div>
             {client.licenseCategory && (
               <div>
-                <dt className="text-xs text-slate-500">
+                <dt className="text-xs text-muted-foreground">
                   {t("licenseCategory")}
                 </dt>
-                <dd className="text-sm text-slate-900">
+                <dd className="text-sm text-foreground">
                   {client.licenseCategory}
                 </dd>
               </div>
             )}
             {client.licenseExpiry && (
               <div>
-                <dt className="text-xs text-slate-500">{t("licenseExpiry")}</dt>
-                <dd className="text-sm text-slate-900">
+                <dt className="text-xs text-muted-foreground">{t("licenseExpiry")}</dt>
+                <dd className="text-sm text-foreground">
                   {formatDate(client.licenseExpiry)}
                 </dd>
               </div>
             )}
             {client.identityDocType && (
               <div>
-                <dt className="text-xs text-slate-500">
+                <dt className="text-xs text-muted-foreground">
                   {t("identityDocType")}
                 </dt>
-                <dd className="text-sm text-slate-900">
+                <dd className="text-sm text-foreground">
                   {client.identityDocType}
                   {client.identityDocNumber && ` — ${client.identityDocNumber}`}
                 </dd>
@@ -166,34 +166,34 @@ export function ClientDetailContent({
         </div>
 
         {/* Card 3: Stats */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
-          <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-            <BarChart3 className="size-4 text-slate-400" />
+        <div className="rounded-xl border border-border bg-card p-5">
+          <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            <BarChart3 className="size-4 text-muted-foreground" />
             {t("cardStats")}
           </h3>
           <dl className="mt-3 space-y-2">
             <div>
-              <dt className="text-xs text-slate-500">{t("totalContracts")}</dt>
-              <dd className="text-sm font-medium text-slate-900">
+              <dt className="text-xs text-muted-foreground">{t("totalContracts")}</dt>
+              <dd className="text-sm font-medium text-foreground">
                 {contracts.length}
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-slate-500">{t("activeContracts")}</dt>
-              <dd className="text-sm font-medium text-slate-900">
+              <dt className="text-xs text-muted-foreground">{t("activeContracts")}</dt>
+              <dd className="text-sm font-medium text-foreground">
                 {activeContracts}
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-slate-500">{t("memberSince")}</dt>
-              <dd className="text-sm text-slate-900">
+              <dt className="text-xs text-muted-foreground">{t("memberSince")}</dt>
+              <dd className="text-sm text-foreground">
                 <Calendar className="mr-1 inline size-3" />
                 {formatDate(client.createdAt)}
               </dd>
             </div>
             <div>
-              <dt className="text-xs text-slate-500">{t("documents")}</dt>
-              <dd className="text-sm font-medium text-slate-900">
+              <dt className="text-xs text-muted-foreground">{t("documents")}</dt>
+              <dd className="text-sm font-medium text-foreground">
                 <FileText className="mr-1 inline size-3" />
                 {documents.length}
               </dd>
@@ -219,16 +219,16 @@ export function ClientDetailContent({
         </TabsContent>
 
         <TabsContent value="notes" className="mt-4">
-          <div className="rounded-xl border border-slate-200 bg-white p-6">
-            <h2 className="text-lg font-semibold text-slate-900">
+          <div className="rounded-xl border border-border bg-card p-6">
+            <h2 className="text-lg font-semibold text-foreground">
               {t("tabNotes")}
             </h2>
             {client.notes ? (
-              <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700">
+              <p className="mt-3 whitespace-pre-wrap text-sm text-foreground">
                 {client.notes}
               </p>
             ) : (
-              <p className="mt-3 text-sm text-slate-400">{t("notSpecified")}</p>
+              <p className="mt-3 text-sm text-muted-foreground">{t("notSpecified")}</p>
             )}
           </div>
         </TabsContent>

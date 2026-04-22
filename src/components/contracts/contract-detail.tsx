@@ -31,12 +31,12 @@ import type { InvoiceStatus } from "@/types";
 // ============================================================================
 
 const invoiceStatusStyles: Record<InvoiceStatus, string> = {
-  pending: "bg-amber-50 text-amber-700",
-  invoiced: "bg-blue-50 text-blue-700",
-  verification: "bg-purple-50 text-purple-700",
-  paid: "bg-green-50 text-green-700",
-  conflict: "bg-red-50 text-red-700",
-  cancelled: "bg-slate-100 text-slate-600",
+  pending: "bg-amber-500/10 text-amber-500",
+  invoiced: "bg-primary/10 text-primary",
+  verification: "bg-purple-500/10 text-purple-500",
+  paid: "bg-green-500/10 text-green-500",
+  conflict: "bg-red-500/10 text-red-500",
+  cancelled: "bg-muted text-muted-foreground",
 };
 
 // ============================================================================
@@ -132,12 +132,12 @@ export function ContractDetail({ contract }: ContractDetailProps) {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold text-foreground">
               {t("title", { contractNumber: contract.contractNumber })}
             </h1>
             <ContractStatusBadge status={contract.status} />
           </div>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             {t("createdAt", { date: formatDateShort(contract.createdAt) })}
           </p>
         </div>
@@ -187,20 +187,20 @@ export function ContractDetail({ contract }: ContractDetailProps) {
 
       {/* Archive info card (when completed) */}
       {isCompleted && contract.archivedAt && (
-        <Card className="bg-slate-50 border-slate-200">
+        <Card className="bg-muted border-border">
           <CardContent className="flex items-start gap-3 py-4">
-            <Info className="size-5 text-slate-500 mt-0.5 shrink-0" />
+            <Info className="size-5 text-muted-foreground mt-0.5 shrink-0" />
             <div className="space-y-0.5">
-              <p className="text-sm font-medium text-slate-700">
+              <p className="text-sm font-medium text-foreground">
                 {t("archiveInfo")}
               </p>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted-foreground">
                 {t("archivedAt", {
                   date: formatDateShort(contract.archivedAt),
                 })}
               </p>
               {contract.actualReturnDate && (
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-muted-foreground">
                   {t("actualReturnDate", {
                     date: formatDateShort(contract.actualReturnDate),
                   })}
@@ -216,13 +216,13 @@ export function ContractDetail({ contract }: ContractDetailProps) {
         {/* Client card */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-sm font-medium text-slate-500">
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
               <User className="size-4" />
               {t("clientCard")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1">
-            <p className="font-semibold text-slate-900">
+            <p className="font-semibold text-foreground">
               {contract.client.firstName} {contract.client.lastName}
             </p>
             {contract.client.isTrusted && (
@@ -231,10 +231,10 @@ export function ContractDetail({ contract }: ContractDetailProps) {
                 {t("trustedClient")}
               </div>
             )}
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               {t("phone")}: {contract.client.phone}
             </p>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               {t("email")}: {contract.client.email}
             </p>
           </CardContent>
@@ -243,24 +243,24 @@ export function ContractDetail({ contract }: ContractDetailProps) {
         {/* Vehicle card */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-sm font-medium text-slate-500">
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
               <Car className="size-4" />
               {t("vehicleCard")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1">
-            <p className="font-semibold text-slate-900">
+            <p className="font-semibold text-foreground">
               {contract.vehicle.brand} {contract.vehicle.model}
             </p>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               {t("plate")}: {contract.vehicle.plateNumber}
             </p>
             {contract.vehicle.categoryName && (
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-muted-foreground">
                 {t("category")}: {contract.vehicle.categoryName}
               </p>
             )}
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               {t("dailyRate")}: {formatCHF(parseFloat(contract.dailyRate))}
             </p>
           </CardContent>
@@ -269,31 +269,31 @@ export function ContractDetail({ contract }: ContractDetailProps) {
         {/* Dates card */}
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-sm font-medium text-slate-500">
+            <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
               <CalendarDays className="size-4" />
               {t("datesCard")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1">
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               {t("start")}: {formatDate(contract.startDate)}
             </p>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               {t("end")}: {formatDate(contract.endDate)}
             </p>
-            <p className="text-sm font-medium text-slate-900">
+            <p className="text-sm font-medium text-foreground">
               {t("totalDays")}: {t("days", { count: contract.totalDays })}
             </p>
             {(contract.pickupLocation || contract.returnLocation) && (
               <div className="pt-1 space-y-0.5">
                 {contract.pickupLocation && (
-                  <p className="flex items-center gap-1 text-xs text-slate-500">
+                  <p className="flex items-center gap-1 text-xs text-muted-foreground">
                     <MapPin className="size-3" />
                     {t("pickup")}: {contract.pickupLocation}
                   </p>
                 )}
                 {contract.returnLocation && (
-                  <p className="flex items-center gap-1 text-xs text-slate-500">
+                  <p className="flex items-center gap-1 text-xs text-muted-foreground">
                     <MapPin className="size-3" />
                     {t("return")}: {contract.returnLocation}
                   </p>
@@ -313,7 +313,7 @@ export function ContractDetail({ contract }: ContractDetailProps) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b text-left text-slate-500">
+                <tr className="border-b text-left text-muted-foreground">
                   <th className="pb-2 font-medium">{t("description")}</th>
                   <th className="pb-2 font-medium text-right">
                     {t("unitPrice")}
@@ -324,11 +324,11 @@ export function ContractDetail({ contract }: ContractDetailProps) {
               <tbody>
                 {lineItems.map((item, i) => (
                   <tr key={i} className="border-b last:border-0">
-                    <td className="py-2 text-slate-700">{item.description}</td>
-                    <td className="py-2 text-right text-slate-600">
+                    <td className="py-2 text-foreground">{item.description}</td>
+                    <td className="py-2 text-right text-muted-foreground">
                       {formatCHF(parseFloat(item.unitPrice))}
                     </td>
-                    <td className="py-2 text-right font-medium text-slate-900">
+                    <td className="py-2 text-right font-medium text-foreground">
                       {formatCHF(parseFloat(item.totalPrice))}
                     </td>
                   </tr>
@@ -338,11 +338,11 @@ export function ContractDetail({ contract }: ContractDetailProps) {
                 <tr className="border-t-2">
                   <td
                     colSpan={2}
-                    className="pt-3 text-right font-semibold text-slate-900"
+                    className="pt-3 text-right font-semibold text-foreground"
                   >
                     {t("totalAmount")}
                   </td>
-                  <td className="pt-3 text-right font-bold text-slate-900">
+                  <td className="pt-3 text-right font-bold text-foreground">
                     {formatCHF(parseFloat(contract.totalAmount))}
                   </td>
                 </tr>
@@ -359,16 +359,16 @@ export function ContractDetail({ contract }: ContractDetailProps) {
         </CardHeader>
         <CardContent className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-slate-500">{t("paymentMethod")}</span>
-            <span className="font-medium text-slate-900">
+            <span className="text-muted-foreground">{t("paymentMethod")}</span>
+            <span className="font-medium text-foreground">
               {paymentMethodKey
                 ? t(`paymentMethods.${paymentMethodKey}`)
                 : t("notSpecified")}
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-slate-500">{t("deposit")}</span>
-            <span className="font-medium text-slate-900">
+            <span className="text-muted-foreground">{t("deposit")}</span>
+            <span className="font-medium text-foreground">
               {contract.depositAmount
                 ? formatCHF(parseFloat(contract.depositAmount))
                 : t("noDeposit")}
@@ -384,7 +384,7 @@ export function ContractDetail({ contract }: ContractDetailProps) {
             <CardTitle className="text-base">{t("notes")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-slate-600 whitespace-pre-wrap">
+            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
               {contract.notes}
             </p>
           </CardContent>
@@ -393,7 +393,7 @@ export function ContractDetail({ contract }: ContractDetailProps) {
 
       {/* Invoice section (after approval) */}
       {contract.invoice && (
-        <Card className="border-blue-200 bg-blue-50/30">
+        <Card className="border-primary/20 bg-primary/5">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <FileText className="size-4" />
@@ -402,13 +402,13 @@ export function ContractDetail({ contract }: ContractDetailProps) {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-slate-500">{t("invoiceNumber")}</span>
-              <span className="font-medium text-slate-900">
+              <span className="text-muted-foreground">{t("invoiceNumber")}</span>
+              <span className="font-medium text-foreground">
                 {contract.invoice.invoiceNumber}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-slate-500">{t("invoiceStatus")}</span>
+              <span className="text-muted-foreground">{t("invoiceStatus")}</span>
               <span
                 className={cn(
                   "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
@@ -419,15 +419,15 @@ export function ContractDetail({ contract }: ContractDetailProps) {
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-slate-500">{t("invoiceAmount")}</span>
-              <span className="font-medium text-slate-900">
+              <span className="text-muted-foreground">{t("invoiceAmount")}</span>
+              <span className="font-medium text-foreground">
                 {formatCHF(parseFloat(contract.invoice.totalAmount))}
               </span>
             </div>
             {contract.invoice.issuedAt && (
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">{t("invoiceDate")}</span>
-                <span className="font-medium text-slate-900">
+                <span className="text-muted-foreground">{t("invoiceDate")}</span>
+                <span className="font-medium text-foreground">
                   {formatDateShort(contract.invoice.issuedAt)}
                 </span>
               </div>

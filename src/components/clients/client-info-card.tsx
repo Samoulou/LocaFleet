@@ -52,17 +52,17 @@ export function ClientInfoCard({ client }: ClientInfoCardProps) {
   ];
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6">
-      <h2 className="text-lg font-semibold text-slate-900">{t("info")}</h2>
+    <div className="rounded-xl border border-border bg-background p-6">
+      <h2 className="text-lg font-semibold text-foreground">{t("info")}</h2>
       <dl className="mt-4 space-y-3">
         {fields.map((field) => (
           <div key={field.label} className="flex flex-col gap-1">
-            <dt className="text-sm font-medium text-slate-500">
+            <dt className="text-sm font-medium text-muted-foreground">
               {field.label}
             </dt>
-            <dd className="text-sm text-slate-900">
+            <dd className="text-sm text-foreground">
               {field.value ?? (
-                <span className="text-slate-400">{t("notSpecified")}</span>
+                <span className="text-muted-foreground">{t("notSpecified")}</span>
               )}
             </dd>
           </div>
@@ -70,9 +70,9 @@ export function ClientInfoCard({ client }: ClientInfoCardProps) {
       </dl>
 
       {/* Trust toggle */}
-      <div className="mt-6 flex items-center gap-3 rounded-lg border border-slate-200 p-4">
+      <div className="mt-6 flex items-center gap-3 rounded-lg border border-border p-4">
         <BadgeCheck
-          className={`size-5 ${client.isTrusted ? "text-emerald-600" : "text-slate-400"}`}
+          className={`size-5 ${client.isTrusted ? "text-emerald-600" : "text-muted-foreground"}`}
         />
         <Label
           htmlFor="trusted-toggle"

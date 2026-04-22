@@ -242,9 +242,9 @@ export function InspectionPhotoUpload({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-slate-700">
+        <span className="text-sm font-medium text-foreground">
           {t("photos")}{" "}
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-muted-foreground">
             ({photos.length}/{MAX_PHOTOS})
           </span>
         </span>
@@ -296,7 +296,7 @@ export function InspectionPhotoUpload({
       </div>
 
       {!disabled && isMaxReached && (
-        <p className="text-xs text-slate-500">{t("maxPhotosInfo")}</p>
+        <p className="text-xs text-muted-foreground">{t("maxPhotosInfo")}</p>
       )}
 
       <input
@@ -338,18 +338,18 @@ export function InspectionPhotoUpload({
       {photos.length === 0 && uploading.length === 0 ? (
         <div
           className={
-            "flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-200 p-8 text-center" +
+            "flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border p-8 text-center" +
             (!disabled
-              ? " cursor-pointer hover:border-blue-300 hover:bg-blue-50/50"
+              ? " cursor-pointer hover:border-primary hover:bg-primary/5"
               : "")
           }
           onDrop={!disabled ? handleDrop : undefined}
           onDragOver={!disabled ? handleDragOver : undefined}
           onClick={!disabled ? () => fileInputRef.current?.click() : undefined}
         >
-          <Upload className="mb-2 size-8 text-slate-300" />
-          <p className="text-sm text-slate-500">{t("dropzone")}</p>
-          <p className="mt-1 text-xs text-slate-400">{t("dropzoneFormats")}</p>
+          <Upload className="mb-2 size-8 text-muted-foreground/50" />
+          <p className="text-sm text-muted-foreground">{t("dropzone")}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{t("dropzoneFormats")}</p>
         </div>
       ) : (
         <div
@@ -391,13 +391,13 @@ export function InspectionPhotoUpload({
           {uploading.map((upload) => (
             <div
               key={upload.id}
-              className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-blue-200 bg-blue-50"
+              className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-primary/20 bg-primary/5"
             >
               {upload.compressing ? (
                 <div className="flex flex-col items-center gap-1">
                   <div className="absolute inset-0 bg-gray-900/80" />
                   <Loader2 className="relative z-10 size-6 animate-spin text-white" />
-                  <span className="relative z-10 text-xs text-slate-500">
+                  <span className="relative z-10 text-xs text-muted-foreground">
                     {t("compressing")}
                   </span>
                 </div>
@@ -411,12 +411,12 @@ export function InspectionPhotoUpload({
             uploading.length === 0 &&
             photos.length < MAX_PHOTOS && (
               <div
-                className="flex aspect-square cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-slate-200 transition-colors hover:border-blue-300 hover:bg-blue-50/50"
+                className="flex aspect-square cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-border transition-colors hover:border-primary hover:bg-primary/5"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <div className="flex flex-col items-center gap-1">
-                  <ImagePlus className="size-5 text-slate-300" />
-                  <span className="text-xs text-slate-400">
+                  <ImagePlus className="size-5 text-muted-foreground/50" />
+                  <span className="text-xs text-muted-foreground">
                     {t("addPhoto")}
                   </span>
                 </div>

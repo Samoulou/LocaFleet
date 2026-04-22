@@ -151,7 +151,7 @@ export function EditClientSheet({
         <form onSubmit={handleSubmit} className="mt-6 space-y-6" noValidate>
           {/* Identity */}
           <fieldset className="space-y-3">
-            <legend className="text-sm font-semibold text-slate-900">
+            <legend className="text-sm font-semibold text-foreground">
               {t("sectionIdentity")}
             </legend>
             <div className="grid grid-cols-2 gap-3">
@@ -172,7 +172,7 @@ export function EditClientSheet({
 
           {/* Contact */}
           <fieldset className="space-y-3">
-            <legend className="text-sm font-semibold text-slate-900">
+            <legend className="text-sm font-semibold text-foreground">
               {t("sectionContact")}
             </legend>
             {renderField("email", t("email"), t("emailPlaceholder"), {
@@ -202,7 +202,7 @@ export function EditClientSheet({
 
           {/* Driving License */}
           <fieldset className="space-y-3">
-            <legend className="text-sm font-semibold text-slate-900">
+            <legend className="text-sm font-semibold text-foreground">
               {t("sectionLicense")}
             </legend>
             {renderField(
@@ -224,7 +224,7 @@ export function EditClientSheet({
 
           {/* Identity Document */}
           <fieldset className="space-y-3">
-            <legend className="text-sm font-semibold text-slate-900">
+            <legend className="text-sm font-semibold text-foreground">
               {t("sectionIdentityDoc")}
             </legend>
             <div className="grid grid-cols-2 gap-3">
@@ -243,7 +243,7 @@ export function EditClientSheet({
 
           {/* Other */}
           <fieldset className="space-y-3">
-            <legend className="text-sm font-semibold text-slate-900">
+            <legend className="text-sm font-semibold text-foreground">
               {t("sectionOther")}
             </legend>
             {renderField(

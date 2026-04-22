@@ -26,7 +26,7 @@ export function ContractPriceSummary({
 
   if (!totalDays || totalDays <= 0) {
     return (
-      <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-center text-sm text-slate-500">
+      <div className="rounded-lg border border-dashed border-border bg-muted p-4 text-center text-sm text-muted-foreground">
         {t("selectDates")}
       </div>
     );
@@ -52,21 +52,21 @@ export function ContractPriceSummary({
       : `${t("baseAmount")} (${totalDays}j × ${formatCHF(dailyRate)})`;
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-2">
-      <h4 className="text-sm font-semibold text-slate-700">{t("title")}</h4>
+    <div className="rounded-lg border border-border bg-muted p-4 space-y-2">
+      <h4 className="text-sm font-semibold text-foreground">{t("title")}</h4>
       <div className="space-y-1 text-sm">
         <div className="flex justify-between">
-          <span className="text-slate-600">{baseLabel}</span>
+          <span className="text-muted-foreground">{baseLabel}</span>
           <span className="font-medium">{formatCHF(baseAmount)}</span>
         </div>
         {optionLines.map((line) => (
           <div key={line.name} className="flex justify-between">
-            <span className="text-slate-600">{line.name}</span>
+            <span className="text-muted-foreground">{line.name}</span>
             <span className="font-medium">{formatCHF(line.total)}</span>
           </div>
         ))}
       </div>
-      <div className="border-t border-slate-200 pt-2 flex justify-between text-sm font-bold">
+      <div className="border-t border-border pt-2 flex justify-between text-sm font-bold">
         <span>{t("total")}</span>
         <span>{formatCHF(totalAmount)}</span>
       </div>

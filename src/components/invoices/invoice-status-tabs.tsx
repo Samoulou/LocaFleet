@@ -56,8 +56,8 @@ export function InvoiceStatusTabs({ counts }: InvoiceStatusTabsProps) {
             className={cn(
               "relative px-4 py-2.5 text-sm transition-colors",
               isActive
-                ? "border-b-2 border-blue-600 text-blue-600 font-semibold"
-                : "text-slate-500 hover:text-slate-700"
+                ? "border-b-2 border-blue-600 text-primary font-semibold"
+                : "text-muted-foreground hover:text-foreground"
             )}
           >
             {tab.label}
@@ -66,8 +66,8 @@ export function InvoiceStatusTabs({ counts }: InvoiceStatusTabsProps) {
                 className={cn(
                   "ml-1.5 inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 text-xs",
                   isActive
-                    ? "bg-blue-100 text-blue-700"
-                    : "bg-slate-100 text-slate-600"
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground"
                 )}
               >
                 {tabCount}

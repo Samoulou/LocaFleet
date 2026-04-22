@@ -175,7 +175,7 @@ export function QuickCreateClientDialog({
               checked={isTrusted}
               onCheckedChange={(checked) => setIsTrusted(checked === true)}
             />
-            <span className="text-sm text-slate-700">{t("isTrusted")}</span>
+            <span className="text-sm text-foreground">{t("isTrusted")}</span>
           </label>
         </div>
 

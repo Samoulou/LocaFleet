@@ -103,12 +103,12 @@ export function ValidateReturnDialog({
 
         {loadingPreview ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="size-6 animate-spin text-slate-400" />
+            <Loader2 className="size-6 animate-spin text-muted-foreground" />
           </div>
         ) : preview ? (
           <div className="space-y-5">
             {/* Warning */}
-            <div className="flex items-start gap-3 rounded-lg bg-amber-50 border border-amber-200 p-3">
+            <div className="flex items-start gap-3 rounded-lg bg-amber-500/10 border border-amber-500/30 p-3">
               <AlertTriangle className="size-5 text-amber-600 mt-0.5 shrink-0" />
               <p className="text-sm text-amber-800">
                 {t("validateReturnWarning")}
@@ -117,13 +117,13 @@ export function ValidateReturnDialog({
 
             {/* Summary */}
             <div>
-              <h4 className="text-sm font-medium text-slate-900 mb-2">
+              <h4 className="text-sm font-medium text-foreground mb-2">
                 {t("summary")}
               </h4>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">{t("vehicle")}</span>
-                  <span className="text-slate-900">
+                  <span className="text-muted-foreground">{t("vehicle")}</span>
+                  <span className="text-foreground">
                     {preview.contractNumber}
                   </span>
                 </div>
@@ -132,39 +132,39 @@ export function ValidateReturnDialog({
 
             {/* Mileage */}
             <div>
-              <h4 className="text-sm font-medium text-slate-900 mb-2">
+              <h4 className="text-sm font-medium text-foreground mb-2">
                 {t("mileage")}
               </h4>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">
+                  <span className="text-muted-foreground">
                     {t("departureMileage")}
                   </span>
-                  <span className="text-slate-900">
+                  <span className="text-foreground">
                     {formatMileage(preview.departureMileage)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">{t("returnMileage")}</span>
-                  <span className="text-slate-900">
+                  <span className="text-muted-foreground">{t("returnMileage")}</span>
+                  <span className="text-foreground">
                     {formatMileage(preview.returnMileage)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">{t("kmDriven")}</span>
-                  <span className="font-medium text-slate-900">
+                  <span className="text-muted-foreground">{t("kmDriven")}</span>
+                  <span className="font-medium text-foreground">
                     {formatMileage(preview.totalKmDriven)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">{t("kmIncluded")}</span>
-                  <span className="text-slate-900">
+                  <span className="text-muted-foreground">{t("kmIncluded")}</span>
+                  <span className="text-foreground">
                     {formatMileage(preview.includedKm)}
                   </span>
                 </div>
                 {preview.excessKm > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-slate-500">{t("kmExcess")}</span>
+                    <span className="text-muted-foreground">{t("kmExcess")}</span>
                     <span className="font-medium text-red-600">
                       {formatMileage(preview.excessKm)}
                       {preview.excessKmRate &&
@@ -177,7 +177,7 @@ export function ValidateReturnDialog({
 
             {/* Damages */}
             <div>
-              <h4 className="text-sm font-medium text-slate-900 mb-2">
+              <h4 className="text-sm font-medium text-foreground mb-2">
                 {t("damagesFound")}
               </h4>
               {preview.newDamages.length > 0 ? (
@@ -185,7 +185,7 @@ export function ValidateReturnDialog({
                   {preview.newDamages.map((damage) => (
                     <li
                       key={damage.id}
-                      className="flex items-center gap-2 text-slate-700"
+                      className="flex items-center gap-2 text-foreground"
                     >
                       <span className="size-1.5 rounded-full bg-red-500 shrink-0" />
                       <span>
@@ -195,7 +195,7 @@ export function ValidateReturnDialog({
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-slate-500">{t("noDamages")}</p>
+                <p className="text-sm text-muted-foreground">{t("noDamages")}</p>
               )}
             </div>
 
@@ -203,7 +203,7 @@ export function ValidateReturnDialog({
             <div>
               <label
                 htmlFor="damagesAmount"
-                className="block text-sm font-medium text-slate-700 mb-1"
+                className="block text-sm font-medium text-foreground mb-1"
               >
                 {t("damagesAmountLabel")}
               </label>
@@ -220,12 +220,12 @@ export function ValidateReturnDialog({
 
             {/* Actions that will be performed */}
             <div>
-              <h4 className="text-sm font-medium text-slate-900 mb-2">
+              <h4 className="text-sm font-medium text-foreground mb-2">
                 {t("actionsPerformed")}
               </h4>
-              <ul className="space-y-1 text-sm text-slate-600">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-blue-500 shrink-0" />
+                  <span className="size-1.5 rounded-full bg-primary/100 shrink-0" />
                   {t("actionContractCompleted")}
                 </li>
                 <li className="flex items-center gap-2">

@@ -20,27 +20,27 @@ type ClientContractsHistoryProps = {
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   draft: {
     label: "Brouillon",
-    className: "bg-slate-100 text-slate-700",
+    className: "bg-muted text-foreground",
   },
   approved: {
     label: "Approuve",
-    className: "bg-blue-50 text-blue-700",
+    className: "bg-primary/10 text-primary",
   },
   pending_cg: {
     label: "En attente CG",
-    className: "bg-amber-50 text-amber-700",
+    className: "bg-amber-500/10 text-amber-500",
   },
   active: {
     label: "Actif",
-    className: "bg-green-50 text-green-700",
+    className: "bg-green-500/10 text-green-500",
   },
   completed: {
     label: "Termine",
-    className: "bg-slate-100 text-slate-700",
+    className: "bg-muted text-foreground",
   },
   cancelled: {
     label: "Annule",
-    className: "bg-red-50 text-red-700",
+    className: "bg-red-500/10 text-red-500",
   },
 };
 
@@ -51,18 +51,18 @@ export function ClientContractsHistory({
 
   if (contracts.length === 0) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6">
-        <h2 className="text-lg font-semibold text-slate-900">
+      <div className="rounded-xl border border-border bg-background p-6">
+        <h2 className="text-lg font-semibold text-foreground">
           {t("contractHistory")}
         </h2>
-        <p className="mt-4 text-sm text-slate-500">{t("noContracts")}</p>
+        <p className="mt-4 text-sm text-muted-foreground">{t("noContracts")}</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6">
-      <h2 className="text-lg font-semibold text-slate-900">
+    <div className="rounded-xl border border-border bg-background p-6">
+      <h2 className="text-lg font-semibold text-foreground">
         {t("contractHistory")}
       </h2>
       <div className="mt-4 overflow-x-auto">
@@ -80,22 +80,22 @@ export function ClientContractsHistory({
             {contracts.map((contract) => {
               const statusConfig = STATUS_CONFIG[contract.status] ?? {
                 label: contract.status,
-                className: "bg-slate-100 text-slate-700",
+                className: "bg-muted text-foreground",
               };
               return (
                 <TableRow key={contract.id}>
                   <TableCell>
                     <Link
                       href={`/contracts/${contract.id}`}
-                      className="text-sm font-medium text-blue-600 hover:underline"
+                      className="text-sm font-medium text-primary hover:underline"
                     >
                       {contract.contractNumber}
                     </Link>
                   </TableCell>
-                  <TableCell className="text-sm text-slate-600">
+                  <TableCell className="text-sm text-muted-foreground">
                     {contract.vehicleBrand} {contract.vehicleModel}
                   </TableCell>
-                  <TableCell className="text-sm text-slate-600">
+                  <TableCell className="text-sm text-muted-foreground">
                     {formatDate(contract.startDate)} &rarr;{" "}
                     {formatDate(contract.endDate)}
                   </TableCell>

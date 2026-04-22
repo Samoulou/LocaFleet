@@ -9,22 +9,22 @@ export const STATUS_CONFIG: Record<
   available: {
     label: "Disponible",
     dotClass: "bg-green-500",
-    badgeClass: "bg-green-50 text-green-700 border-green-200",
+    badgeClass: "bg-green-500/10 text-green-500 border-green-500/30",
   },
   rented: {
     label: "Loué",
     dotClass: "bg-violet-500",
-    badgeClass: "bg-violet-50 text-violet-700 border-violet-200",
+    badgeClass: "bg-violet-500/10 text-violet-500 border-violet-500/30",
   },
   maintenance: {
     label: "Maintenance",
     dotClass: "bg-amber-500",
-    badgeClass: "bg-amber-50 text-amber-700 border-amber-200",
+    badgeClass: "bg-amber-500/10 text-amber-500 border-amber-500/30",
   },
   out_of_service: {
     label: "Hors service",
     dotClass: "bg-red-500",
-    badgeClass: "bg-red-50 text-red-700 border-red-200",
+    badgeClass: "bg-red-500/10 text-red-500 border-red-500/30",
   },
 };
 

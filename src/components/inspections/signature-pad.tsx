@@ -60,14 +60,14 @@ export const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(
     return (
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-foreground">
             {t("clientSignature")}
             {required ? (
               <span className="ml-1 text-xs font-normal text-red-600">
                 * {t("required")}
               </span>
             ) : (
-              <span className="ml-1 text-xs font-normal text-slate-400">
+              <span className="ml-1 text-xs font-normal text-muted-foreground">
                 ({t("optional")})
               </span>
             )}
@@ -86,8 +86,8 @@ export const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(
         </div>
         <div
           className={cn(
-            "rounded-lg border bg-white",
-            error ? "border-red-300" : "border-slate-200"
+            "rounded-lg border bg-background",
+            error ? "border-red-300" : "border-border"
           )}
         >
           <SignatureCanvas

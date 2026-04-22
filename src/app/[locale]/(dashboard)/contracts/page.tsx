@@ -26,8 +26,8 @@ export default async function ContractsPage({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">{t("list.title")}</h1>
-        <p className="mt-1 text-sm text-slate-500">{t("list.subtitle")}</p>
+        <h1 className="text-2xl font-bold text-foreground">{t("list.title")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("list.subtitle")}</p>
       </div>
 
       {/* Content */}
@@ -36,14 +36,14 @@ export default async function ContractsPage({
           <p className="text-sm text-red-700">{result.error}</p>
         </div>
       ) : result.data.totalCount === 0 && !params.search && !params.status ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
-          <div className="flex size-12 items-center justify-center rounded-full bg-slate-100">
-            <FileText className="size-6 text-slate-400" />
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
+          <div className="flex size-12 items-center justify-center rounded-full bg-muted">
+            <FileText className="size-6 text-muted-foreground" />
           </div>
-          <h3 className="mt-4 text-sm font-medium text-slate-900">
+          <h3 className="mt-4 text-sm font-medium text-foreground">
             {t("list.empty")}
           </h3>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             {t("list.emptyDescription")}
           </p>
         </div>

@@ -52,9 +52,9 @@ export function DamageEntry({
   const t = useTranslations("inspections.departure");
 
   return (
-    <div className="space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+    <div className="space-y-3 rounded-lg border border-border bg-muted p-4">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-slate-700">
+        <span className="text-sm font-medium text-foreground">
           {t("damage")} #{index + 1}
         </span>
         {!disabled && (
@@ -63,7 +63,7 @@ export function DamageEntry({
             variant="ghost"
             size="sm"
             onClick={onRemove}
-            className="text-red-500 hover:text-red-700"
+            className="text-red-500 hover:text-red-500"
           >
             <Trash2 className="size-4" />
           </Button>
@@ -119,11 +119,11 @@ export function DamageEntry({
                 "flex h-9 flex-1 items-center justify-center rounded-md border text-xs font-medium transition-colors",
                 value.severity === sev
                   ? sev === "low"
-                    ? "border-emerald-300 bg-emerald-100 text-emerald-700"
+                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500"
                     : sev === "medium"
-                      ? "border-amber-300 bg-amber-100 text-amber-700"
-                      : "border-red-300 bg-red-100 text-red-700"
-                  : "border-slate-200 bg-white text-slate-400 hover:border-slate-300",
+                      ? "border-amber-500/30 bg-amber-500/10 text-amber-500"
+                      : "border-red-500/30 bg-red-500/10 text-red-500"
+                  : "border-border bg-background text-muted-foreground hover:border-border",
                 disabled && "cursor-not-allowed opacity-50"
               )}
             >

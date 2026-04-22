@@ -44,14 +44,14 @@ export default async function ClientsPage({ searchParams }: ClientsPageProps) {
           <p className="text-sm text-red-700">{clientsResult.error}</p>
         </div>
       ) : clientsResult.data.totalCount === 0 && !params.search ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
-          <div className="flex size-12 items-center justify-center rounded-full bg-slate-100">
-            <Users className="size-6 text-slate-400" />
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
+          <div className="flex size-12 items-center justify-center rounded-full bg-muted">
+            <Users className="size-6 text-muted-foreground" />
           </div>
-          <h3 className="mt-4 text-sm font-medium text-slate-900">
+          <h3 className="mt-4 text-sm font-medium text-foreground">
             {t("emptyState.title")}
           </h3>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             {t("emptyState.description")}
           </p>
         </div>

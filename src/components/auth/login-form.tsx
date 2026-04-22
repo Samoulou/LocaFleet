@@ -88,7 +88,7 @@ export function LoginForm() {
           <Label htmlFor="password">{t("password")}</Label>
           <button
             type="button"
-            className="text-xs text-slate-400 cursor-not-allowed"
+            className="text-xs text-muted-foreground cursor-not-allowed"
             tabIndex={-1}
             disabled
           >
@@ -108,7 +108,7 @@ export function LoginForm() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground"
             aria-label={showPassword ? t("hidePassword") : t("showPassword")}
           >
             {showPassword ? (
@@ -153,9 +153,9 @@ export function LoginForm() {
         )}
       </Button>
 
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-muted-foreground">
         {t("supportText")}{" "}
-        <span className="text-blue-600">{t("supportLink")}</span>
+        <span className="text-primary">{t("supportLink")}</span>
       </p>
     </form>
   );

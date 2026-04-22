@@ -32,8 +32,8 @@ export default async function InvoicesPage({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Factures</h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <h1 className="text-2xl font-bold text-foreground">Factures</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
           Consultez et gérez les factures de location
         </p>
       </div>
@@ -53,14 +53,14 @@ export default async function InvoicesPage({
         !params.search &&
         !params.status &&
         !params.period ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
-          <div className="flex size-12 items-center justify-center rounded-full bg-slate-100">
-            <Receipt className="size-6 text-slate-400" />
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
+          <div className="flex size-12 items-center justify-center rounded-full bg-muted">
+            <Receipt className="size-6 text-muted-foreground" />
           </div>
-          <h3 className="mt-4 text-sm font-medium text-slate-900">
+          <h3 className="mt-4 text-sm font-medium text-foreground">
             Aucune facture
           </h3>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             Les factures seront générées automatiquement à la clôture des
             contrats
           </p>

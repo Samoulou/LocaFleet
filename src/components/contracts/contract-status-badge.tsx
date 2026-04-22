@@ -3,12 +3,12 @@ import { cn } from "@/lib/utils";
 import type { ContractStatus } from "@/types";
 
 const statusStyles: Record<ContractStatus, string> = {
-  draft: "bg-slate-100 text-slate-600",
-  approved: "bg-blue-50 text-blue-700",
-  pending_cg: "bg-amber-50 text-amber-700",
-  active: "bg-green-50 text-green-700",
-  completed: "bg-slate-100 text-slate-600",
-  cancelled: "bg-red-50 text-red-700",
+  draft: "bg-muted text-muted-foreground",
+  approved: "bg-primary/10 text-primary",
+  pending_cg: "bg-amber-500/10 text-amber-500",
+  active: "bg-green-500/10 text-green-500",
+  completed: "bg-muted text-muted-foreground",
+  cancelled: "bg-red-500/10 text-red-500",
 };
 
 type ContractStatusBadgeProps = {

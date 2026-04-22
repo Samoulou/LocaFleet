@@ -47,9 +47,9 @@ export function MobileSidebar({ user }: MobileSidebarProps) {
       </SheetTrigger>
       <SheetContent side="left" className="w-[280px] p-0">
         {/* Header */}
-        <div className="flex h-14 items-center border-b border-slate-200 px-4 gap-2">
-          <Car className="size-6 text-blue-600" />
-          <span className="text-lg font-bold text-slate-900">LocaFleet</span>
+        <div className="flex h-14 items-center border-b border-border px-4 gap-2">
+          <Car className="size-6 text-primary" />
+          <span className="text-lg font-bold text-foreground">LocaFleet</span>
         </div>
 
         {/* Navigation */}
@@ -69,12 +69,12 @@ export function MobileSidebar({ user }: MobileSidebarProps) {
                       return (
                         <span
                           key={item.key}
-                          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium border-l-[3px] border-transparent text-slate-400 cursor-not-allowed"
+                          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium border-l-[3px] border-transparent text-muted-foreground cursor-not-allowed"
                           aria-disabled="true"
                         >
                           <Icon className="w-5 h-5 shrink-0" />
                           <span className="truncate">{label}</span>
-                          <span className="ml-auto text-[10px] font-normal text-slate-400">
+                          <span className="ml-auto text-[10px] font-normal text-muted-foreground">
                             {t("sidebar.comingSoon")}
                           </span>
                         </span>
@@ -82,15 +82,15 @@ export function MobileSidebar({ user }: MobileSidebarProps) {
                     }
 
                     return (
-                      <Link
+                        <Link
                         key={item.key}
                         href={`/${locale}${item.href}`}
                         onClick={() => setOpen(false)}
                         className={cn(
                           "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                           active
-                            ? "bg-blue-50 text-blue-600 border-l-[3px] border-blue-600"
-                            : "text-slate-600 hover:bg-slate-50 border-l-[3px] border-transparent"
+                            ? "bg-primary/10 text-primary border-l-[3px] border-primary"
+                            : "text-muted-foreground hover:bg-muted border-l-[3px] border-transparent"
                         )}
                       >
                         <Icon className="w-5 h-5 shrink-0" />
@@ -104,15 +104,15 @@ export function MobileSidebar({ user }: MobileSidebarProps) {
         </nav>
 
         {/* User section */}
-        <div className="border-t border-slate-200 p-2 mt-auto">
+        <div className="border-t border-border p-2 mt-auto">
           <UserMenu user={user} side="top" align="start">
-            <button className="flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-slate-50 transition-colors text-left">
+            <button className="flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-muted transition-colors text-left">
               <UserAvatar name={user.name} className="size-8" />
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-slate-900 truncate">
+                <p className="text-sm font-medium text-foreground truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-slate-500 truncate capitalize">
+                <p className="text-xs text-muted-foreground truncate capitalize">
                   {t(`rbac.roles.${user.role}`)}
                 </p>
               </div>

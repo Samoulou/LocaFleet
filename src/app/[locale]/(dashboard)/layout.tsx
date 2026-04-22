@@ -30,7 +30,7 @@ export default async function DashboardLayout({
         <div className="flex flex-1 flex-col overflow-hidden">
           <AppTopbar user={displayUser} />
 
-          <main className="flex-1 overflow-auto bg-slate-50 p-6">
+          <main className="flex-1 overflow-auto bg-background p-6">
             {children}
           </main>
         </div>

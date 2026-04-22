@@ -99,7 +99,7 @@ export function ClientsDataTable({ data }: ClientsDataTableProps) {
               />
               <Link
                 href={`/clients/${client.id}`}
-                className="font-medium text-slate-900 hover:text-blue-600"
+                className="font-medium text-foreground hover:text-primary"
                 onClick={(e) => e.stopPropagation()}
               >
                 {client.lastName} {client.firstName}
@@ -112,21 +112,21 @@ export function ClientsDataTable({ data }: ClientsDataTableProps) {
         accessorKey: "email",
         header: t("columns.email"),
         cell: ({ getValue }) => (
-          <span className="text-sm text-slate-600">{getValue<string>()}</span>
+          <span className="text-sm text-muted-foreground">{getValue<string>()}</span>
         ),
       },
       {
         accessorKey: "phone",
         header: t("columns.phone"),
         cell: ({ getValue }) => (
-          <span className="text-sm text-slate-600">{getValue<string>()}</span>
+          <span className="text-sm text-muted-foreground">{getValue<string>()}</span>
         ),
       },
       {
         accessorKey: "licenseNumber",
         header: t("columns.license"),
         cell: ({ getValue }) => (
-          <span className="text-sm text-slate-600">
+          <span className="text-sm text-muted-foreground">
             {getValue<string | null>() ?? "\u2014"}
           </span>
         ),
@@ -136,7 +136,7 @@ export function ClientsDataTable({ data }: ClientsDataTableProps) {
         header: t("columns.trusted"),
         cell: ({ getValue }) =>
           getValue<boolean>() ? (
-            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-500">
               <BadgeCheck className="size-3" />
               {t("badges.trusted")}
             </span>
@@ -146,14 +146,14 @@ export function ClientsDataTable({ data }: ClientsDataTableProps) {
         accessorKey: "contractCount",
         header: t("columns.contracts"),
         cell: ({ getValue }) => (
-          <span className="text-sm text-slate-600">{getValue<number>()}</span>
+          <span className="text-sm text-muted-foreground">{getValue<number>()}</span>
         ),
       },
       {
         accessorKey: "createdAt",
         header: t("columns.createdAt"),
         cell: ({ getValue }) => (
-          <span className="text-sm text-slate-600">
+          <span className="text-sm text-muted-foreground">
             {formatDate(getValue<Date>())}
           </span>
         ),
@@ -270,7 +270,7 @@ export function ClientsDataTable({ data }: ClientsDataTableProps) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="cursor-pointer hover:bg-slate-50"
+                  className="cursor-pointer hover:bg-muted"
                   onClick={() => router.push(`/clients/${row.original.id}`)}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -287,7 +287,7 @@ export function ClientsDataTable({ data }: ClientsDataTableProps) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-slate-500"
+                  className="h-24 text-center text-muted-foreground"
                 >
                   {t("noResults")}
                 </TableCell>

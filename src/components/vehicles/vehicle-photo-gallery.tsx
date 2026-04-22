@@ -202,9 +202,9 @@ export function VehiclePhotoGallery({
   };
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6">
+    <div className="rounded-xl border border-border bg-background p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-slate-900">{t("title")}</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("title")}</h2>
         {canEdit && (
           <Button
             variant="outline"
@@ -237,19 +237,19 @@ export function VehiclePhotoGallery({
       {photos.length === 0 && uploading.length === 0 ? (
         <div
           className={cn(
-            "flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-200 p-12 text-center",
+            "flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border p-12 text-center",
             canEdit &&
-              "cursor-pointer hover:border-blue-300 hover:bg-blue-50/50"
+              "cursor-pointer hover:border-primary hover:bg-primary/5"
           )}
           onDrop={canEdit ? handleDrop : undefined}
           onDragOver={canEdit ? handleDragOver : undefined}
           onClick={canEdit ? () => fileInputRef.current?.click() : undefined}
         >
-          <Upload className="mb-3 size-10 text-slate-300" />
-          <p className="text-sm font-medium text-slate-600">
+          <Upload className="mb-3 size-10 text-muted-foreground/50" />
+          <p className="text-sm font-medium text-muted-foreground">
             {canEdit ? t("dropzone") : t("noPhotos")}
           </p>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             {canEdit ? t("dropzoneFormats") : t("noPhotosDescription")}
           </p>
         </div>
@@ -311,11 +311,11 @@ export function VehiclePhotoGallery({
           {uploading.map((upload) => (
             <div
               key={upload.id}
-              className="relative flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-blue-200 bg-blue-50"
+              className="relative flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-primary/20 bg-primary/10"
             >
               <div className="flex flex-col items-center gap-2">
                 <Loader2 className="size-6 animate-spin text-blue-500" />
-                <span className="text-xs text-blue-600">{t("uploading")}</span>
+                <span className="text-xs text-primary">{t("uploading")}</span>
               </div>
             </div>
           ))}
@@ -323,12 +323,12 @@ export function VehiclePhotoGallery({
           {/* Drop zone placeholder when gallery has items */}
           {canEdit && uploading.length === 0 && (
             <div
-              className="flex aspect-square cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-slate-200 transition-colors hover:border-blue-300 hover:bg-blue-50/50"
+              className="flex aspect-square cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-border transition-colors hover:border-primary hover:bg-primary/5"
               onClick={() => fileInputRef.current?.click()}
             >
               <div className="flex flex-col items-center gap-1">
-                <ImagePlus className="size-6 text-slate-300" />
-                <span className="text-xs text-slate-400">{t("addPhotos")}</span>
+                <ImagePlus className="size-6 text-muted-foreground/50" />
+                <span className="text-xs text-muted-foreground">{t("addPhotos")}</span>
               </div>
             </div>
           )}

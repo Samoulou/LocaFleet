@@ -16,7 +16,7 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <div className="inline-flex overflow-hidden rounded-full border border-slate-200 bg-white text-sm">
+    <div className="inline-flex overflow-hidden rounded-full border border-border bg-background text-sm">
       {routing.locales.map((locale) => (
         <button
           key={locale}
@@ -25,7 +25,7 @@ export function LanguageSwitcher() {
             "px-3 py-1 font-medium transition-colors",
             locale === currentLocale
               ? "bg-blue-600 text-white"
-              : "text-slate-600 hover:bg-slate-100"
+              : "text-muted-foreground hover:bg-muted"
           )}
         >
           {locale.toUpperCase()}

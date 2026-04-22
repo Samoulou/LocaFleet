@@ -209,12 +209,12 @@ export function NewContractSheet({
 
         <div className="space-y-6 px-4 pb-8">
           {/* 1. Vehicle info card */}
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-1">
-            <p className="text-sm font-semibold text-slate-900">
+          <div className="rounded-lg border border-border bg-muted p-3 space-y-1">
+            <p className="text-sm font-semibold text-foreground">
               {vehicleBrand} {vehicleModel}
             </p>
-            <p className="text-xs text-slate-500">{vehiclePlateNumber}</p>
-            <div className="flex gap-4 text-xs text-slate-500">
+            <p className="text-xs text-muted-foreground">{vehiclePlateNumber}</p>
+            <div className="flex gap-4 text-xs text-muted-foreground">
               {categoryName && (
                 <span>
                   {t("category")}: {categoryName}
@@ -257,7 +257,7 @@ export function NewContractSheet({
             </div>
           </div>
           {totalDays !== null && totalDays > 0 && totalHours !== null && (
-            <p className="text-sm text-slate-600 -mt-4">
+            <p className="text-sm text-muted-foreground -mt-4">
               {t("duration", { hours: totalHours, days: totalDays })}
             </p>
           )}
@@ -287,9 +287,9 @@ export function NewContractSheet({
           <div className="space-y-1.5">
             <Label>{t("options")}</Label>
             {loadingData ? (
-              <p className="text-sm text-slate-400">{t("loadingOptions")}</p>
+              <p className="text-sm text-muted-foreground">{t("loadingOptions")}</p>
             ) : optionsList.length === 0 ? (
-              <p className="text-sm text-slate-400">{t("noOptions")}</p>
+              <p className="text-sm text-muted-foreground">{t("noOptions")}</p>
             ) : (
               <div className="space-y-2">
                 {optionsList.map((opt) => (
@@ -301,8 +301,8 @@ export function NewContractSheet({
                       checked={selectedOptionIds.includes(opt.id)}
                       onCheckedChange={() => toggleOption(opt.id)}
                     />
-                    <span className="text-sm text-slate-700">{opt.name}</span>
-                    <span className="text-xs text-slate-400 ml-auto">
+                    <span className="text-sm text-foreground">{opt.name}</span>
+                    <span className="text-xs text-muted-foreground ml-auto">
                       {formatCHF(parseFloat(opt.dailyPrice))}
                       {opt.isPerDay ? t("perDay") : ` ${t("oneTime")}`}
                     </span>
@@ -341,7 +341,7 @@ export function NewContractSheet({
           <div>
             <button
               type="button"
-              className="flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"
+              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
               onClick={() => setShowAdvanced(!showAdvanced)}
             >
               {showAdvanced ? (

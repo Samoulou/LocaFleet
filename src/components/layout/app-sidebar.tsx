@@ -39,15 +39,15 @@ export function AppSidebar({ user }: AppSidebarProps) {
   return (
     <aside
       className={cn(
-        "hidden md:flex flex-col border-r border-slate-200 bg-white transition-[width] duration-200 ease-in-out shrink-0",
+        "hidden md:flex flex-col border-r border-border bg-background transition-[width] duration-200 ease-in-out shrink-0",
         collapsed ? "w-16" : "w-[240px]"
       )}
     >
       {/* Header */}
-      <div className="flex h-14 items-center border-b border-slate-200 px-4 gap-2">
-        <Car className="size-6 shrink-0 text-blue-600" />
+      <div className="flex h-14 items-center border-b border-border px-4 gap-2">
+        <Car className="size-6 shrink-0 text-primary" />
         {!collapsed && (
-          <span className="text-lg font-bold text-slate-900 truncate">
+          <span className="text-lg font-bold text-foreground truncate">
             LocaFleet
           </span>
         )}
@@ -69,14 +69,14 @@ export function AppSidebar({ user }: AppSidebarProps) {
                   if (item.disabled) {
                     const disabledContent = (
                       <span
-                        className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium border-l-[3px] border-transparent text-slate-400 cursor-not-allowed"
+                        className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium border-l-[3px] border-transparent text-muted-foreground cursor-not-allowed"
                         aria-disabled="true"
                       >
                         <Icon className="w-5 h-5 shrink-0" />
                         {!collapsed && (
                           <>
                             <span className="truncate">{label}</span>
-                            <span className="ml-auto text-[10px] font-normal text-slate-400">
+                            <span className="ml-auto text-[10px] font-normal text-muted-foreground">
                               {t("sidebar.comingSoon")}
                             </span>
                           </>
@@ -103,13 +103,13 @@ export function AppSidebar({ user }: AppSidebarProps) {
                   }
 
                   const linkContent = (
-                    <Link
+                      <Link
                       href={`/${locale}${item.href}`}
                       className={cn(
                         "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                         active
-                          ? "bg-blue-50 text-blue-600 border-l-[3px] border-blue-600"
-                          : "text-slate-600 hover:bg-slate-50 border-l-[3px] border-transparent"
+                          ? "bg-primary/10 text-primary border-l-[3px] border-primary"
+                          : "text-muted-foreground hover:bg-muted border-l-[3px] border-transparent"
                       )}
                     >
                       <Icon className="w-5 h-5 shrink-0" />
@@ -139,7 +139,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
       <div className="px-2 py-1">
         <button
           onClick={toggleCollapsed}
-          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors"
+          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           aria-label={collapsed ? t("sidebar.expand") : t("sidebar.collapse")}
         >
           {collapsed ? (
@@ -154,16 +154,16 @@ export function AppSidebar({ user }: AppSidebarProps) {
       </div>
 
       {/* User section */}
-      <div className="border-t border-slate-200 p-2">
+      <div className="border-t border-border p-2">
         <UserMenu user={user} side="top" align="start">
-          <button className="flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-slate-50 transition-colors text-left">
+          <button className="flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-muted transition-colors text-left">
             <UserAvatar name={user.name} className="size-8 shrink-0" />
             {!collapsed && (
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-slate-900 truncate">
+                <p className="text-sm font-medium text-foreground truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-slate-500 truncate capitalize">
+                <p className="text-xs text-muted-foreground truncate capitalize">
                   {t(`rbac.roles.${user.role}`)}
                 </p>
               </div>

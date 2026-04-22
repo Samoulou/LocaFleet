@@ -22,27 +22,27 @@ export function ContractsDataTable({ data }: ContractsDataTableProps) {
   const t = useTranslations("contracts.list");
 
   return (
-    <div className="rounded-lg border bg-white">
+    <div className="rounded-lg border bg-card">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b bg-slate-50 text-left">
-              <th className="px-4 py-3 font-medium text-slate-500">
+            <tr className="border-b bg-muted text-left">
+              <th className="px-4 py-3 font-medium text-muted-foreground">
                 {t("contractNumber")}
               </th>
-              <th className="px-4 py-3 font-medium text-slate-500">
+              <th className="px-4 py-3 font-medium text-muted-foreground">
                 {t("client")}
               </th>
-              <th className="px-4 py-3 font-medium text-slate-500">
+              <th className="px-4 py-3 font-medium text-muted-foreground">
                 {t("vehicle")}
               </th>
-              <th className="px-4 py-3 font-medium text-slate-500">
+              <th className="px-4 py-3 font-medium text-muted-foreground">
                 {t("period")}
               </th>
-              <th className="px-4 py-3 font-medium text-slate-500">
+              <th className="px-4 py-3 font-medium text-muted-foreground">
                 {t("amount")}
               </th>
-              <th className="px-4 py-3 font-medium text-slate-500">
+              <th className="px-4 py-3 font-medium text-muted-foreground">
                 {t("status")}
               </th>
             </tr>
@@ -51,34 +51,34 @@ export function ContractsDataTable({ data }: ContractsDataTableProps) {
             {data.contracts.map((contract) => (
               <tr
                 key={contract.id}
-                className="border-b last:border-0 hover:bg-slate-50"
+                className="border-b last:border-0 hover:bg-muted"
               >
                 <td className="px-4 py-3">
                   <Link
                     href={`/contracts/${contract.id}`}
-                    className="font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                    className="font-medium text-primary hover:text-primary/80 hover:underline"
                   >
                     {contract.contractNumber}
                   </Link>
                 </td>
-                <td className="px-4 py-3 text-slate-700">
+                <td className="px-4 py-3 text-foreground">
                   {contract.clientFirstName} {contract.clientLastName}
                 </td>
-                <td className="px-4 py-3 text-slate-700">
+                <td className="px-4 py-3 text-foreground">
                   <div>
                     {contract.vehicleBrand} {contract.vehicleModel}
                   </div>
-                  <div className="text-xs text-slate-400">
+                  <div className="text-xs text-muted-foreground">
                     {contract.vehiclePlateNumber}
                   </div>
                 </td>
-                <td className="px-4 py-3 text-slate-600">
+                <td className="px-4 py-3 text-muted-foreground">
                   <div>{formatDate(contract.startDate)}</div>
-                  <div className="text-xs text-slate-400">
+                  <div className="text-xs text-muted-foreground">
                     → {formatDate(contract.endDate)} ({contract.totalDays}j)
                   </div>
                 </td>
-                <td className="px-4 py-3 font-medium text-slate-900">
+                <td className="px-4 py-3 font-medium text-foreground">
                   {formatCHF(parseFloat(contract.totalAmount))}
                 </td>
                 <td className="px-4 py-3">
@@ -90,7 +90,7 @@ export function ContractsDataTable({ data }: ContractsDataTableProps) {
         </table>
       </div>
       {data.totalPages > 1 && (
-        <div className="flex items-center justify-between border-t px-4 py-3 text-sm text-slate-500">
+        <div className="flex items-center justify-between border-t px-4 py-3 text-sm text-muted-foreground">
           <span>
             {t("showing", {
               from: (data.page - 1) * data.pageSize + 1,

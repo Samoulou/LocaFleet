@@ -19,6 +19,11 @@
     "languageFr": "Français",
     "languageEn": "English"
   },
+  "theme": {
+    "light": "Mode clair",
+    "dark": "Mode sombre",
+    "toggle": "Basculer le thème"
+  },
   "auth": {
     "login": "Connexion",
     "logout": "Déconnexion",

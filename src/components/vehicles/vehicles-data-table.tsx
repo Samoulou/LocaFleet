@@ -57,8 +57,8 @@ export function VehiclesDataTable({ data }: VehiclesDataTableProps) {
               className="size-12 rounded-lg object-cover"
             />
           ) : (
-            <div className="flex size-12 items-center justify-center rounded-lg bg-slate-100">
-              <Car className="size-5 text-slate-400" />
+            <div className="flex size-12 items-center justify-center rounded-lg bg-muted">
+              <Car className="size-5 text-muted-foreground" />
             </div>
           );
         },
@@ -84,7 +84,7 @@ export function VehiclesDataTable({ data }: VehiclesDataTableProps) {
         id: "category",
         header: "Catégorie",
         cell: ({ row }) => (
-          <span className="text-sm text-slate-600">
+          <span className="text-sm text-muted-foreground">
             {row.original.categoryName ?? "\u2014"}
           </span>
         ),
@@ -180,7 +180,7 @@ export function VehiclesDataTable({ data }: VehiclesDataTableProps) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="cursor-pointer hover:bg-slate-50"
+                  className="cursor-pointer hover:bg-muted"
                   onClick={() => router.push(`/vehicles/${row.original.id}`)}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -197,7 +197,7 @@ export function VehiclesDataTable({ data }: VehiclesDataTableProps) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-slate-500"
+                  className="h-24 text-center text-muted-foreground"
                 >
                   Aucun véhicule ne correspond aux filtres
                 </TableCell>

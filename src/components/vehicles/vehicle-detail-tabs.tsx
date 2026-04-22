@@ -55,7 +55,7 @@ export function VehicleDetailTabs({
       </TabsContent>
 
       <TabsContent value="locations" className="mt-6">
-        <div className="rounded-xl border border-slate-200 bg-white">
+        <div className="rounded-xl border border-border bg-background">
           <VehicleRentalHistory rentals={rentalHistory} />
         </div>
       </TabsContent>
@@ -66,7 +66,7 @@ export function VehicleDetailTabs({
             <CreateMaintenanceDialog vehicleId={vehicle.id} />
           </div>
         )}
-        <div className="rounded-xl border border-slate-200 bg-white">
+        <div className="rounded-xl border border-border bg-background">
           <VehicleMaintenanceHistory
             records={maintenanceHistory}
             canEdit={canEdit}
