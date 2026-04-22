@@ -15,6 +15,7 @@ import {
   ClipboardList,
   Archive,
   Info,
+  Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -142,6 +143,16 @@ export function ContractDetail({ contract }: ContractDetailProps) {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <Button variant="outline" asChild>
+            <a
+              href={`/api/contracts/${contract.id}/pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Download className="mr-2 size-4" />
+              {t("downloadPdf")}
+            </a>
+          </Button>
           {!isCompleted && (
             <>
               {contract.status === "draft" && (

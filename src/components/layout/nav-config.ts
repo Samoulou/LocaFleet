@@ -5,6 +5,8 @@ import {
   Receipt,
   Wrench,
   Settings,
+  LayoutDashboard,
+  CalendarDays,
   type LucideIcon,
 } from "lucide-react";
 import { hasPermission, type Resource, type Role } from "@/lib/rbac";
@@ -33,6 +35,18 @@ export type NavSection = {
 export const NAV_SECTIONS: NavSection[] = [
   {
     items: [
+      {
+        key: "dashboard",
+        href: "/dashboard",
+        icon: LayoutDashboard,
+        resource: "contracts",
+      },
+      {
+        key: "planning",
+        href: "/planning",
+        icon: CalendarDays,
+        resource: "contracts",
+      },
       { key: "vehicles", href: "/vehicles", icon: Car, resource: "vehicles" },
       {
         key: "clients",

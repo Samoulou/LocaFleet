@@ -43,6 +43,8 @@
     "hidePassword": "Hide password"
   },
   "navigation": {
+    "dashboard": "Dashboard",
+    "planning": "Planning",
     "vehicles": "Vehicles",
     "clients": "Clients",
     "contracts": "Contracts",
@@ -582,7 +584,8 @@
       "actionContractCompleted": "The contract will be set to \"Completed\" status",
       "actionVehicleAvailable": "The vehicle will become available again",
       "actionInvoiceUpdated": "The invoice will be updated",
-      "summary": "Summary"
+      "summary": "Summary",
+      "downloadPdf": "Download PDF"
     },
     "status": {
       "draft": "Draft",
@@ -914,6 +917,69 @@
       "paidSummary": "Total paid: {paid} / {total}",
       "balance": "Balance: {amount}",
       "notesTitle": "Notes"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of your activity",
+    "stats": {
+      "activeRentals": "Active rentals",
+      "returnsDueToday": "Returns today",
+      "overdueReturns": "Overdue returns",
+      "inMaintenance": "In maintenance",
+      "available": "Available",
+      "monthlyRevenue": "Monthly revenue"
+    },
+    "activeRentals": {
+      "title": "Active rentals",
+      "viewAll": "View all",
+      "empty": "No active rentals"
+    },
+    "returnsDue": {
+      "title": "Returns due",
+      "viewAll": "View all",
+      "empty": "No returns due",
+      "returnDate": "Return date",
+      "today": "Today",
+      "overdue": "Overdue by {days}d"
+    },
+    "maintenance": {
+      "title": "Maintenance alerts",
+      "empty": "No maintenance in progress",
+      "status": {
+        "open": "Open",
+        "in_progress": "In progress",
+        "completed": "Completed"
+      },
+      "type": {
+        "regular_service": "Regular service",
+        "repair": "Repair",
+        "technical_inspection": "Technical inspection",
+        "tires": "Tires",
+        "other": "Other"
+      }
+    },
+    "quickActions": {
+      "title": "Quick actions",
+      "newContract": "New contract",
+      "newClient": "New client",
+      "newVehicle": "New vehicle",
+      "inspection": "Inspection"
+    }
+  },
+  "planning": {
+    "title": "Planning",
+    "subtitle": "Reservation calendar by vehicle",
+    "vehicle": "Vehicle",
+    "previous": "Previous period",
+    "next": "Next period",
+    "noVehicles": "No vehicles available",
+    "legend": "Legend",
+    "status": {
+      "draft": "Draft",
+      "approved": "Approved",
+      "pending_cg": "Pending CG",
+      "active": "Active"
     }
   }
 }

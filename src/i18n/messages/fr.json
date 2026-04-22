@@ -43,6 +43,8 @@
     "hidePassword": "Masquer le mot de passe"
   },
   "navigation": {
+    "dashboard": "Tableau de bord",
+    "planning": "Planning",
     "vehicles": "Véhicules",
     "clients": "Clients",
     "contracts": "Contrats",
@@ -582,7 +584,8 @@
       "actionContractCompleted": "Le contrat passera au statut \"Terminé\"",
       "actionVehicleAvailable": "Le véhicule redeviendra disponible",
       "actionInvoiceUpdated": "La facture sera mise à jour",
-      "summary": "Résumé"
+      "summary": "Résumé",
+      "downloadPdf": "Télécharger le PDF"
     },
     "status": {
       "draft": "Brouillon",
@@ -914,6 +917,69 @@
       "paidSummary": "Total payé : {paid} / {total}",
       "balance": "Solde : {amount}",
       "notesTitle": "Notes"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subtitle": "Vue d'ensemble de votre activité",
+    "stats": {
+      "activeRentals": "Locations actives",
+      "returnsDueToday": "Retours aujourd'hui",
+      "overdueReturns": "Retours en retard",
+      "inMaintenance": "En maintenance",
+      "available": "Disponibles",
+      "monthlyRevenue": "CA du mois"
+    },
+    "activeRentals": {
+      "title": "Locations en cours",
+      "viewAll": "Tout voir",
+      "empty": "Aucune location active"
+    },
+    "returnsDue": {
+      "title": "Retours prévus",
+      "viewAll": "Tout voir",
+      "empty": "Aucun retour prévu",
+      "returnDate": "Retour prévu",
+      "today": "Aujourd'hui",
+      "overdue": "Retard de {days}j"
+    },
+    "maintenance": {
+      "title": "Alertes maintenance",
+      "empty": "Aucune maintenance en cours",
+      "status": {
+        "open": "Ouvert",
+        "in_progress": "En cours",
+        "completed": "Terminé"
+      },
+      "type": {
+        "regular_service": "Entretien régulier",
+        "repair": "Réparation",
+        "technical_inspection": "Contrôle technique",
+        "tires": "Pneus",
+        "other": "Autre"
+      }
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "newContract": "Nouveau contrat",
+      "newClient": "Nouveau client",
+      "newVehicle": "Nouveau véhicule",
+      "inspection": "État des lieux"
+    }
+  },
+  "planning": {
+    "title": "Planning",
+    "subtitle": "Calendrier des réservations par véhicule",
+    "vehicle": "Véhicule",
+    "previous": "Période précédente",
+    "next": "Période suivante",
+    "noVehicles": "Aucun véhicule disponible",
+    "legend": "Légende",
+    "status": {
+      "draft": "Brouillon",
+      "approved": "Approuvé",
+      "pending_cg": "Attente CG",
+      "active": "Actif"
     }
   }
 }

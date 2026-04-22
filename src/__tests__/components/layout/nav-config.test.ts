@@ -32,22 +32,22 @@ describe("nav-config", () => {
     expect(settings!.adminOnly).toBe(true);
   });
 
-  it("getVisibleNavItems('admin') returns 5 items (disabled hidden)", () => {
+  it("getVisibleNavItems('admin') returns 7 items (disabled hidden)", () => {
     const items = getVisibleNavItems("admin");
-    expect(items).toHaveLength(5);
+    expect(items).toHaveLength(7);
     expect(items.find((i) => i.disabled)).toBeUndefined();
   });
 
-  it("getVisibleNavItems('agent') returns 4 items (no settings, disabled hidden)", () => {
+  it("getVisibleNavItems('agent') returns 6 items (no settings, disabled hidden)", () => {
     const items = getVisibleNavItems("agent");
-    expect(items).toHaveLength(4);
+    expect(items).toHaveLength(6);
     expect(items.find((i) => i.key === "settings")).toBeUndefined();
     expect(items.find((i) => i.disabled)).toBeUndefined();
   });
 
-  it("getVisibleNavItems('viewer') returns 4 items (no settings, disabled hidden)", () => {
+  it("getVisibleNavItems('viewer') returns 6 items (no settings, disabled hidden)", () => {
     const items = getVisibleNavItems("viewer");
-    expect(items).toHaveLength(4);
+    expect(items).toHaveLength(6);
     expect(items.find((i) => i.key === "settings")).toBeUndefined();
     expect(items.find((i) => i.disabled)).toBeUndefined();
   });
