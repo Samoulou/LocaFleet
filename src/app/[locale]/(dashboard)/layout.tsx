@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { SidebarProvider } from "@/components/layout/sidebar-context";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { AppTopbar } from "@/components/layout/app-topbar";
+import { CopilotWidget } from "@/components/ai/copilot-widget";
 
 export default async function DashboardLayout({
   children,
@@ -35,6 +36,8 @@ export default async function DashboardLayout({
           </main>
         </div>
       </div>
+
+      <CopilotWidget />
     </SidebarProvider>
   );
 }
