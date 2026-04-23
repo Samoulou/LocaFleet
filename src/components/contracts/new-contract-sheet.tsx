@@ -44,6 +44,9 @@ type NewContractSheetProps = {
   vehicleStatus: string;
   dailyRate: number;
   categoryName: string | null;
+  /** Controlled mode: when provided, external code drives open/close */
+  open?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 };
 
 export function NewContractSheet({
@@ -53,11 +56,15 @@ export function NewContractSheet({
   vehiclePlateNumber,
   dailyRate,
   categoryName,
+  open: controlledOpen,
+  onOpenChange,
 }: NewContractSheetProps) {
   const t = useTranslations("contracts.create");
   const router = useRouter();
 
-  const [open, setOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = isControlled ? controlledOpen : internalOpen;
   const [submitting, setSubmitting] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -120,7 +127,10 @@ export function NewContractSheet({
   }
 
   function handleOpenChange(isOpen: boolean) {
-    setOpen(isOpen);
+    if (!isControlled) {
+      setInternalOpen(isOpen);
+    }
+    onOpenChange?.(isOpen);
     if (isOpen) {
       fetchData();
     } else {
@@ -196,10 +206,12 @@ export function NewContractSheet({
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
-      <Button variant="outline" onClick={() => setOpen(true)}>
-        <FilePlus2 className="mr-2 size-4" />
-        {t("button")}
-      </Button>
+      {!isControlled && (
+        <Button variant="outline" onClick={() => handleOpenChange(true)}>
+          <FilePlus2 className="mr-2 size-4" />
+          {t("button")}
+        </Button>
+      )}
 
       <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
         <SheetHeader>

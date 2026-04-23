@@ -206,6 +206,82 @@ export async function listVehicleCategories(): Promise<
 }
 
 // ============================================================================
+// getVehiclesForContractPicker
+// ============================================================================
+
+export type VehiclePickerItem = {
+  id: string;
+  brand: string;
+  model: string;
+  plateNumber: string;
+  status: VehicleStatus;
+  dailyRate: number;
+  categoryName: string | null;
+};
+
+export async function getVehiclesForContractPicker(): Promise<
+  ActionResult<VehiclePickerItem[]>
+> {
+  try {
+    const currentUser = await requirePermission("contracts", "create");
+
+    const rows = await db
+      .select({
+        id: vehicles.id,
+        brand: vehicles.brand,
+        model: vehicles.model,
+        plateNumber: vehicles.plateNumber,
+        status: vehicles.status,
+        dailyRateOverride: vehicles.dailyRateOverride,
+        categoryName: vehicleCategories.name,
+        categoryDailyRate: vehicleCategories.dailyRate,
+      })
+      .from(vehicles)
+      .leftJoin(
+        vehicleCategories,
+        eq(vehicles.categoryId, vehicleCategories.id)
+      )
+      .where(
+        and(
+          eq(vehicles.tenantId, currentUser.tenantId),
+          isNull(vehicles.deletedAt),
+          ne(vehicles.status, "out_of_service")
+        )
+      )
+      .orderBy(asc(vehicles.brand), asc(vehicles.model));
+
+    return {
+      success: true,
+      data: rows.map((row) => ({
+        id: row.id,
+        brand: row.brand,
+        model: row.model,
+        plateNumber: row.plateNumber,
+        status: row.status,
+        dailyRate: row.dailyRateOverride
+          ? parseFloat(row.dailyRateOverride)
+          : row.categoryDailyRate
+            ? parseFloat(row.categoryDailyRate)
+            : 0,
+        categoryName: row.categoryName,
+      })),
+    };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "getVehiclesForContractPicker error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error: "Une erreur est survenue lors du chargement des véhicules",
+    };
+  }
+}
+
+// ============================================================================
 // getVehicle
 // ============================================================================
 

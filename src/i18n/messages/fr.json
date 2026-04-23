@@ -965,6 +965,13 @@
       "newClient": "Nouveau client",
       "newVehicle": "Nouveau véhicule",
       "inspection": "État des lieux"
+    },
+    "vehiclePicker": {
+      "title": "Choisir un véhicule",
+      "description": "Sélectionnez le véhicule pour le nouveau contrat",
+      "searchPlaceholder": "Rechercher par marque, modèle ou plaque...",
+      "noResults": "Aucun véhicule ne correspond",
+      "empty": "Aucun véhicule disponible"
     }
   },
   "planning": {

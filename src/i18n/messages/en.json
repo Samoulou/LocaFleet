@@ -965,6 +965,13 @@
       "newClient": "New client",
       "newVehicle": "New vehicle",
       "inspection": "Inspection"
+    },
+    "vehiclePicker": {
+      "title": "Choose a vehicle",
+      "description": "Select the vehicle for the new contract",
+      "searchPlaceholder": "Search by brand, model or plate...",
+      "noResults": "No vehicles match",
+      "empty": "No vehicles available"
     }
   },
   "planning": {
