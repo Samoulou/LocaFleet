@@ -8,6 +8,7 @@ import {
   clients,
 } from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
+import { revalidatePath } from "next/cache";
 import type { ActionResult } from "@/types";
 
 // ============================================================================

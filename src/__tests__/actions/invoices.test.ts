@@ -144,15 +144,17 @@ function mockUpdateChain() {
 
 /**
  * Sets up all DB mocks for a successful close-contract scenario.
- * Select sequence (5 calls):
+ * Select sequence (7 calls):
  *  1: contract fetch
  *  2: existing invoice check (empty = no duplicate)
  *  3: contract options (via innerJoin)
- *  4: client info (for dossier)
- *  5: vehicle info (for dossier)
- * Execute sequence (2 calls — FOR UPDATE):
- *  1: last invoice number
- *  2: last dossier number
+ *  4: invoice numbers (generator)
+ *  5: client info (for dossier)
+ *  6: vehicle info (for dossier)
+ *  7: dossier numbers (generator)
+ * Execute sequence (2 calls — advisory locks):
+ *  1: invoice advisory lock
+ *  2: dossier advisory lock
  */
 function setupSuccessMocks(overrides?: {
   contract?: Record<string, unknown>;
@@ -176,13 +178,15 @@ function setupSuccessMocks(overrides?: {
     [contract], // 1: contract
     [], // 2: no existing invoice
     options, // 3: contract options (innerJoin)
-    [{ firstName: "Jean", lastName: "Dupont" }], // 4: client
-    [{ brand: "Toyota", model: "Yaris", plateNumber: "VD 123456" }], // 5: vehicle
+    lastInvoice, // 4: invoice numbers
+    [{ firstName: "Jean", lastName: "Dupont" }], // 5: client
+    [{ brand: "Toyota", model: "Yaris", plateNumber: "VD 123456" }], // 6: vehicle
+    lastDossier, // 7: dossier numbers
   ]);
 
   mockExecuteSequence([
-    lastInvoice, // 1: last invoice number (FOR UPDATE)
-    lastDossier, // 2: last dossier number (FOR UPDATE)
+    [], // 1: advisory lock (returns nothing)
+    [], // 2: advisory lock (returns nothing)
   ]);
 
   mockInsertChain([{ id: INVOICE_ID }]);
@@ -309,7 +313,7 @@ describe("closeContractAndGenerateInvoice", () => {
 
   it("generates correct invoice number format (FAC-YYYY-XXXX)", async () => {
     setupSuccessMocks({
-      lastInvoice: [{ invoice_number: `FAC-${new Date().getFullYear()}-0005` }],
+      lastInvoice: [{ invoiceNumber: `FAC-${new Date().getFullYear()}-0005` }],
     });
 
     const result = await closeContractAndGenerateInvoice(VALID_INPUT);

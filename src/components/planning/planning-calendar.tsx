@@ -12,8 +12,15 @@ import {
   ChevronRight,
   CalendarIcon,
   FileText,
+  CheckCircle2,
+  Wrench,
 } from "lucide-react";
-import { formatDate, cn, toDateInputValue, parseDateInputValue } from "@/lib/utils";
+import {
+  formatDate,
+  cn,
+  toDateInputValue,
+  parseDateInputValue,
+} from "@/lib/utils";
 import { getPlanningData } from "@/actions/planning";
 import type { PlanningData } from "@/actions/planning";
 
@@ -125,9 +132,7 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
           <span className="text-sm text-muted-foreground">
             {formatDate(days[0])} — {formatDate(days[days.length - 1])}
           </span>
-          {isPending && (
-            <Skeleton className="h-4 w-16" />
-          )}
+          {isPending && <Skeleton className="h-4 w-16" />}
         </div>
       </CardHeader>
       <CardContent className="p-0">
@@ -239,6 +244,9 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
                     const isToday = isSameDay(day, today);
                     const isWeekend =
                       day.getDay() === 0 || day.getDay() === 6;
+                    const isRented = contractsOnDay.length > 0;
+                    const isInMaintenance =
+                      !isRented && vehicle.status === "maintenance";
 
                     return (
                       <div
@@ -246,9 +254,11 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
                         className={cn(
                           "relative min-h-[64px] border-r p-1",
                           isToday && "bg-primary/5",
-                          isWeekend && "bg-muted/30"
+                          isWeekend && "bg-muted/30",
+                          isInMaintenance && "bg-amber-50 dark:bg-amber-950/20"
                         )}
                       >
+                        {/* Contract bars when rented */}
                         {contractsOnDay.map((contract) => (
                           <Link
                             key={contract.id}
@@ -265,6 +275,20 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
                             </span>
                           </Link>
                         ))}
+
+                        {/* Available indicator when free */}
+                        {!isRented && !isInMaintenance && (
+                          <div className="flex h-full items-center justify-center">
+                            <CheckCircle2 className="size-4 text-green-400 opacity-40" />
+                          </div>
+                        )}
+
+                        {/* Maintenance indicator */}
+                        {isInMaintenance && (
+                          <div className="flex h-full items-center justify-center">
+                            <Wrench className="size-4 text-amber-500 opacity-60" />
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -303,6 +327,18 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
               </span>
             </div>
           ))}
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="size-3 text-green-400 opacity-40" />
+            <span className="text-xs text-muted-foreground">
+              Disponible
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Wrench className="size-3 text-amber-500 opacity-60" />
+            <span className="text-xs text-muted-foreground">
+              Maintenance
+            </span>
+          </div>
         </div>
       </CardContent>
     </Card>
