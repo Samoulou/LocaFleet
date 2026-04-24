@@ -348,10 +348,18 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
               (nv) => nv.id === v.id
             );
             if (!newVehicle) return v;
+            const contracts = new Map([
+              ...newVehicle.contracts.map((c) => [c.id, c] as const),
+              ...v.contracts.map((c) => [c.id, c] as const),
+            ]);
+            const maintenance = new Map([
+              ...newVehicle.maintenance.map((m) => [m.id, m] as const),
+              ...v.maintenance.map((m) => [m.id, m] as const),
+            ]);
             return {
               ...v,
-              contracts: [...newVehicle.contracts, ...v.contracts],
-              maintenance: [...newVehicle.maintenance, ...v.maintenance],
+              contracts: Array.from(contracts.values()),
+              maintenance: Array.from(maintenance.values()),
             };
           });
           // Add any vehicles from new data that weren't in prev
@@ -406,10 +414,18 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
               (nv) => nv.id === v.id
             );
             if (!newVehicle) return v;
+            const contracts = new Map([
+              ...v.contracts.map((c) => [c.id, c] as const),
+              ...newVehicle.contracts.map((c) => [c.id, c] as const),
+            ]);
+            const maintenance = new Map([
+              ...v.maintenance.map((m) => [m.id, m] as const),
+              ...newVehicle.maintenance.map((m) => [m.id, m] as const),
+            ]);
             return {
               ...v,
-              contracts: [...v.contracts, ...newVehicle.contracts],
-              maintenance: [...v.maintenance, ...newVehicle.maintenance],
+              contracts: Array.from(contracts.values()),
+              maintenance: Array.from(maintenance.values()),
             };
           });
           const existingIds = new Set(prev.vehicles.map((v) => v.id));
