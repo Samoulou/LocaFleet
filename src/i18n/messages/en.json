@@ -177,10 +177,12 @@
         "status": "Status",
         "mechanic": "Mechanic",
         "actions": "Actions",
+        "cancel": "Cancel",
         "statuses": {
           "open": "Open",
           "in_progress": "In Progress",
-          "completed": "Completed"
+          "completed": "Completed",
+          "cancelled": "Cancelled"
         },
         "types": {
           "regular_service": "Regular Service",
@@ -359,6 +361,13 @@
       "submitButton": "Close maintenance",
       "success": "Maintenance closed successfully"
     },
+    "cancel": {
+      "title": "Cancel maintenance",
+      "description": "This maintenance will be cancelled and the vehicle will become available if no other maintenance is in progress.",
+      "submitting": "Cancelling...",
+      "confirm": "Cancel",
+      "success": "Maintenance cancelled successfully"
+    },
     "create": {
       "button": "New maintenance",
       "title": "New maintenance",
@@ -380,6 +389,8 @@
       "description": "Description",
       "descriptionPlaceholder": "Describe the work to be done...",
       "startDate": "Start date",
+      "endDate": "End date",
+      "noEndDate": "No end date",
       "estimatedCost": "Estimated cost (CHF)",
       "estimatedCostPlaceholder": "e.g. 350.00",
       "mechanicName": "Mechanic name",
@@ -978,8 +989,7 @@
     "title": "Planning",
     "subtitle": "Reservation calendar by vehicle",
     "vehicle": "Vehicle",
-    "previous": "Previous period",
-    "next": "Next period",
+    "today": "Today",
     "noVehicles": "No vehicles available",
     "legend": "Legend",
     "status": {

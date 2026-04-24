@@ -21,17 +21,25 @@ import { Label } from "@/components/ui/label";
 type CloseMaintenanceDialogProps = {
   maintenanceId: string;
   disabled?: boolean;
+  /** Controlled mode */
+  open?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 };
 
 export function CloseMaintenanceDialog({
   maintenanceId,
   disabled,
+  open: controlledOpen,
+  onOpenChange,
 }: CloseMaintenanceDialogProps) {
   const t = useTranslations("maintenance.close");
   const tCommon = useTranslations("common");
   const router = useRouter();
 
-  const [open, setOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = isControlled ? controlledOpen : internalOpen;
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,6 +55,14 @@ export function CloseMaintenanceDialog({
     setFinalCost("");
     setNotes("");
     setError(null);
+  }
+
+  function handleOpenChange(isOpen: boolean) {
+    if (!isControlled) {
+      setInternalOpen(isOpen);
+    }
+    onOpenChange?.(isOpen);
+    if (!isOpen) resetForm();
   }
 
   async function handleSubmit() {
@@ -67,8 +83,7 @@ export function CloseMaintenanceDialog({
       }
 
       toast.success(t("success"));
-      setOpen(false);
-      resetForm();
+      handleOpenChange(false);
       router.refresh();
     } finally {
       setLoading(false);
@@ -76,19 +91,15 @@ export function CloseMaintenanceDialog({
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(v) => {
-        setOpen(v);
-        if (!v) resetForm();
-      }}
-    >
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm" disabled={disabled}>
-          <CheckCircle2 className="mr-1.5 size-3.5" />
-          {t("button")}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      {!isControlled && (
+        <DialogTrigger asChild>
+          <Button variant="outline" size="sm" disabled={disabled}>
+            <CheckCircle2 className="mr-1.5 size-3.5" />
+            {t("button")}
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
@@ -141,7 +152,7 @@ export function CloseMaintenanceDialog({
           <div className="flex justify-end gap-2">
             <Button
               variant="outline"
-              onClick={() => setOpen(false)}
+              onClick={() => handleOpenChange(false)}
               disabled={loading}
             >
               {tCommon("cancel")}

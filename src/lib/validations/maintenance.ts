@@ -15,6 +15,12 @@ export const createMaintenanceSchema = z.object({
   startDate: z.coerce.date({
     errorMap: () => ({ message: "La date de début est invalide" }),
   }),
+  endDate: z.coerce
+    .date({
+      errorMap: () => ({ message: "La date de fin est invalide" }),
+    })
+    .optional()
+    .nullable(),
   estimatedCost: z
     .union([
       z.literal(""),

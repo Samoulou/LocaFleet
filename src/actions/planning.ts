@@ -1,14 +1,15 @@
 "use server";
 
-import { eq, and, gte, lte, sql } from "drizzle-orm";
+import { eq, and, gte, lte, sql, or, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import {
   rentalContracts,
   vehicles,
   clients,
+  vehicleCategories,
+  maintenanceRecords,
 } from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
-import { revalidatePath } from "next/cache";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -28,12 +29,24 @@ export type PlanningContract = {
   totalAmount: string;
 };
 
+export type PlanningMaintenance = {
+  id: string;
+  type: string;
+  status: string;
+  description: string;
+  startDate: Date;
+  endDate: Date | null;
+};
+
 export type PlanningVehicle = {
   id: string;
   name: string;
   plateNumber: string;
   status: string;
+  dailyRate: number;
+  categoryName: string | null;
   contracts: PlanningContract[];
+  maintenance: PlanningMaintenance[];
 };
 
 export type PlanningData = {
@@ -67,8 +80,15 @@ export async function getPlanningData(
         model: vehicles.model,
         plateNumber: vehicles.plateNumber,
         status: vehicles.status,
+        dailyRateOverride: vehicles.dailyRateOverride,
+        categoryName: vehicleCategories.name,
+        categoryDailyRate: vehicleCategories.dailyRate,
       })
       .from(vehicles)
+      .leftJoin(
+        vehicleCategories,
+        eq(vehicles.categoryId, vehicleCategories.id)
+      )
       .where(
         and(
           eq(vehicles.tenantId, tenantId),
@@ -101,6 +121,30 @@ export async function getPlanningData(
         )
       );
 
+    // Fetch maintenance records overlapping the date range
+    const maintenanceRows = await db
+      .select({
+        id: maintenanceRecords.id,
+        vehicleId: maintenanceRecords.vehicleId,
+        type: maintenanceRecords.type,
+        status: maintenanceRecords.status,
+        description: maintenanceRecords.description,
+        startDate: maintenanceRecords.startDate,
+        endDate: maintenanceRecords.endDate,
+      })
+      .from(maintenanceRecords)
+      .where(
+        and(
+          eq(maintenanceRecords.tenantId, tenantId),
+          lte(maintenanceRecords.startDate, endDate),
+          or(
+            isNull(maintenanceRecords.endDate),
+            gte(maintenanceRecords.endDate, startDate)
+          ),
+          sql`${maintenanceRecords.status} IN ('open', 'in_progress')`
+        )
+      );
+
     // Group contracts by vehicle
     const contractsByVehicle = new Map<string, PlanningContract[]>();
     for (const row of contractRows) {
@@ -122,18 +166,44 @@ export async function getPlanningData(
       contractsByVehicle.set(row.vehicleId, list);
     }
 
+    // Group maintenance by vehicle
+    const maintenanceByVehicle = new Map<string, PlanningMaintenance[]>();
+    for (const row of maintenanceRows) {
+      const maintenance: PlanningMaintenance = {
+        id: row.id,
+        type: row.type,
+        status: row.status,
+        description: row.description,
+        startDate: row.startDate,
+        endDate: row.endDate,
+      };
+
+      const list = maintenanceByVehicle.get(row.vehicleId) ?? [];
+      list.push(maintenance);
+      maintenanceByVehicle.set(row.vehicleId, list);
+    }
+
     const planningVehicles: PlanningVehicle[] = vehicleRows.map((v) => {
       const vehicleContracts = contractsByVehicle.get(v.id) ?? [];
+      const vehicleMaintenance = maintenanceByVehicle.get(v.id) ?? [];
+      const dailyRate = v.dailyRateOverride
+        ? parseFloat(v.dailyRateOverride)
+        : v.categoryDailyRate
+          ? parseFloat(v.categoryDailyRate)
+          : 0;
       return {
         id: v.id,
         name: `${v.brand} ${v.model}`,
         plateNumber: v.plateNumber,
         status: v.status,
+        dailyRate,
+        categoryName: v.categoryName,
         contracts: vehicleContracts.map((c) => ({
           ...c,
           vehicleName: `${v.brand} ${v.model}`,
           plateNumber: v.plateNumber,
         })),
+        maintenance: vehicleMaintenance,
       };
     });
 
