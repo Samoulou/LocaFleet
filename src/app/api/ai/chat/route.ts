@@ -13,6 +13,7 @@ import {
   getMaintenanceRecords,
   getDashboardSummary,
   generateEmail,
+  getKPIs,
 } from "@/lib/ai/tool-executors";
 import { chatRequestSchema } from "@/lib/validations/ai";
 import type OpenAI from "openai";
@@ -33,6 +34,7 @@ const toolDispatcher: Record<ToolName, Executor> = {
   getMaintenanceRecords: getMaintenanceRecords as Executor,
   getDashboardSummary: getDashboardSummary as Executor,
   generateEmail: generateEmail as Executor,
+  getKPIs: getKPIs as Executor,
 };
 
 const MAX_ITERATIONS = 10;

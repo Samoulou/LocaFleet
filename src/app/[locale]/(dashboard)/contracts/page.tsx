@@ -1,7 +1,8 @@
 import { FileText } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { ContractsDataTable } from "@/components/contracts/contracts-data-table";
-import { listContracts } from "@/actions/contracts";
+import { ContractKpiCards } from "@/components/contracts/contract-kpi-cards";
+import { listContracts, getContractKPIs } from "@/actions/contracts";
 
 type ContractsPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -12,7 +13,7 @@ export default async function ContractsPage({
 }: ContractsPageProps) {
   const params = await searchParams;
 
-  const [t, result] = await Promise.all([
+  const [t, result, kpisResult] = await Promise.all([
     getTranslations("contracts"),
     listContracts({
       page: params.page,
@@ -20,7 +21,10 @@ export default async function ContractsPage({
       status: params.status,
       search: params.search,
     }),
+    getContractKPIs(),
   ]);
+
+  const kpis = kpisResult.success ? kpisResult.data : null;
 
   return (
     <div className="space-y-6">
@@ -29,6 +33,9 @@ export default async function ContractsPage({
         <h1 className="text-2xl font-bold text-foreground">{t("list.title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("list.subtitle")}</p>
       </div>
+
+      {/* KPI Cards */}
+      {kpis && kpis.total > 0 && <ContractKpiCards kpis={kpis} />}
 
       {/* Content */}
       {!result.success ? (

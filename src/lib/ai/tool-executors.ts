@@ -421,3 +421,278 @@ export async function generateEmail(
     note: "The AI will compose the email text in its final response.",
   };
 }
+
+export async function getKPIs(tenantId: string) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  // Dashboard summary (existing logic)
+  const [activeRentalsResult] = await db
+    .select({ count: count() })
+    .from(rentalContracts)
+    .where(
+      and(
+        eq(rentalContracts.tenantId, tenantId),
+        sql`${rentalContracts.status} IN ('approved', 'pending_cg', 'active')`
+      )
+    );
+
+  const [overdueReturnsResult] = await db
+    .select({ count: count() })
+    .from(rentalContracts)
+    .where(
+      and(
+        eq(rentalContracts.tenantId, tenantId),
+        sql`${rentalContracts.status} IN ('approved', 'pending_cg', 'active')`,
+        lt(rentalContracts.endDate, today)
+      )
+    );
+
+  const [maintenanceResult] = await db
+    .select({ count: count() })
+    .from(vehicles)
+    .where(
+      and(
+        eq(vehicles.tenantId, tenantId),
+        eq(vehicles.status, "maintenance")
+      )
+    );
+
+  const [availableResult] = await db
+    .select({ count: count() })
+    .from(vehicles)
+    .where(
+      and(
+        eq(vehicles.tenantId, tenantId),
+        isNull(vehicles.deletedAt),
+        eq(vehicles.status, "available")
+      )
+    );
+
+  const [revenueResult] = await db
+    .select({ total: sql<string>`COALESCE(SUM(${invoices.totalAmount}), '0')` })
+    .from(invoices)
+    .where(
+      and(
+        eq(invoices.tenantId, tenantId),
+        eq(invoices.status, "paid"),
+        gte(invoices.issuedAt, startOfMonth)
+      )
+    );
+
+  // Fleet intelligence
+  const [fleetSizeResult] = await db
+    .select({ count: count() })
+    .from(vehicles)
+    .where(
+      and(
+        eq(vehicles.tenantId, tenantId),
+        isNull(vehicles.deletedAt),
+        sql`${vehicles.status} != 'out_of_service'`
+      )
+    );
+
+  const fleetSize = fleetSizeResult?.count ?? 0;
+  const activeRentals = activeRentalsResult?.count ?? 0;
+  const monthlyRevenue = parseFloat(revenueResult?.total ?? "0");
+
+  const [avgDurationResult] = await db
+    .select({
+      avg: sql<string>`COALESCE(AVG(${rentalContracts.totalDays}), '0')`,
+    })
+    .from(rentalContracts)
+    .where(eq(rentalContracts.tenantId, tenantId));
+
+  const recurringSq = db
+    .select({ clientId: rentalContracts.clientId })
+    .from(rentalContracts)
+    .where(eq(rentalContracts.tenantId, tenantId))
+    .groupBy(rentalContracts.clientId)
+    .having(sql`COUNT(*) >= 2`)
+    .as("recurring_clients");
+
+  const [recurringResult] = await db
+    .select({ count: count() })
+    .from(recurringSq);
+
+  const [unpaidResult] = await db
+    .select({
+      total: sql<string>`COALESCE(SUM(${invoices.totalAmount}), '0')`,
+    })
+    .from(invoices)
+    .where(
+      and(
+        eq(invoices.tenantId, tenantId),
+        sql`${invoices.status} IN ('pending', 'invoiced', 'verification', 'conflict')`
+      )
+    );
+
+  const [avgValueResult] = await db
+    .select({
+      avg: sql<string>`COALESCE(AVG(${rentalContracts.totalAmount}), '0')`,
+    })
+    .from(rentalContracts)
+    .where(
+      and(
+        eq(rentalContracts.tenantId, tenantId),
+        eq(rentalContracts.status, "completed")
+      )
+    );
+
+  // Vehicle KPIs
+  const [vehicleKPIs] = await db
+    .select({
+      total: count(),
+      available:
+        sql<number>`count(*) filter (where ${vehicles.status} = 'available')`.mapWith(
+          Number
+        ),
+      rented:
+        sql<number>`count(*) filter (where ${vehicles.status} = 'rented')`.mapWith(
+          Number
+        ),
+      maintenance:
+        sql<number>`count(*) filter (where ${vehicles.status} = 'maintenance')`.mapWith(
+          Number
+        ),
+    })
+    .from(vehicles)
+    .where(
+      and(
+        eq(vehicles.tenantId, tenantId),
+        isNull(vehicles.deletedAt)
+      )
+    );
+
+  // Contract KPIs
+  const [contractKPIs] = await db
+    .select({
+      total: count(),
+      draft:
+        sql<number>`count(*) filter (where ${rentalContracts.status} = 'draft')`.mapWith(
+          Number
+        ),
+      approved:
+        sql<number>`count(*) filter (where ${rentalContracts.status} = 'approved')`.mapWith(
+          Number
+        ),
+      pendingCG:
+        sql<number>`count(*) filter (where ${rentalContracts.status} = 'pending_cg')`.mapWith(
+          Number
+        ),
+      active:
+        sql<number>`count(*) filter (where ${rentalContracts.status} = 'active')`.mapWith(
+          Number
+        ),
+      completed:
+        sql<number>`count(*) filter (where ${rentalContracts.status} = 'completed')`.mapWith(
+          Number
+        ),
+      cancelled:
+        sql<number>`count(*) filter (where ${rentalContracts.status} = 'cancelled')`.mapWith(
+          Number
+        ),
+    })
+    .from(rentalContracts)
+    .where(eq(rentalContracts.tenantId, tenantId));
+
+  // Invoice KPIs
+  const [pendingAmountResult] = await db
+    .select({
+      total: sql<string>`COALESCE(SUM(${invoices.totalAmount}), '0')`,
+    })
+    .from(invoices)
+    .where(
+      and(
+        eq(invoices.tenantId, tenantId),
+        sql`${invoices.status} IN ('pending', 'invoiced', 'verification', 'conflict')`
+      )
+    );
+
+  const [paidThisMonthResult] = await db
+    .select({
+      total: sql<string>`COALESCE(SUM(${invoices.totalAmount}), '0')`,
+    })
+    .from(invoices)
+    .where(
+      and(
+        eq(invoices.tenantId, tenantId),
+        eq(invoices.status, "paid"),
+        gte(invoices.issuedAt, startOfMonth)
+      )
+    );
+
+  const [avgInvoiceResult] = await db
+    .select({
+      avg: sql<string>`COALESCE(AVG(${invoices.totalAmount}), '0')`,
+    })
+    .from(invoices)
+    .where(eq(invoices.tenantId, tenantId));
+
+  const todayStr = today.toISOString().split("T")[0];
+  const [overdueInvoiceResult] = await db
+    .select({ count: count() })
+    .from(invoices)
+    .where(
+      and(
+        eq(invoices.tenantId, tenantId),
+        sql`${invoices.dueDate} < ${todayStr}`,
+        sql`${invoices.status} IN ('pending', 'invoiced', 'verification')`
+      )
+    );
+
+  // Client KPIs
+  const [clientKPIs] = await db
+    .select({
+      totalClients: count(),
+      trustedClients:
+        sql<number>`count(*) filter (where ${clients.isTrusted} = true)`.mapWith(
+          Number
+        ),
+    })
+    .from(clients)
+    .where(and(eq(clients.tenantId, tenantId), isNull(clients.deletedAt)));
+
+  return {
+    dashboard: {
+      activeRentals,
+      overdueReturns: overdueReturnsResult?.count ?? 0,
+      vehiclesInMaintenance: maintenanceResult?.count ?? 0,
+      availableVehicles: availableResult?.count ?? 0,
+      monthlyRevenue,
+      utilizationRate:
+        fleetSize > 0 ? Math.round((activeRentals / fleetSize) * 100) : 0,
+      avgRevenuePerVehicle: fleetSize > 0 ? Math.round(monthlyRevenue / fleetSize) : 0,
+      avgContractDuration: Math.round(parseFloat(avgDurationResult?.avg ?? "0")),
+      recurringClients: recurringResult?.count ?? 0,
+      totalUnpaid: parseFloat(unpaidResult?.total ?? "0"),
+      avgContractValue: Math.round(parseFloat(avgValueResult?.avg ?? "0")),
+    },
+    vehicles: {
+      total: vehicleKPIs?.total ?? 0,
+      available: vehicleKPIs?.available ?? 0,
+      rented: vehicleKPIs?.rented ?? 0,
+      maintenance: vehicleKPIs?.maintenance ?? 0,
+    },
+    contracts: {
+      total: contractKPIs?.total ?? 0,
+      draft: contractKPIs?.draft ?? 0,
+      approved: contractKPIs?.approved ?? 0,
+      pendingCG: contractKPIs?.pendingCG ?? 0,
+      active: contractKPIs?.active ?? 0,
+      completed: contractKPIs?.completed ?? 0,
+      cancelled: contractKPIs?.cancelled ?? 0,
+    },
+    invoices: {
+      totalPending: parseFloat(pendingAmountResult?.total ?? "0"),
+      totalPaidThisMonth: parseFloat(paidThisMonthResult?.total ?? "0"),
+      averageAmount: parseFloat(avgInvoiceResult?.avg ?? "0"),
+      overdueCount: overdueInvoiceResult?.count ?? 0,
+    },
+    clients: {
+      totalClients: clientKPIs?.totalClients ?? 0,
+      trustedClients: clientKPIs?.trustedClients ?? 0,
+    },
+  };
+}

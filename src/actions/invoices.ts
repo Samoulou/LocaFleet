@@ -961,3 +961,100 @@ export async function updateInvoiceStatus(
     };
   }
 }
+
+// ============================================================================
+// getInvoiceKPIs
+// ============================================================================
+
+export type InvoiceKPIs = {
+  totalPending: number;
+  totalPaidThisMonth: number;
+  averageAmount: number;
+  overdueCount: number;
+};
+
+export async function getInvoiceKPIs(): Promise<ActionResult<InvoiceKPIs>> {
+  try {
+    const currentUser = await requirePermission("invoices", "read");
+    const tenantId = currentUser.tenantId;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    const [pendingResult] = await db
+      .select({
+        total: sql<string>`COALESCE(SUM(${invoices.totalAmount}), '0')`,
+      })
+      .from(invoices)
+      .where(
+        and(
+          eq(invoices.tenantId, tenantId),
+          or(
+            eq(invoices.status, "pending"),
+            eq(invoices.status, "invoiced"),
+            eq(invoices.status, "verification"),
+            eq(invoices.status, "conflict")
+          )
+        )
+      );
+
+    const [paidResult] = await db
+      .select({
+        total: sql<string>`COALESCE(SUM(${invoices.totalAmount}), '0')`,
+      })
+      .from(invoices)
+      .where(
+        and(
+          eq(invoices.tenantId, tenantId),
+          eq(invoices.status, "paid"),
+          gte(invoices.issuedAt, startOfMonth)
+        )
+      );
+
+    const [avgResult] = await db
+      .select({
+        average: sql<string>`COALESCE(AVG(${invoices.totalAmount}), '0')`,
+      })
+      .from(invoices)
+      .where(eq(invoices.tenantId, tenantId));
+
+    const todayStr = today.toISOString().split("T")[0];
+    const [overdueResult] = await db
+      .select({ count: count() })
+      .from(invoices)
+      .where(
+        and(
+          eq(invoices.tenantId, tenantId),
+          sql`${invoices.dueDate} < ${todayStr}`,
+          or(
+            eq(invoices.status, "pending"),
+            eq(invoices.status, "invoiced"),
+            eq(invoices.status, "verification")
+          )
+        )
+      );
+
+    return {
+      success: true,
+      data: {
+        totalPending: parseFloat(pendingResult?.total ?? "0"),
+        totalPaidThisMonth: parseFloat(paidResult?.total ?? "0"),
+        averageAmount: parseFloat(avgResult?.average ?? "0"),
+        overdueCount: overdueResult?.count ?? 0,
+      },
+    };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "getInvoiceKPIs error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error:
+        "Une erreur est survenue lors du chargement des indicateurs de factures",
+    };
+  }
+}

@@ -605,3 +605,80 @@ export async function listContracts(input: {
     };
   }
 }
+
+// ============================================================================
+// getContractKPIs
+// ============================================================================
+
+export type ContractKPIs = {
+  total: number;
+  draft: number;
+  approved: number;
+  pendingCG: number;
+  active: number;
+  completed: number;
+  cancelled: number;
+};
+
+export async function getContractKPIs(): Promise<ActionResult<ContractKPIs>> {
+  try {
+    const currentUser = await requirePermission("contracts", "read");
+
+    const [result] = await db
+      .select({
+        total: count(),
+        draft:
+          sql<number>`count(*) filter (where ${rentalContracts.status} = 'draft')`.mapWith(
+            Number
+          ),
+        approved:
+          sql<number>`count(*) filter (where ${rentalContracts.status} = 'approved')`.mapWith(
+            Number
+          ),
+        pendingCG:
+          sql<number>`count(*) filter (where ${rentalContracts.status} = 'pending_cg')`.mapWith(
+            Number
+          ),
+        active:
+          sql<number>`count(*) filter (where ${rentalContracts.status} = 'active')`.mapWith(
+            Number
+          ),
+        completed:
+          sql<number>`count(*) filter (where ${rentalContracts.status} = 'completed')`.mapWith(
+            Number
+          ),
+        cancelled:
+          sql<number>`count(*) filter (where ${rentalContracts.status} = 'cancelled')`.mapWith(
+            Number
+          ),
+      })
+      .from(rentalContracts)
+      .where(eq(rentalContracts.tenantId, currentUser.tenantId));
+
+    return {
+      success: true,
+      data: {
+        total: result?.total ?? 0,
+        draft: result?.draft ?? 0,
+        approved: result?.approved ?? 0,
+        pendingCG: result?.pendingCG ?? 0,
+        active: result?.active ?? 0,
+        completed: result?.completed ?? 0,
+        cancelled: result?.cancelled ?? 0,
+      },
+    };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "getContractKPIs error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error:
+        "Une erreur est survenue lors du chargement des indicateurs de contrats",
+    };
+  }
+}

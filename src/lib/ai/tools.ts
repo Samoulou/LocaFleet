@@ -219,6 +219,19 @@ export const TOOL_DEFINITIONS = [
       },
     },
   },
+  {
+    type: "function" as const,
+    function: {
+      name: "getKPIs",
+      description:
+        "Get all business KPIs: fleet overview, contract stats, invoice stats, client stats, and dashboard intelligence (utilization rate, revenue per vehicle, avg contract duration, recurring clients, unpaid amounts, avg contract value).",
+      parameters: {
+        type: "object",
+        properties: {},
+        required: [],
+      },
+    },
+  },
 ] as const;
 
 export type ToolName = (typeof TOOL_DEFINITIONS)[number]["function"]["name"];

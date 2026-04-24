@@ -2,7 +2,8 @@ import { Receipt } from "lucide-react";
 import { InvoiceStatusTabs } from "@/components/invoices/invoice-status-tabs";
 import { InvoiceFilters } from "@/components/invoices/invoice-filters";
 import { InvoicesDataTable } from "@/components/invoices/invoices-data-table";
-import { listInvoices, getInvoiceStatusCounts } from "@/actions/invoices";
+import { InvoiceKpiCards } from "@/components/invoices/invoice-kpi-cards";
+import { listInvoices, getInvoiceStatusCounts, getInvoiceKPIs } from "@/actions/invoices";
 
 type InvoicesPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -21,12 +22,14 @@ export default async function InvoicesPage({
     period: params.period,
   };
 
-  const [invoicesResult, countsResult] = await Promise.all([
+  const [invoicesResult, countsResult, kpisResult] = await Promise.all([
     listInvoices(input),
     getInvoiceStatusCounts(),
+    getInvoiceKPIs(),
   ]);
 
   const counts = countsResult.success ? countsResult.data : null;
+  const kpis = kpisResult.success ? kpisResult.data : null;
 
   return (
     <div className="space-y-6">
@@ -37,6 +40,9 @@ export default async function InvoicesPage({
           Consultez et gérez les factures de location
         </p>
       </div>
+
+      {/* KPI Cards */}
+      {kpis && <InvoiceKpiCards kpis={kpis} />}
 
       {/* Status Tabs */}
       <InvoiceStatusTabs counts={counts} />

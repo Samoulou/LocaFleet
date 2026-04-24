@@ -23,6 +23,12 @@ export type DashboardStats = {
   vehiclesInMaintenance: number;
   availableVehicles: number;
   monthlyRevenue: number;
+  utilizationRate: number;
+  avgRevenuePerVehicle: number;
+  avgContractDuration: number;
+  recurringClients: number;
+  totalUnpaid: number;
+  avgContractValue: number;
 };
 
 export type ActiveRental = {
@@ -143,6 +149,78 @@ export async function getDashboardStats(): Promise<
         )
       );
 
+    // Total fleet size (active vehicles, not deleted, not out_of_service)
+    const [fleetSizeResult] = await db
+      .select({ count: count() })
+      .from(vehicles)
+      .where(
+        and(
+          eq(vehicles.tenantId, tenantId),
+          isNull(vehicles.deletedAt),
+          sql`${vehicles.status} != 'out_of_service'`
+        )
+      );
+
+    const fleetSize = fleetSizeResult?.count ?? 0;
+
+    // Utilization rate: active rentals / fleet size
+    const utilizationRate =
+      fleetSize > 0
+        ? Math.round(((activeRentalsResult?.count ?? 0) / fleetSize) * 100)
+        : 0;
+
+    // Avg revenue per vehicle
+    const monthlyRevenue = Number(revenueResult?.total ?? 0);
+    const avgRevenuePerVehicle =
+      fleetSize > 0 ? Math.round(monthlyRevenue / fleetSize) : 0;
+
+    // Avg contract duration (days) across all contracts
+    const [avgDurationResult] = await db
+      .select({
+        avg: sql<string>`COALESCE(AVG(${rentalContracts.totalDays}), '0')`,
+      })
+      .from(rentalContracts)
+      .where(eq(rentalContracts.tenantId, tenantId));
+
+    // Recurring clients: clients with 2+ contracts
+    const recurringSq = db
+      .select({ clientId: rentalContracts.clientId })
+      .from(rentalContracts)
+      .where(eq(rentalContracts.tenantId, tenantId))
+      .groupBy(rentalContracts.clientId)
+      .having(sql`COUNT(*) >= 2`)
+      .as("recurring_clients");
+
+    const [recurringResult] = await db
+      .select({ count: count() })
+      .from(recurringSq);
+
+    // Total unpaid amount (pending, invoiced, verification, conflict)
+    const [unpaidResult] = await db
+      .select({
+        total: sql<string>`COALESCE(SUM(${invoices.totalAmount}), '0')`,
+      })
+      .from(invoices)
+      .where(
+        and(
+          eq(invoices.tenantId, tenantId),
+          sql`${invoices.status} IN ('pending', 'invoiced', 'verification', 'conflict')`
+        )
+      );
+
+    // Avg contract value (completed contracts only)
+    const [avgValueResult] = await db
+      .select({
+        avg: sql<string>`COALESCE(AVG(${rentalContracts.totalAmount}), '0')`,
+      })
+      .from(rentalContracts)
+      .where(
+        and(
+          eq(rentalContracts.tenantId, tenantId),
+          eq(rentalContracts.status, "completed")
+        )
+      );
+
     return {
       success: true,
       data: {
@@ -151,7 +229,15 @@ export async function getDashboardStats(): Promise<
         overdueReturns: overdueReturnsResult?.count ?? 0,
         vehiclesInMaintenance: maintenanceResult?.count ?? 0,
         availableVehicles: availableResult?.count ?? 0,
-        monthlyRevenue: Number(revenueResult?.total ?? 0),
+        monthlyRevenue,
+        utilizationRate,
+        avgRevenuePerVehicle,
+        avgContractDuration: Math.round(
+          parseFloat(avgDurationResult?.avg ?? "0")
+        ),
+        recurringClients: recurringResult?.count ?? 0,
+        totalUnpaid: parseFloat(unpaidResult?.total ?? "0"),
+        avgContractValue: Math.round(parseFloat(avgValueResult?.avg ?? "0")),
       },
     };
   } catch (err) {
