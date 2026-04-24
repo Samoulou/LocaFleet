@@ -56,6 +56,7 @@ export const maintenanceStatusEnum = pgEnum("maintenance_status", [
   "open",
   "in_progress",
   "completed",
+  "cancelled",
 ]);
 
 export const maintenanceUrgencyEnum = pgEnum("maintenance_urgency", [

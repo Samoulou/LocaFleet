@@ -766,7 +766,7 @@ export type VehicleMaintenanceHistoryItem = {
     | "technical_inspection"
     | "tires"
     | "other";
-  status: "open" | "in_progress" | "completed";
+  status: "open" | "in_progress" | "completed" | "cancelled";
   description: string;
   estimatedCost: string | null;
   finalCost: string | null;

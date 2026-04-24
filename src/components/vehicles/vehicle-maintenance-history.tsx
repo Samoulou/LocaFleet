@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Wrench } from "lucide-react";
+import { Wrench, XCircle } from "lucide-react";
 import { cn, formatDate, formatCHF } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { CloseMaintenanceDialog } from "@/components/maintenance/close-maintenance-dialog";
+import { CancelMaintenanceDialog } from "@/components/maintenance/cancel-maintenance-dialog";
 import type { VehicleMaintenanceHistoryItem } from "@/actions/vehicles";
 
 type VehicleMaintenanceHistoryProps = {
@@ -16,6 +19,7 @@ const maintenanceStatusStyles: Record<
   open: "bg-amber-500/10 text-amber-500",
   in_progress: "bg-primary/10 text-primary",
   completed: "bg-green-500/10 text-green-500",
+  cancelled: "bg-red-500/10 text-red-500",
 };
 
 export function VehicleMaintenanceHistory({
@@ -23,6 +27,8 @@ export function VehicleMaintenanceHistory({
   canEdit,
 }: VehicleMaintenanceHistoryProps) {
   const t = useTranslations("vehicles.detail.maintenanceHistory");
+
+  const [cancelId, setCancelId] = useState<string | null>(null);
 
   if (records.length === 0) {
     return (
@@ -108,17 +114,40 @@ export function VehicleMaintenanceHistory({
               </td>
               {canEdit && (
                 <td className="whitespace-nowrap px-4 py-3 text-right">
-                  {record.status !== "completed" ? (
-                    <CloseMaintenanceDialog maintenanceId={record.id} />
-                  ) : (
-                    <span className="text-sm text-muted-foreground">{"\u2014"}</span>
-                  )}
+                  <div className="flex items-center justify-end gap-1">
+                    {record.status !== "completed" && record.status !== "cancelled" ? (
+                      <>
+                        <CloseMaintenanceDialog maintenanceId={record.id} />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => setCancelId(record.id)}
+                        >
+                          <XCircle className="mr-1 size-3.5" />
+                          {t("cancel")}
+                        </Button>
+                      </>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">
+                        {"\u2014"}
+                      </span>
+                    )}
+                  </div>
                 </td>
               )}
             </tr>
           ))}
         </tbody>
       </table>
+
+      <CancelMaintenanceDialog
+        maintenanceId={cancelId ?? ""}
+        open={!!cancelId}
+        onOpenChange={(open) => {
+          if (!open) setCancelId(null);
+        }}
+      />
     </div>
   );
 }

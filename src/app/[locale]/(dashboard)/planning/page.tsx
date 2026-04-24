@@ -6,15 +6,18 @@ import { toDateInputValue } from "@/lib/utils";
 export default async function PlanningPage() {
   const t = await getTranslations("planning");
 
-  // Default to current week + next week (14 days)
+  // Default to ±30 days (60 days total) for horizontal scroll
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const startDate = toDateInputValue(today);
+  const startDateObj = new Date(today);
+  startDateObj.setDate(startDateObj.getDate() - 30);
   const endDateObj = new Date(today);
-  endDateObj.setDate(endDateObj.getDate() + 13);
-  const endDate = toDateInputValue(endDateObj);
+  endDateObj.setDate(endDateObj.getDate() + 29);
 
-  const result = await getPlanningData(startDate, endDate);
+  const result = await getPlanningData(
+    toDateInputValue(startDateObj),
+    toDateInputValue(endDateObj)
+  );
 
   if (!result.success) {
     return (

@@ -6,6 +6,7 @@ import { Plus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 import { createMaintenanceRecord } from "@/actions/maintenance";
+import { toDateInputValue } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,6 +28,13 @@ import { Label } from "@/components/ui/label";
 
 type CreateMaintenanceDialogProps = {
   vehicleId: string;
+  /** Controlled mode */
+  open?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
+  initialStartDate?: Date;
+  initialEndDate?: Date;
+  /** Called when maintenance is successfully created */
+  onSuccess?: () => void;
 };
 
 const MAINTENANCE_TYPES = [
@@ -41,12 +49,20 @@ const URGENCY_LEVELS = ["low", "medium", "high"] as const;
 
 export function CreateMaintenanceDialog({
   vehicleId,
+  open: controlledOpen,
+  onOpenChange,
+  initialStartDate,
+  initialEndDate,
+  onSuccess,
 }: CreateMaintenanceDialogProps) {
   const t = useTranslations("maintenance.create");
   const tCommon = useTranslations("common");
   const router = useRouter();
 
-  const [open, setOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = isControlled ? controlledOpen : internalOpen;
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,8 +71,18 @@ export function CreateMaintenanceDialog({
   const [urgency, setUrgency] = useState("medium");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(
-    new Date().toISOString().split("T")[0]
+    initialStartDate
+      ? toDateInputValue(initialStartDate)
+      : new Date().toISOString().split("T")[0]
   );
+  const [endDate, setEndDate] = useState(
+    initialEndDate
+      ? toDateInputValue(initialEndDate)
+      : initialStartDate
+        ? toDateInputValue(initialStartDate)
+        : ""
+  );
+  const [hasEndDate, setHasEndDate] = useState(true);
   const [estimatedCost, setEstimatedCost] = useState("");
   const [mechanicName, setMechanicName] = useState("");
   const [mechanicEmail, setMechanicEmail] = useState("");
@@ -66,12 +92,32 @@ export function CreateMaintenanceDialog({
     setType("");
     setUrgency("medium");
     setDescription("");
-    setStartDate(new Date().toISOString().split("T")[0]);
+    setStartDate(
+      initialStartDate
+        ? toDateInputValue(initialStartDate)
+        : new Date().toISOString().split("T")[0]
+    );
+    setEndDate(
+      initialEndDate
+        ? toDateInputValue(initialEndDate)
+        : initialStartDate
+          ? toDateInputValue(initialStartDate)
+          : ""
+    );
+    setHasEndDate(true);
     setEstimatedCost("");
     setMechanicName("");
     setMechanicEmail("");
     setNotes("");
     setError(null);
+  }
+
+  function handleOpenChange(isOpen: boolean) {
+    if (!isControlled) {
+      setInternalOpen(isOpen);
+    }
+    onOpenChange?.(isOpen);
+    if (!isOpen) resetForm();
   }
 
   async function handleSubmit() {
@@ -86,6 +132,7 @@ export function CreateMaintenanceDialog({
         type,
         description,
         startDate,
+        endDate: hasEndDate ? endDate : null,
         estimatedCost: estimatedCost || "",
         mechanicName: mechanicName || "",
         mechanicEmail: mechanicEmail || "",
@@ -99,8 +146,8 @@ export function CreateMaintenanceDialog({
       }
 
       toast.success(t("success"));
-      setOpen(false);
-      resetForm();
+      onSuccess?.();
+      handleOpenChange(false);
       router.refresh();
     } finally {
       setLoading(false);
@@ -108,19 +155,15 @@ export function CreateMaintenanceDialog({
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(v) => {
-        setOpen(v);
-        if (!v) resetForm();
-      }}
-    >
-      <DialogTrigger asChild>
-        <Button>
-          <Plus className="mr-2 size-4" />
-          {t("button")}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      {!isControlled && (
+        <DialogTrigger asChild>
+          <Button>
+            <Plus className="mr-2 size-4" />
+            {t("button")}
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
@@ -174,7 +217,7 @@ export function CreateMaintenanceDialog({
             />
           </div>
 
-          {/* Start date + Estimated cost */}
+          {/* Dates */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>{t("startDate")}</Label>
@@ -186,16 +229,41 @@ export function CreateMaintenanceDialog({
             </div>
 
             <div className="space-y-2">
-              <Label>{t("estimatedCost")}</Label>
+              <Label>{t("endDate")}</Label>
               <Input
-                type="number"
-                min="0"
-                step="0.01"
-                value={estimatedCost}
-                onChange={(e) => setEstimatedCost(e.target.value)}
-                placeholder={t("estimatedCostPlaceholder")}
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                disabled={!hasEndDate}
               />
             </div>
+          </div>
+
+          {/* Unknown end date checkbox */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="hasEndDate"
+              checked={!hasEndDate}
+              onChange={(e) => setHasEndDate(!e.target.checked)}
+              className="size-4 rounded border-gray-300"
+            />
+            <Label htmlFor="hasEndDate" className="text-sm font-normal cursor-pointer">
+              {t("noEndDate")}
+            </Label>
+          </div>
+
+          {/* Estimated cost */}
+          <div className="space-y-2">
+            <Label>{t("estimatedCost")}</Label>
+            <Input
+              type="number"
+              min="0"
+              step="0.01"
+              value={estimatedCost}
+              onChange={(e) => setEstimatedCost(e.target.value)}
+              placeholder={t("estimatedCostPlaceholder")}
+            />
           </div>
 
           {/* Mechanic name + email */}
@@ -244,7 +312,7 @@ export function CreateMaintenanceDialog({
           <div className="flex justify-end gap-2">
             <Button
               variant="outline"
-              onClick={() => setOpen(false)}
+              onClick={() => handleOpenChange(false)}
               disabled={loading}
             >
               {tCommon("cancel")}

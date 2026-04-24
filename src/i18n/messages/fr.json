@@ -177,10 +177,12 @@
         "status": "Statut",
         "mechanic": "Mécanicien",
         "actions": "Actions",
+        "cancel": "Annuler",
         "statuses": {
           "open": "Ouvert",
           "in_progress": "En cours",
-          "completed": "Terminé"
+          "completed": "Terminé",
+          "cancelled": "Annulé"
         },
         "types": {
           "regular_service": "Entretien régulier",
@@ -359,6 +361,13 @@
       "submitButton": "Clôturer la maintenance",
       "success": "Maintenance clôturée avec succès"
     },
+    "cancel": {
+      "title": "Annuler la maintenance",
+      "description": "Cette maintenance sera annulée et le véhicule redeviendra disponible si aucune autre maintenance n'est en cours.",
+      "submitting": "Annulation en cours...",
+      "confirm": "Annuler",
+      "success": "Maintenance annulée avec succès"
+    },
     "create": {
       "button": "Nouvelle maintenance",
       "title": "Nouvelle maintenance",
@@ -380,6 +389,8 @@
       "description": "Description",
       "descriptionPlaceholder": "Décrivez les travaux à effectuer...",
       "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "noEndDate": "Pas de date de fin",
       "estimatedCost": "Coût estimé (CHF)",
       "estimatedCostPlaceholder": "ex. 350.00",
       "mechanicName": "Nom du mécanicien",
@@ -978,8 +989,7 @@
     "title": "Planning",
     "subtitle": "Calendrier des réservations par véhicule",
     "vehicle": "Véhicule",
-    "previous": "Période précédente",
-    "next": "Période suivante",
+    "today": "Aujourd'hui",
     "noVehicles": "Aucun véhicule disponible",
     "legend": "Légende",
     "status": {

@@ -47,6 +47,11 @@ type NewContractSheetProps = {
   /** Controlled mode: when provided, external code drives open/close */
   open?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
+  /** Pre-filled dates when opened from planning/context */
+  initialStartDate?: Date;
+  initialEndDate?: Date;
+  /** Called when contract is successfully created */
+  onSuccess?: (contract: { id: string; contractNumber: string }) => void;
 };
 
 export function NewContractSheet({
@@ -58,6 +63,9 @@ export function NewContractSheet({
   categoryName,
   open: controlledOpen,
   onOpenChange,
+  initialStartDate,
+  initialEndDate,
+  onSuccess,
 }: NewContractSheetProps) {
   const t = useTranslations("contracts.create");
   const router = useRouter();
@@ -76,8 +84,8 @@ export function NewContractSheet({
   );
 
   // Form state
-  const [startDate, setStartDate] = useState<Date | undefined>();
-  const [endDate, setEndDate] = useState<Date | undefined>();
+  const [startDate, setStartDate] = useState<Date | undefined>(initialStartDate);
+  const [endDate, setEndDate] = useState<Date | undefined>(initialEndDate);
   const [clientId, setClientId] = useState("");
   const [selectedOptionIds, setSelectedOptionIds] = useState<string[]>([]);
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -110,8 +118,8 @@ export function NewContractSheet({
 
   // Reset form on close
   function resetForm() {
-    setStartDate(undefined);
-    setEndDate(undefined);
+    setStartDate(initialStartDate);
+    setEndDate(initialEndDate);
     setClientId("");
     setSelectedClient(null);
     setSelectedOptionIds([]);
@@ -197,8 +205,12 @@ export function NewContractSheet({
       toast.success(
         t("success", { contractNumber: result.data.contractNumber })
       );
+      onSuccess?.(result.data);
       handleOpenChange(false);
-      router.push(`/contracts/${result.data.id}`);
+      // Only navigate away when opened standalone (no onSuccess handler)
+      if (!onSuccess) {
+        router.push(`/contracts/${result.data.id}`);
+      }
     } else {
       toast.error(result.error);
     }

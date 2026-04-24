@@ -35,6 +35,7 @@ export async function createMaintenanceRecord(
       type,
       description,
       startDate,
+      endDate,
       estimatedCost,
       mechanicName,
       mechanicEmail,
@@ -75,6 +76,7 @@ export async function createMaintenanceRecord(
           type,
           description,
           startDate,
+          endDate: endDate ?? null,
           estimatedCost: estimatedCost?.toString(),
           mechanicName: mechanicName ?? null,
           mechanicEmail: mechanicEmail ?? null,
@@ -305,6 +307,150 @@ export async function closeMaintenanceRecord(
     return {
       success: false,
       error: "Une erreur est survenue lors de la clôture de la maintenance",
+    };
+  }
+}
+
+// ============================================================================
+// cancelMaintenanceRecord
+// ============================================================================
+
+export async function cancelMaintenanceRecord(
+  maintenanceId: string
+): Promise<ActionResult<{ id: string }>> {
+  try {
+    const currentUser = await requirePermission("vehicles", "create");
+
+    // Transaction: fetch, validate, cancel record, restore vehicle if needed
+    let recordNotFound = false;
+    let alreadyCompleted = false;
+    let vehicleId = "";
+
+    await db.transaction(async (tx) => {
+      // Fetch maintenance record inside transaction (tenant-scoped)
+      const [record] = await tx
+        .select({
+          id: maintenanceRecords.id,
+          vehicleId: maintenanceRecords.vehicleId,
+          status: maintenanceRecords.status,
+        })
+        .from(maintenanceRecords)
+        .where(
+          and(
+            eq(maintenanceRecords.id, maintenanceId),
+            eq(maintenanceRecords.tenantId, currentUser.tenantId)
+          )
+        );
+
+      if (!record) {
+        recordNotFound = true;
+        return;
+      }
+
+      vehicleId = record.vehicleId;
+
+      if (record.status === "completed" || record.status === "cancelled") {
+        alreadyCompleted = true;
+        return;
+      }
+
+      // Update maintenance record to cancelled
+      await tx
+        .update(maintenanceRecords)
+        .set({
+          status: "cancelled",
+          endDate: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(
+          and(
+            eq(maintenanceRecords.id, maintenanceId),
+            eq(maintenanceRecords.tenantId, currentUser.tenantId)
+          )
+        );
+
+      // Check if vehicle has other open/in_progress maintenance records
+      const otherOpenRecords = await tx
+        .select({ id: maintenanceRecords.id })
+        .from(maintenanceRecords)
+        .where(
+          and(
+            eq(maintenanceRecords.vehicleId, record.vehicleId),
+            eq(maintenanceRecords.tenantId, currentUser.tenantId),
+            inArray(maintenanceRecords.status, ["open", "in_progress"]),
+            ne(maintenanceRecords.id, maintenanceId)
+          )
+        );
+
+      // Set vehicle back to "available" only if no other open records
+      if (otherOpenRecords.length === 0) {
+        await tx
+          .update(vehicles)
+          .set({
+            status: "available",
+            updatedAt: new Date(),
+          })
+          .where(
+            and(
+              eq(vehicles.id, record.vehicleId),
+              eq(vehicles.tenantId, currentUser.tenantId),
+              eq(vehicles.status, "maintenance")
+            )
+          );
+      }
+
+      // Audit log
+      await createAuditLog(
+        {
+          tenantId: currentUser.tenantId,
+          userId: currentUser.id,
+          action: "maintenance_cancelled",
+          entityType: "vehicle",
+          entityId: record.vehicleId,
+          changes: {
+            maintenanceId,
+            previousStatus: record.status,
+            newStatus: "cancelled",
+          },
+        },
+        tx
+      );
+    });
+
+    if (recordNotFound) {
+      return {
+        success: false,
+        error: "Cet enregistrement de maintenance n'existe pas",
+      };
+    }
+
+    if (alreadyCompleted) {
+      return {
+        success: false,
+        error: "Cette maintenance est déjà terminée ou annulée",
+      };
+    }
+
+    revalidatePath("/vehicles");
+    if (vehicleId) {
+      revalidatePath(`/vehicles/${vehicleId}`);
+    }
+
+    return {
+      success: true,
+      data: { id: maintenanceId },
+    };
+  } catch (err) {
+    if (err instanceof AuthorizationError) {
+      return { success: false, error: err.message };
+    }
+    console.error(
+      "cancelMaintenanceRecord error:",
+      err instanceof Error ? err.message : "Unknown error"
+    );
+    return {
+      success: false,
+      error: "Une erreur est survenue lors de l'annulation de la maintenance",
     };
   }
 }
