@@ -453,7 +453,7 @@
       "startDatePlaceholder": "Date et heure",
       "endDatePlaceholder": "Date et heure",
       "totalDays": "{count} jour(s)",
-      "duration": "{hours}h \u2192 factur\u00e9 {days} jour(s)",
+      "duration": "{hours}h → facturé {days} jour(s)",
       "confirmTime": "Confirmer",
       "client": "Client",
       "clientPlaceholder": "Sélectionnez un client",
@@ -506,7 +506,7 @@
         "options": "Options",
         "total": "Total",
         "selectDates": "Sélectionnez les dates et heures pour voir le récapitulatif",
-        "baseAmountWithHours": "Location ({hours}h \u2192 {days}j) \u00d7 {rate}"
+        "baseAmountWithHours": "Location ({hours}h → {days}j) × {rate}"
       },
       "submitting": "Création en cours...",
       "submitButton": "Créer brouillon",
@@ -997,6 +997,121 @@
       "approved": "Approuvé",
       "pending_cg": "Attente CG",
       "active": "Actif"
+    }
+  },
+  "landing": {
+    "nav": {
+      "features": "Fonctionnalités",
+      "howItWorks": "Comment ça marche",
+      "trial": "Essai gratuit",
+      "login": "Se connecter",
+      "requestTrial": "Demander un essai"
+    },
+    "hero": {
+      "badge": "Conçu pour les loueurs suisses",
+      "titleLine1": "Votre flotte de location,",
+      "titleHighlight": "pilotée sans effort",
+      "subtitle": "LocaFleet centralise véhicules, contrats, planning, inspections et facturation dans un back-office moderne. Pensé pour les flottes de 30 à 100 véhicules.",
+      "ctaPrimary": "Demander un essai gratuit",
+      "ctaSecondary": "Accéder à l'application",
+      "note": "Essai de 30 jours · Sans carte bancaire · Données hébergées en conformité suisse"
+    },
+    "preview": {
+      "dashboard": "Tableau de bord",
+      "fleet": "Flotte",
+      "planning": "Planning",
+      "contracts": "Contrats",
+      "invoices": "Factures",
+      "vehiclesAvailable": "Véhicules disponibles",
+      "activeContracts": "Contrats actifs",
+      "monthlyRevenue": "Revenus du mois",
+      "occupancyRate": "Taux d'occupation"
+    },
+    "stats": {
+      "title": "Une vision claire de votre activité",
+      "vehicles": "véhicules gérés par flotte",
+      "time": "de temps administratif économisé",
+      "billing": "facturation en francs suisses",
+      "languages": "interface bilingue FR / EN"
+    },
+    "features": {
+      "title": "Tout votre métier, un seul outil",
+      "subtitle": "De la réservation à la facturation, chaque étape de la location est couverte.",
+      "planning": {
+        "title": "Planning visuel",
+        "description": "Visualisez toutes vos réservations par véhicule sur une timeline interactive. Détectez les conflits en un coup d'œil."
+      },
+      "vehicles": {
+        "title": "Gestion de flotte",
+        "description": "Suivi complet de chaque véhicule : statut, kilométrage, photos, catégories tarifaires et historique de maintenance."
+      },
+      "contracts": {
+        "title": "Contrats digitaux",
+        "description": "Créez des contrats de location en quelques clics, avec signature, options et workflow d'approbation intégré."
+      },
+      "inspections": {
+        "title": "Inspections départ / retour",
+        "description": "Documentez l'état des véhicules avec photos et constats de dommages, opposables en cas de litige."
+      },
+      "invoicing": {
+        "title": "Facturation suisse",
+        "description": "Factures PDF en CHF au format suisse (1'250.00 CHF), encaissements espèces, carte ou virement."
+      },
+      "team": {
+        "title": "Équipe & rôles",
+        "description": "Admin, agent, lecture seule : chaque collaborateur accède exactement à ce dont il a besoin, journal d'audit inclus."
+      }
+    },
+    "howItWorks": {
+      "title": "Opérationnel en trois étapes",
+      "subtitle": "Pas de projet d'intégration interminable. Votre flotte est en ligne en quelques jours.",
+      "step1": {
+        "title": "Importez votre flotte",
+        "description": "Ajoutez vos véhicules, catégories et tarifs. Nous vous accompagnons pour la reprise de vos données."
+      },
+      "step2": {
+        "title": "Invitez votre équipe",
+        "description": "Créez les comptes de vos agents avec les bons niveaux d'accès, en français ou en anglais."
+      },
+      "step3": {
+        "title": "Louez et facturez",
+        "description": "Réservations, contrats, inspections et factures s'enchaînent dans un flux unique et traçable."
+      }
+    },
+    "trial": {
+      "title": "Essayez LocaFleet gratuitement",
+      "subtitle": "Laissez-nous vos coordonnées : nous préparons un environnement d'essai avec vos données et vous recontactons sous 24h ouvrées.",
+      "companyName": "Entreprise",
+      "companyNamePlaceholder": "Garage Lemania SA",
+      "contactName": "Nom et prénom",
+      "contactNamePlaceholder": "Jean Dupont",
+      "email": "Email professionnel",
+      "emailPlaceholder": "jean.dupont@entreprise.ch",
+      "phone": "Téléphone (optionnel)",
+      "phonePlaceholder": "+41 21 000 00 00",
+      "fleetSize": "Taille de votre flotte",
+      "fleetSizePlaceholder": "Sélectionnez une taille",
+      "fleetSizeSuffix": "véhicules",
+      "message": "Message (optionnel)",
+      "messagePlaceholder": "Parlez-nous de votre activité…",
+      "submit": "Envoyer ma demande",
+      "submitting": "Envoi en cours…",
+      "successTitle": "Demande envoyée !",
+      "successMessage": "Merci pour votre intérêt. Notre équipe vous recontacte sous 24h ouvrées pour préparer votre essai.",
+      "privacy": "Vos données ne sont jamais partagées avec des tiers."
+    },
+    "footer": {
+      "tagline": "Le back-office des loueurs de véhicules suisses.",
+      "product": "Produit",
+      "features": "Fonctionnalités",
+      "trial": "Essai gratuit",
+      "login": "Connexion",
+      "company": "Entreprise",
+      "contact": "Contact",
+      "support": "Support",
+      "legal": "Mentions légales",
+      "copyright": "© {year} LocaFleet. Tous droits réservés.",
+      "madeIn": "Conçu et hébergé en Suisse"
     }
   }
 }

@@ -16,9 +16,12 @@ export function proxy(request: NextRequest) {
 
   // Denylist approach: protect all locale routes except known public ones
   const publicPaths = ["/login"];
-  const isPublicRoute = publicPaths.some((p) =>
+  const isLoginRoute = publicPaths.some((p) =>
     pathname.match(new RegExp(`^/(fr|en)${p}(/.*)?$`))
   );
+  // Landing page (locale root) is public for everyone
+  const isLandingRoute = /^\/(fr|en)\/?$/.test(pathname);
+  const isPublicRoute = isLoginRoute || isLandingRoute;
 
   const sessionToken =
     request.cookies.get("better-auth.session_token")?.value ||
@@ -31,8 +34,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
   }
 
-  // Redirect authenticated users away from login
-  if (isPublicRoute && isAuthenticated) {
+  // Redirect authenticated users away from login (landing stays accessible)
+  if (isLoginRoute && isAuthenticated) {
     return NextResponse.redirect(new URL(`/${locale}/vehicles`, request.url));
   }
 

@@ -124,3 +124,73 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ── Landing page animations ────────────────────────────────────────────── */
+
+@keyframes landing-blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(40px, -30px) scale(1.08);
+  }
+  66% {
+    transform: translate(-25px, 25px) scale(0.95);
+  }
+}
+
+@keyframes landing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes landing-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@layer utilities {
+  .animate-landing-blob {
+    animation: landing-blob 14s ease-in-out infinite;
+  }
+  .animate-landing-fade-up {
+    animation: landing-fade-up 0.7s ease-out both;
+  }
+  .animate-landing-grow-x {
+    transform-origin: left;
+    animation: landing-grow-x 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-landing-float {
+    animation: landing-float 6s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-landing-blob,
+  .animate-landing-fade-up,
+  .animate-landing-grow-x,
+  .animate-landing-float {
+    animation: none;
+  }
+}
