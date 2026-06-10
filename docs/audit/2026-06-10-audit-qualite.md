@@ -105,7 +105,7 @@ Le check de chevauchement véhicule est fait en `SELECT` dans la transaction, sa
 
 ### 🟡 Moyen
 
-- **Index manquants** sur les FK les plus sollicitées : `rentalContracts.clientId`, `rentalContracts.vehicleId`, `invoices.contractId`, `invoices.clientId` (PostgreSQL n'indexe **pas** automatiquement les FK). Impact direct sur les requêtes planning/chevauchement quand le volume montera.
+- ~~Index manquants sur les FK~~ — **correction après vérification** : les index existent déjà (`contracts_client_idx`, `contracts_vehicle_idx`, `contracts_overlap_idx`, `invoices_contract_idx`, `invoices_client_idx` — `schema.ts:558-568` et `717-726`). Seul le comportement `onDelete` manquait.
 - **Gestion d'erreur des transactions** (`src/actions/invoices.ts:75-147`) : tout est aplati en « Une erreur est survenue » ; distinguer au moins les violations de contrainte pour le debugging.
 - **TVA codée à 0** dans la génération de facture — confirmé volontairement V1 ? À documenter, sinon c'est une bombe à retardement comptable.
 
@@ -232,7 +232,7 @@ Pré-requis : stratégie de seed dédiée aux E2E (base de test isolée), sinon 
 
 ### Semaine 1 — risques
 1. Copilote IA : rate limiting (par utilisateur/tenant), fail-fast si `OPENROUTER_API_KEY` absente, durcissement du system prompt.
-2. `schema.ts` : `onDelete: "restrict"` explicite sur contrats/factures/dossiers + index sur les 4 FK chaudes ; migration.
+2. `schema.ts` : `onDelete: "restrict"` explicite sur contrats/factures/dossiers ; migration (les index FK existent déjà).
 3. Contrainte d'exclusion PostgreSQL contre la double réservation (ou `FOR UPDATE`).
 4. Supprimer `trace-login.json` du dépôt + `.gitignore`.
 5. Corriger les 2 erreurs ESLint et le `useEffect` aux dépendances manquantes du planning.

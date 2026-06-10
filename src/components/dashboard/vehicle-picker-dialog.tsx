@@ -29,26 +29,37 @@ export function VehiclePickerDialog({
   onSelect,
 }: VehiclePickerDialogProps) {
   const t = useTranslations("dashboard.vehiclePicker");
-  const [vehicles, setVehicles] = useState<VehiclePickerItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  // null = not loaded yet for the current open session
+  const [vehicles, setVehicles] = useState<VehiclePickerItem[] | null>(null);
   const [search, setSearch] = useState("");
+
+  const loading = open && vehicles === null;
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) {
+      setSearch("");
+      setVehicles(null);
+    }
+    onOpenChange(nextOpen);
+  };
 
   useEffect(() => {
     if (!open) {
-      setSearch("");
       return;
     }
 
-    setLoading(true);
+    let cancelled = false;
     getVehiclesForContractPicker().then((result) => {
-      if (result.success) {
-        setVehicles(result.data);
-      }
-      setLoading(false);
+      if (cancelled) return;
+      setVehicles(result.success ? result.data : []);
     });
+
+    return () => {
+      cancelled = true;
+    };
   }, [open]);
 
-  const filtered = vehicles.filter((v) => {
+  const filtered = (vehicles ?? []).filter((v) => {
     const q = search.toLowerCase();
     return (
       v.brand.toLowerCase().includes(q) ||
@@ -58,7 +69,7 @@ export function VehiclePickerDialog({
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">

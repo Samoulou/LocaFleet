@@ -180,7 +180,9 @@ export async function createDraftContract(
     let contractNumber = "";
 
     await db.transaction(async (tx) => {
-      // 2. Verify vehicle exists, tenant-scoped, not soft-deleted
+      // 2. Verify vehicle exists, tenant-scoped, not soft-deleted.
+      // FOR UPDATE serializes concurrent bookings of the same vehicle so two
+      // requests can't both pass the overlap check below and double-book.
       const [vehicle] = await tx
         .select({
           id: vehicles.id,
@@ -195,7 +197,8 @@ export async function createDraftContract(
             eq(vehicles.tenantId, currentUser.tenantId),
             isNull(vehicles.deletedAt)
           )
-        );
+        )
+        .for("update");
 
       if (!vehicle) {
         throw new ContractError("Ce véhicule n'existe pas");

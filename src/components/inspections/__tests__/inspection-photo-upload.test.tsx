@@ -38,7 +38,6 @@ vi.mock("sonner", () => ({
   toast: mockToast,
 }));
 
-// eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
 vi.mock("next/image", () => ({
   default: (props: Record<string, unknown>) => {
     const { fill, ...rest } = props;

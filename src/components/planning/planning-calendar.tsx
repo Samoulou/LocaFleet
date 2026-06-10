@@ -23,24 +23,22 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
-import {
-  formatDate,
-  cn,
-  toDateInputValue,
-  parseDateInputValue,
-} from "@/lib/utils";
+import { cn, toDateInputValue, parseDateInputValue } from "@/lib/utils";
 import { getPlanningData } from "@/actions/planning";
 import { NewContractSheet } from "@/components/contracts/new-contract-sheet";
 import { CreateMaintenanceDialog } from "@/components/maintenance/create-maintenance-dialog";
 import { CloseMaintenanceDialog } from "@/components/maintenance/close-maintenance-dialog";
 import { CancelMaintenanceDialog } from "@/components/maintenance/cancel-maintenance-dialog";
-import type { PlanningData, PlanningContract, PlanningMaintenance } from "@/actions/planning";
+import type {
+  PlanningData,
+  PlanningContract,
+  PlanningMaintenance,
+} from "@/actions/planning";
 
 type PlanningCalendarProps = {
   initialData: PlanningData;
 };
 
-const INITIAL_DAYS = 60; // ±30 from today
 const EXTEND_DAYS = 30;
 const VEHICLE_COL_WIDTH = 200; // px
 const MIN_DAY_COL_WIDTH = 72; // px
@@ -58,17 +56,6 @@ function isSameDay(a: Date, b: Date): boolean {
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate()
   );
-}
-
-function generateDayRange(center: Date, halfWindow: number): Date[] {
-  const days: Date[] = [];
-  for (let i = -halfWindow; i < halfWindow; i++) {
-    const d = new Date(center);
-    d.setDate(d.getDate() + i);
-    d.setHours(0, 0, 0, 0);
-    days.push(d);
-  }
-  return days;
 }
 
 /** Get the day index (0-N) within the visible window for a contract's overlap */
@@ -111,9 +98,7 @@ function getMaintenanceVisibleRange(
 ): { startIdx: number; endIdx: number } | null {
   const mStart = new Date(maintenance.startDate);
   mStart.setHours(0, 0, 0, 0);
-  const mEnd = maintenance.endDate
-    ? new Date(maintenance.endDate)
-    : null;
+  const mEnd = maintenance.endDate ? new Date(maintenance.endDate) : null;
   if (mEnd) mEnd.setHours(23, 59, 59, 999);
 
   const vStart = new Date(viewStart);
@@ -150,17 +135,14 @@ function assignLanes(
   const assignments = new Map<string, number>();
 
   const sorted = [...ranges].sort((a, b) =>
-    a.startIdx !== b.startIdx
-      ? a.startIdx - b.startIdx
-      : a.endIdx - b.endIdx
+    a.startIdx !== b.startIdx ? a.startIdx - b.startIdx : a.endIdx - b.endIdx
   );
 
   for (const contract of sorted) {
     let placed = false;
     for (let i = 0; i < lanes.length; i++) {
       const overlaps = lanes[i].some(
-        (c) =>
-          contract.startIdx <= c.endIdx && contract.endIdx >= c.startIdx
+        (c) => contract.startIdx <= c.endIdx && contract.endIdx >= c.startIdx
       );
       if (!overlaps) {
         lanes[i].push(contract);
@@ -316,7 +298,11 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
       );
       if (result.success) {
         const newDays: Date[] = [];
-        for (let d = new Date(newStart); d <= newEnd; d.setDate(d.getDate() + 1)) {
+        for (
+          let d = new Date(newStart);
+          d <= newEnd;
+          d.setDate(d.getDate() + 1)
+        ) {
           newDays.push(new Date(d));
         }
 
@@ -403,7 +389,11 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
       );
       if (result.success) {
         const newDays: Date[] = [];
-        for (let d = new Date(newStart); d <= newEnd; d.setDate(d.getDate() + 1)) {
+        for (
+          let d = new Date(newStart);
+          d <= newEnd;
+          d.setDate(d.getDate() + 1)
+        ) {
           newDays.push(new Date(d));
         }
 
@@ -480,7 +470,13 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
   // Scroll to today on mount
   // --------------------------------------------------------------------------
 
+  const didScrollToTodayRef = useRef(false);
+
   useEffect(() => {
+    // Center on today once, after the first render that has days available —
+    // later day-range extensions must not yank the scroll position back.
+    if (didScrollToTodayRef.current) return;
+
     const container = scrollRef.current;
     if (!container || days.length === 0) return;
 
@@ -492,7 +488,8 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
       todayIdx * dayWidth - container.clientWidth / 2 + dayWidth / 2;
 
     container.scrollLeft = Math.max(0, targetScroll);
-  }, []); // Only on mount
+    didScrollToTodayRef.current = true;
+  }, [days, today]);
 
   function scrollToToday() {
     const container = scrollRef.current;
@@ -544,10 +541,7 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
     setMenuOpen(false);
   }
 
-  function handleMouseMove(
-    e: React.MouseEvent,
-    rowRef: HTMLDivElement | null
-  ) {
+  function handleMouseMove(e: React.MouseEvent, rowRef: HTMLDivElement | null) {
     if (!isSelectingRef.current || !rowRef) return;
     const rect = rowRef.getBoundingClientRect();
     const dayIdx = getDayIndexFromMouseX(e.clientX, rect);
@@ -736,7 +730,10 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}
                   onMaintAction={(id, type) => {
-                    setMaintActionMenu({ maintenanceId: id, maintenanceType: type });
+                    setMaintActionMenu({
+                      maintenanceId: id,
+                      maintenanceType: type,
+                    });
                   }}
                 />
               ))}
@@ -794,10 +791,7 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
       {/* Action menu */}
       {menuOpen && menuVehicle && (
         <>
-          <div
-            className="fixed inset-0 z-50"
-            onClick={cancelSelection}
-          >
+          <div className="fixed inset-0 z-50" onClick={cancelSelection}>
             <div className="absolute inset-0 bg-black/5" />
           </div>
           <div
@@ -994,10 +988,7 @@ type VehicleRowProps = {
     vehicleId: string,
     rowRef: HTMLDivElement | null
   ) => void;
-  onMouseMove: (
-    e: React.MouseEvent,
-    rowRef: HTMLDivElement | null
-  ) => void;
+  onMouseMove: (e: React.MouseEvent, rowRef: HTMLDivElement | null) => void;
   onMouseUp: (
     e: React.MouseEvent,
     vehicle: {
@@ -1160,7 +1151,9 @@ function VehicleRow({
               isToday && "bg-primary/5",
               isWeekend && "bg-muted/30",
               selected && "bg-blue-200/40 dark:bg-blue-900/30",
-              hasMaintenance && !selected && !hasContract &&
+              hasMaintenance &&
+                !selected &&
+                !hasContract &&
                 "bg-amber-50 dark:bg-amber-950/20"
             )}
             style={{ height: rowHeight }}
@@ -1209,7 +1202,9 @@ function VehicleRow({
             >
               <span className="flex items-center gap-1">
                 <FileText className="size-3 shrink-0" />
-                <span className="truncate">{contract.clientName} — {contract.contractNumber}</span>
+                <span className="truncate">
+                  {contract.clientName} — {contract.contractNumber}
+                </span>
               </span>
             </Link>
           );
