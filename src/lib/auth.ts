@@ -9,6 +9,15 @@ import * as schema from "@/db/schema";
 import { users } from "@/db/schema";
 
 export const auth = betterAuth({
+  // On Vercel preview deployments, VERCEL_URL is the deployment-specific URL
+  // (no https:// prefix). We trust it alongside the configured app URL so that
+  // sign-in works from preview branches without changing env vars per deploy.
+  baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: [
+    process.env.BETTER_AUTH_URL,
+    process.env.NEXT_PUBLIC_APP_URL,
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  ].filter((v): v is string => Boolean(v)),
   database: drizzleAdapter(db, {
     provider: "pg",
     usePlural: true,
