@@ -7,7 +7,11 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function LandingNav() {
+type LandingNavProps = {
+  isAuthenticated: boolean;
+};
+
+export function LandingNav({ isAuthenticated }: LandingNavProps) {
   const t = useTranslations("landing.nav");
   const [scrolled, setScrolled] = useState(false);
 
@@ -60,7 +64,9 @@ export function LandingNav() {
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" asChild className="hidden sm:inline-flex">
-            <Link href="/login">{t("login")}</Link>
+            <Link href={isAuthenticated ? "/vehicles" : "/login"}>
+              {isAuthenticated ? t("openApp") : t("login")}
+            </Link>
           </Button>
           <Button asChild className="group">
             <a href="#trial">

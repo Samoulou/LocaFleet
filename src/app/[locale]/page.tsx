@@ -7,6 +7,7 @@ import {
   Receipt,
   ShieldCheck,
 } from "lucide-react";
+import { cookies } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,15 @@ import { ScrollReveal } from "@/components/marketing/scroll-reveal";
 
 export default async function LandingPage() {
   const t = await getTranslations("landing");
+
+  // Same session detection as the middleware: an authenticated visitor gets
+  // direct app links instead of "Se connecter" (which middleware would
+  // redirect to /vehicles anyway)
+  const cookieStore = await cookies();
+  const isAuthenticated = Boolean(
+    cookieStore.get("better-auth.session_token")?.value ||
+    cookieStore.get("__Secure-better-auth.session_token")?.value
+  );
 
   const features = [
     { icon: CalendarRange, key: "planning" },
@@ -39,7 +49,7 @@ export default async function LandingPage() {
 
   return (
     <div id="top" className="min-h-screen bg-background">
-      <LandingNav />
+      <LandingNav isAuthenticated={isAuthenticated} />
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40">
@@ -111,7 +121,9 @@ export default async function LandingPage() {
                 asChild
                 className="h-12 px-7 text-base"
               >
-                <Link href="/login">{t("hero.ctaSecondary")}</Link>
+                <Link href={isAuthenticated ? "/vehicles" : "/login"}>
+                  {t("hero.ctaSecondary")}
+                </Link>
               </Button>
             </div>
 

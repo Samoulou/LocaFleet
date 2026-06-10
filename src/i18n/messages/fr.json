@@ -1005,7 +1005,8 @@
       "howItWorks": "Comment ça marche",
       "trial": "Essai gratuit",
       "login": "Se connecter",
-      "requestTrial": "Demander un essai"
+      "requestTrial": "Demander un essai",
+      "openApp": "Ouvrir l'application"
     },
     "hero": {
       "badge": "Conçu pour les loueurs suisses",
