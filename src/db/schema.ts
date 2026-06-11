@@ -230,6 +230,14 @@ export const eventBillingStatusEnum = pgEnum("event_billing_status", [
   "not_billed",
 ]);
 
+export const quoteStatusEnum = pgEnum("quote_status", [
+  "draft",
+  "sent",
+  "accepted",
+  "declined",
+  "expired",
+]);
+
 // ============================================================================
 // EPIC 1 — FOUNDATION & AUTH
 // ============================================================================
@@ -1062,6 +1070,11 @@ export const events = pgTable(
     invoiceId: uuid("invoice_id").references(() => invoices.id, {
       onDelete: "set null",
     }),
+    // Source offer when converted. Forward reference: quotes is declared
+    // later in this file.
+    quoteId: uuid("quote_id").references((): AnyPgColumn => quotes.id, {
+      onDelete: "set null",
+    }),
     createdByUserId: uuid("created_by_user_id").references(() => users.id, {
       onDelete: "set null",
     }),
@@ -1159,6 +1172,57 @@ export const eventComments = pgTable(
   ]
 );
 
+// -- Quotes (offres/devis) — accepted quotes convert into events ---------------
+// Line items are a JSONB snapshot (same approach as invoices.lineItems).
+
+export const quotes = pgTable(
+  "quotes",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    tenantId: uuid("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    quoteNumber: varchar("quote_number", { length: 50 }).notNull(),
+    clientId: uuid("client_id")
+      .notNull()
+      .references(() => clients.id, { onDelete: "restrict" }),
+    fonctionId: uuid("fonction_id")
+      .notNull()
+      .references(() => fonctions.id, { onDelete: "restrict" }),
+    status: quoteStatusEnum("status").default("draft").notNull(),
+    title: varchar("title", { length: 255 }),
+    // Planned period — prefills the event at conversion
+    startDate: timestamp("start_date"),
+    endDate: timestamp("end_date"),
+    lineItems: jsonb("line_items").default([]),
+    subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
+    taxRate: decimal("tax_rate", { precision: 5, scale: 2 }).default("0"),
+    taxAmount: decimal("tax_amount", { precision: 10, scale: 2 }).default("0"),
+    totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
+    validUntil: date("valid_until"),
+    quotePdfUrl: text("quote_pdf_url"),
+    sentAt: timestamp("sent_at"),
+    acceptedAt: timestamp("accepted_at"),
+    declinedAt: timestamp("declined_at"),
+    notes: text("notes"),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("quotes_tenant_idx").on(table.tenantId),
+    uniqueIndex("quotes_number_tenant_idx").on(
+      table.quoteNumber,
+      table.tenantId
+    ),
+    index("quotes_status_idx").on(table.tenantId, table.status),
+    index("quotes_client_idx").on(table.clientId),
+    index("quotes_fonction_idx").on(table.fonctionId),
+  ]
+);
+
 // ============================================================================
 // RELATIONS
 // ============================================================================
@@ -1179,6 +1243,7 @@ export const tenantsRelations = relations(tenants, ({ many }) => ({
   auditLogs: many(auditLogs),
   fonctions: many(fonctions),
   events: many(events),
+  quotes: many(quotes),
 }));
 
 export const fonctionsRelations = relations(fonctions, ({ one, many }) => ({
@@ -1206,6 +1271,10 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
     fields: [events.invoiceId],
     references: [invoices.id],
   }),
+  quote: one(quotes, {
+    fields: [events.quoteId],
+    references: [quotes.id],
+  }),
   createdBy: one(users, {
     fields: [events.createdByUserId],
     references: [users.id],
@@ -1214,6 +1283,26 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
   employees: many(eventEmployees),
   comments: many(eventComments),
   contracts: many(rentalContracts),
+}));
+
+export const quotesRelations = relations(quotes, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [quotes.tenantId],
+    references: [tenants.id],
+  }),
+  client: one(clients, {
+    fields: [quotes.clientId],
+    references: [clients.id],
+  }),
+  fonction: one(fonctions, {
+    fields: [quotes.fonctionId],
+    references: [fonctions.id],
+  }),
+  createdBy: one(users, {
+    fields: [quotes.createdByUserId],
+    references: [users.id],
+  }),
+  events: many(events),
 }));
 
 export const eventVehiclesRelations = relations(eventVehicles, ({ one }) => ({

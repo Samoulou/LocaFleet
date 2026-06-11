@@ -13,7 +13,8 @@ export type Resource =
   | "payments"
   | "users"
   | "settings"
-  | "events";
+  | "events"
+  | "quotes";
 
 export type SpecialPermission = "process_payment";
 
@@ -47,6 +48,7 @@ export const ROLE_PERMISSIONS: Readonly<
     users: ALL_ACTIONS,
     settings: ALL_ACTIONS,
     events: ALL_ACTIONS,
+    quotes: ALL_ACTIONS,
   }),
   agent: Object.freeze({
     vehicles: ALL_ACTIONS,
@@ -58,6 +60,7 @@ export const ROLE_PERMISSIONS: Readonly<
     users: READ_ONLY,
     settings: NONE,
     events: ALL_ACTIONS,
+    quotes: ALL_ACTIONS,
   }),
   viewer: Object.freeze({
     vehicles: READ_ONLY,
@@ -69,6 +72,7 @@ export const ROLE_PERMISSIONS: Readonly<
     users: READ_ONLY,
     settings: NONE,
     events: READ_ONLY,
+    quotes: READ_ONLY,
   }),
   // Field staff (déménageurs, chauffeurs): vehicles + their assigned events.
   // Row-level scoping (only THEIR events/hours/tasks) lives in the
@@ -83,6 +87,7 @@ export const ROLE_PERMISSIONS: Readonly<
     users: NONE,
     settings: NONE,
     events: READ_ONLY,
+    quotes: NONE,
   }),
 });
 

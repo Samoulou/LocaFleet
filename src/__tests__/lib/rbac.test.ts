@@ -32,6 +32,7 @@ describe("hasPermission", () => {
       "users",
       "settings",
       "events",
+      "quotes",
     ];
     const actions: Action[] = ["create", "read", "update", "delete"];
 
@@ -96,6 +97,13 @@ describe("hasPermission", () => {
     }
   });
 
+  it("agent can CRUD quotes", () => {
+    const actions: Action[] = ["create", "read", "update", "delete"];
+    for (const action of actions) {
+      expect(hasPermission("agent", "quotes", action)).toBe(true);
+    }
+  });
+
   // --- viewer ---
   it("viewer can only read vehicles, clients, contracts, inspections, invoices", () => {
     const resources: Resource[] = [
@@ -138,6 +146,11 @@ describe("hasPermission", () => {
     expect(hasPermission("viewer", "events", "create")).toBe(false);
   });
 
+  it("viewer can only read quotes", () => {
+    expect(hasPermission("viewer", "quotes", "read")).toBe(true);
+    expect(hasPermission("viewer", "quotes", "create")).toBe(false);
+  });
+
   // --- employee ---
   it("employee can only read vehicles", () => {
     expect(hasPermission("employee", "vehicles", "read")).toBe(true);
@@ -162,6 +175,7 @@ describe("hasPermission", () => {
       "payments",
       "users",
       "settings",
+      "quotes",
     ];
     const actions: Action[] = ["create", "read", "update", "delete"];
 
