@@ -180,6 +180,13 @@ export const notificationTypeEnum = pgEnum("notification_type", [
   "other",
 ]);
 
+export const trialRequestStatusEnum = pgEnum("trial_request_status", [
+  "new",
+  "contacted",
+  "converted",
+  "declined",
+]);
+
 // ============================================================================
 // EPIC 1 — FOUNDATION & AUTH
 // ============================================================================
@@ -896,6 +903,33 @@ export const auditLogs = pgTable(
     index("audit_logs_tenant_idx").on(table.tenantId),
     index("audit_logs_entity_idx").on(table.entityType, table.entityId),
     index("audit_logs_created_idx").on(table.tenantId, table.createdAt),
+  ]
+);
+
+// ============================================================================
+// MARKETING — TRIAL REQUESTS (public landing page leads)
+// ============================================================================
+
+// -- Trial requests (no tenantId: prospects exist before any tenant) ----------
+
+export const trialRequests = pgTable(
+  "trial_requests",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    companyName: varchar("company_name", { length: 255 }).notNull(),
+    contactName: varchar("contact_name", { length: 255 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    phone: varchar("phone", { length: 30 }),
+    fleetSize: varchar("fleet_size", { length: 20 }).notNull(),
+    message: text("message"),
+    locale: varchar("locale", { length: 5 }).default("fr").notNull(),
+    status: trialRequestStatusEnum("status").default("new").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("trial_requests_email_idx").on(table.email),
+    index("trial_requests_status_idx").on(table.status, table.createdAt),
   ]
 );
 

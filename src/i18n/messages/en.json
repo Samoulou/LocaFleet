@@ -453,7 +453,7 @@
       "startDatePlaceholder": "Date and time",
       "endDatePlaceholder": "Date and time",
       "totalDays": "{count} day(s)",
-      "duration": "{hours}h \u2192 billed {days} day(s)",
+      "duration": "{hours}h → billed {days} day(s)",
       "confirmTime": "Confirm",
       "client": "Client",
       "clientPlaceholder": "Select a client",
@@ -506,7 +506,7 @@
         "options": "Options",
         "total": "Total",
         "selectDates": "Select dates and times to see the summary",
-        "baseAmountWithHours": "Rental ({hours}h \u2192 {days}d) \u00d7 {rate}"
+        "baseAmountWithHours": "Rental ({hours}h → {days}d) × {rate}"
       },
       "submitting": "Creating...",
       "submitButton": "Create draft",
@@ -997,6 +997,122 @@
       "approved": "Approved",
       "pending_cg": "Pending CG",
       "active": "Active"
+    }
+  },
+  "landing": {
+    "nav": {
+      "features": "Features",
+      "howItWorks": "How it works",
+      "trial": "Free trial",
+      "login": "Sign in",
+      "requestTrial": "Request a trial",
+      "openApp": "Open the app"
+    },
+    "hero": {
+      "badge": "Built for Swiss rental companies",
+      "titleLine1": "Your rental fleet,",
+      "titleHighlight": "managed effortlessly",
+      "subtitle": "LocaFleet brings vehicles, contracts, planning, inspections and invoicing together in one modern back-office. Designed for fleets of 30 to 100 vehicles.",
+      "ctaPrimary": "Request a free trial",
+      "ctaSecondary": "Open the app",
+      "note": "30-day trial · No credit card · Data hosted in compliance with Swiss law"
+    },
+    "preview": {
+      "dashboard": "Dashboard",
+      "fleet": "Fleet",
+      "planning": "Planning",
+      "contracts": "Contracts",
+      "invoices": "Invoices",
+      "vehiclesAvailable": "Available vehicles",
+      "activeContracts": "Active contracts",
+      "monthlyRevenue": "Monthly revenue",
+      "occupancyRate": "Occupancy rate"
+    },
+    "stats": {
+      "title": "A clear view of your business",
+      "vehicles": "vehicles managed per fleet",
+      "time": "of admin time saved",
+      "billing": "invoicing in Swiss francs",
+      "languages": "bilingual interface FR / EN"
+    },
+    "features": {
+      "title": "Your whole business, one tool",
+      "subtitle": "From booking to invoicing, every step of the rental is covered.",
+      "planning": {
+        "title": "Visual planning",
+        "description": "See every booking per vehicle on an interactive timeline. Spot conflicts at a glance."
+      },
+      "vehicles": {
+        "title": "Fleet management",
+        "description": "Full tracking of each vehicle: status, mileage, photos, pricing categories and maintenance history."
+      },
+      "contracts": {
+        "title": "Digital contracts",
+        "description": "Create rental contracts in a few clicks, with signature, options and a built-in approval workflow."
+      },
+      "inspections": {
+        "title": "Check-out / check-in inspections",
+        "description": "Document vehicle condition with photos and damage reports you can rely on in case of dispute."
+      },
+      "invoicing": {
+        "title": "Swiss invoicing",
+        "description": "PDF invoices in CHF using the Swiss format (1'250.00 CHF), payments by cash, card or bank transfer."
+      },
+      "team": {
+        "title": "Team & roles",
+        "description": "Admin, agent, read-only: each team member gets exactly the access they need, audit log included."
+      }
+    },
+    "howItWorks": {
+      "title": "Up and running in three steps",
+      "subtitle": "No endless integration project. Your fleet is online within days.",
+      "step1": {
+        "title": "Import your fleet",
+        "description": "Add your vehicles, categories and rates. We help you migrate your existing data."
+      },
+      "step2": {
+        "title": "Invite your team",
+        "description": "Create accounts for your agents with the right access levels, in French or English."
+      },
+      "step3": {
+        "title": "Rent and invoice",
+        "description": "Bookings, contracts, inspections and invoices flow through a single, traceable process."
+      }
+    },
+    "trial": {
+      "title": "Try LocaFleet for free",
+      "subtitle": "Leave us your details: we set up a trial environment with your data and get back to you within one business day.",
+      "companyName": "Company",
+      "companyNamePlaceholder": "Garage Lemania SA",
+      "contactName": "Full name",
+      "contactNamePlaceholder": "John Smith",
+      "email": "Work email",
+      "emailPlaceholder": "john.smith@company.ch",
+      "phone": "Phone (optional)",
+      "phonePlaceholder": "+41 21 000 00 00",
+      "fleetSize": "Fleet size",
+      "fleetSizePlaceholder": "Select a size",
+      "fleetSizeSuffix": "vehicles",
+      "message": "Message (optional)",
+      "messagePlaceholder": "Tell us about your business…",
+      "submit": "Send my request",
+      "submitting": "Sending…",
+      "successTitle": "Request sent!",
+      "successMessage": "Thank you for your interest. Our team will get back to you within one business day to set up your trial.",
+      "privacy": "Your data is never shared with third parties."
+    },
+    "footer": {
+      "tagline": "The back-office for Swiss vehicle rental companies.",
+      "product": "Product",
+      "features": "Features",
+      "trial": "Free trial",
+      "login": "Sign in",
+      "company": "Company",
+      "contact": "Contact",
+      "support": "Support",
+      "legal": "Legal notice",
+      "copyright": "© {year} LocaFleet. All rights reserved.",
+      "madeIn": "Designed and hosted in Switzerland"
     }
   }
 }

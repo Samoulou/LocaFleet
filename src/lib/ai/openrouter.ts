@@ -6,7 +6,7 @@ import OpenAI from "openai";
 
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 const OPENROUTER_MODEL =
-  process.env.OPENROUTER_MODEL ?? "qwen/qwen-2.5-72b-instruct";
+  process.env.OPENROUTER_MODEL ?? "qwen/qwen3-235b-a22b-2507";
 
 let client: OpenAI | null = null;
 
