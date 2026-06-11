@@ -20,6 +20,7 @@ import {
   jsonb,
   index,
   uniqueIndex,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
 // ============================================================================
@@ -209,6 +210,24 @@ export const timeEntryUnitEnum = pgEnum("time_entry_unit", [
   "hours",
   "trips",
   "flat",
+]);
+
+export const eventStatusEnum = pgEnum("event_status", [
+  "draft",
+  "confirmed",
+  "in_progress",
+  "completed",
+  "cancelled",
+]);
+
+// The «fichier facturation» state of an event:
+// to_review = awaiting manual validation, monthly = waiting for the monthly
+// batch, invoiced = attached to an invoice, not_billed = explicitly excluded
+export const eventBillingStatusEnum = pgEnum("event_billing_status", [
+  "to_review",
+  "monthly",
+  "invoiced",
+  "not_billed",
 ]);
 
 // ============================================================================
@@ -549,6 +568,11 @@ export const rentalContracts = pgTable(
       .notNull()
       .references(() => vehicles.id, { onDelete: "restrict" }),
     createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    // Source event when the contract was generated from one (CRM phase).
+    // Forward reference: events is declared later in this file.
+    eventId: uuid("event_id").references((): AnyPgColumn => events.id, {
       onDelete: "set null",
     }),
     status: contractStatusEnum("status").default("draft").notNull(),
@@ -1001,6 +1025,140 @@ export const fonctions = pgTable(
   ]
 );
 
+// -- Events (jobs: a location, a déménagement, a school-transport day...) ------
+// Central planning entity: typed by a fonction, owned by a client, with
+// vehicles and employees assigned through junction tables. Overlaps raise
+// warnings but are never forbidden (acknowledged by the user).
+
+export const events = pgTable(
+  "events",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    tenantId: uuid("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    eventNumber: varchar("event_number", { length: 50 }).notNull(),
+    fonctionId: uuid("fonction_id")
+      .notNull()
+      .references(() => fonctions.id, { onDelete: "restrict" }),
+    clientId: uuid("client_id")
+      .notNull()
+      .references(() => clients.id, { onDelete: "restrict" }),
+    title: varchar("title", { length: 255 }).notNull(),
+    status: eventStatusEnum("status").default("draft").notNull(),
+    startDate: timestamp("start_date").notNull(),
+    endDate: timestamp("end_date").notNull(),
+    location: text("location"),
+    // Arrival address for déménagement-type events
+    destination: text("destination"),
+    description: text("description"),
+    notes: text("notes"),
+    // Agreed price — prefills the invoice line when billed
+    agreedAmount: decimal("agreed_amount", { precision: 10, scale: 2 }),
+    billingStatus: eventBillingStatusEnum("billing_status")
+      .default("to_review")
+      .notNull(),
+    // One invoice can cover many events (monthly batch): the FK lives here.
+    invoiceId: uuid("invoice_id").references(() => invoices.id, {
+      onDelete: "set null",
+    }),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("events_tenant_idx").on(table.tenantId),
+    uniqueIndex("events_number_tenant_idx").on(
+      table.eventNumber,
+      table.tenantId
+    ),
+    index("events_status_idx").on(table.tenantId, table.status),
+    index("events_period_idx").on(
+      table.tenantId,
+      table.startDate,
+      table.endDate
+    ),
+    index("events_billing_idx").on(table.tenantId, table.billingStatus),
+    index("events_fonction_idx").on(table.fonctionId),
+    index("events_client_idx").on(table.clientId),
+    index("events_invoice_idx").on(table.invoiceId),
+  ]
+);
+
+// -- Event ↔ Vehicles (n-n, scoped through the parent event like contractOptions)
+
+export const eventVehicles = pgTable(
+  "event_vehicles",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    vehicleId: uuid("vehicle_id")
+      .notNull()
+      .references(() => vehicles.id, { onDelete: "restrict" }),
+    notes: text("notes"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex("event_vehicles_event_vehicle_idx").on(
+      table.eventId,
+      table.vehicleId
+    ),
+    index("event_vehicles_vehicle_idx").on(table.vehicleId),
+  ]
+);
+
+// -- Event ↔ Employees (n-n; role is free text: chauffeur, porteur...) ---------
+
+export const eventEmployees = pgTable(
+  "event_employees",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "restrict" }),
+    role: varchar("role", { length: 100 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex("event_employees_event_user_idx").on(
+      table.eventId,
+      table.userId
+    ),
+    index("event_employees_user_idx").on(table.userId),
+  ]
+);
+
+// -- Event comments (thread: inventory supplements, overtime, total hours...) --
+
+export const eventComments = pgTable(
+  "event_comments",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    tenantId: uuid("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    authorUserId: uuid("author_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    body: text("body").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("event_comments_event_idx").on(table.eventId, table.createdAt),
+  ]
+);
+
 // ============================================================================
 // RELATIONS
 // ============================================================================
@@ -1020,12 +1178,74 @@ export const tenantsRelations = relations(tenants, ({ many }) => ({
   notifications: many(notifications),
   auditLogs: many(auditLogs),
   fonctions: many(fonctions),
+  events: many(events),
 }));
 
-export const fonctionsRelations = relations(fonctions, ({ one }) => ({
+export const fonctionsRelations = relations(fonctions, ({ one, many }) => ({
   tenant: one(tenants, {
     fields: [fonctions.tenantId],
     references: [tenants.id],
+  }),
+  events: many(events),
+}));
+
+export const eventsRelations = relations(events, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [events.tenantId],
+    references: [tenants.id],
+  }),
+  fonction: one(fonctions, {
+    fields: [events.fonctionId],
+    references: [fonctions.id],
+  }),
+  client: one(clients, {
+    fields: [events.clientId],
+    references: [clients.id],
+  }),
+  invoice: one(invoices, {
+    fields: [events.invoiceId],
+    references: [invoices.id],
+  }),
+  createdBy: one(users, {
+    fields: [events.createdByUserId],
+    references: [users.id],
+  }),
+  vehicles: many(eventVehicles),
+  employees: many(eventEmployees),
+  comments: many(eventComments),
+  contracts: many(rentalContracts),
+}));
+
+export const eventVehiclesRelations = relations(eventVehicles, ({ one }) => ({
+  event: one(events, {
+    fields: [eventVehicles.eventId],
+    references: [events.id],
+  }),
+  vehicle: one(vehicles, {
+    fields: [eventVehicles.vehicleId],
+    references: [vehicles.id],
+  }),
+}));
+
+export const eventEmployeesRelations = relations(eventEmployees, ({ one }) => ({
+  event: one(events, {
+    fields: [eventEmployees.eventId],
+    references: [events.id],
+  }),
+  user: one(users, {
+    fields: [eventEmployees.userId],
+    references: [users.id],
+  }),
+}));
+
+export const eventCommentsRelations = relations(eventComments, ({ one }) => ({
+  event: one(events, {
+    fields: [eventComments.eventId],
+    references: [events.id],
+  }),
+  author: one(users, {
+    fields: [eventComments.authorUserId],
+    references: [users.id],
   }),
 }));
 
@@ -1104,6 +1324,7 @@ export const clientsRelations = relations(clients, ({ one, many }) => ({
   documents: many(clientDocuments),
   rentalContracts: many(rentalContracts),
   invoices: many(invoices),
+  events: many(events),
 }));
 
 export const clientDocumentsRelations = relations(
@@ -1141,6 +1362,10 @@ export const rentalContractsRelations = relations(
     createdBy: one(users, {
       fields: [rentalContracts.createdByUserId],
       references: [users.id],
+    }),
+    event: one(events, {
+      fields: [rentalContracts.eventId],
+      references: [events.id],
     }),
     options: many(contractOptions),
     inspections: many(inspections),

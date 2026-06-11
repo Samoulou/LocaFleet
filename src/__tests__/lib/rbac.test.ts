@@ -31,6 +31,7 @@ describe("hasPermission", () => {
       "payments",
       "users",
       "settings",
+      "events",
     ];
     const actions: Action[] = ["create", "read", "update", "delete"];
 
@@ -88,6 +89,13 @@ describe("hasPermission", () => {
     }
   });
 
+  it("agent can CRUD events", () => {
+    const actions: Action[] = ["create", "read", "update", "delete"];
+    for (const action of actions) {
+      expect(hasPermission("agent", "events", action)).toBe(true);
+    }
+  });
+
   // --- viewer ---
   it("viewer can only read vehicles, clients, contracts, inspections, invoices", () => {
     const resources: Resource[] = [
@@ -125,12 +133,24 @@ describe("hasPermission", () => {
     expect(hasPermission("viewer", "users", "create")).toBe(false);
   });
 
+  it("viewer can only read events", () => {
+    expect(hasPermission("viewer", "events", "read")).toBe(true);
+    expect(hasPermission("viewer", "events", "create")).toBe(false);
+  });
+
   // --- employee ---
   it("employee can only read vehicles", () => {
     expect(hasPermission("employee", "vehicles", "read")).toBe(true);
     expect(hasPermission("employee", "vehicles", "create")).toBe(false);
     expect(hasPermission("employee", "vehicles", "update")).toBe(false);
     expect(hasPermission("employee", "vehicles", "delete")).toBe(false);
+  });
+
+  it("employee can read events (row-scoped in actions) but not write", () => {
+    expect(hasPermission("employee", "events", "read")).toBe(true);
+    expect(hasPermission("employee", "events", "create")).toBe(false);
+    expect(hasPermission("employee", "events", "update")).toBe(false);
+    expect(hasPermission("employee", "events", "delete")).toBe(false);
   });
 
   it("employee has no access to other resources", () => {

@@ -12,7 +12,8 @@ export type Resource =
   | "invoices"
   | "payments"
   | "users"
-  | "settings";
+  | "settings"
+  | "events";
 
 export type SpecialPermission = "process_payment";
 
@@ -45,6 +46,7 @@ export const ROLE_PERMISSIONS: Readonly<
     payments: ALL_ACTIONS,
     users: ALL_ACTIONS,
     settings: ALL_ACTIONS,
+    events: ALL_ACTIONS,
   }),
   agent: Object.freeze({
     vehicles: ALL_ACTIONS,
@@ -55,6 +57,7 @@ export const ROLE_PERMISSIONS: Readonly<
     payments: READ_ONLY,
     users: READ_ONLY,
     settings: NONE,
+    events: ALL_ACTIONS,
   }),
   viewer: Object.freeze({
     vehicles: READ_ONLY,
@@ -65,10 +68,11 @@ export const ROLE_PERMISSIONS: Readonly<
     payments: NONE,
     users: READ_ONLY,
     settings: NONE,
+    events: READ_ONLY,
   }),
-  // Field staff (déménageurs, chauffeurs): vehicles only for now. Their own
-  // events/hours/tasks arrive with the CRM phases (row-scoped in the
-  // corresponding actions, not in this coarse matrix).
+  // Field staff (déménageurs, chauffeurs): vehicles + their assigned events.
+  // Row-level scoping (only THEIR events/hours/tasks) lives in the
+  // corresponding actions, not in this coarse matrix.
   employee: Object.freeze({
     vehicles: READ_ONLY,
     clients: NONE,
@@ -78,6 +82,7 @@ export const ROLE_PERMISSIONS: Readonly<
     payments: NONE,
     users: NONE,
     settings: NONE,
+    events: READ_ONLY,
   }),
 });
 

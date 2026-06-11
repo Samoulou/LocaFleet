@@ -28,6 +28,7 @@ import { createContractSchema } from "@/lib/validations/contracts";
 import { computeRentalDays } from "@/lib/utils";
 import { createAuditLog } from "@/actions/audit-logs";
 import { ContractError, generateNextContractNumber } from "@/lib/number-utils";
+import { checkVehicleConflicts } from "@/lib/conflicts";
 import { revalidatePath } from "next/cache";
 import { getZodErrorMessage } from "@/lib/validations/utils";
 import type { ActionResult, ContractStatus } from "@/types";
@@ -208,28 +209,19 @@ export async function createDraftContract(
         throw new ContractError("Ce véhicule est hors service");
       }
 
-      // 3. Date overlap check
-      const overlapping = await tx
-        .select({ id: rentalContracts.id })
-        .from(rentalContracts)
-        .where(
-          and(
-            eq(rentalContracts.vehicleId, vehicleId),
-            eq(rentalContracts.tenantId, currentUser.tenantId),
-            or(
-              eq(rentalContracts.status, "draft"),
-              eq(rentalContracts.status, "approved"),
-              eq(rentalContracts.status, "pending_cg"),
-              eq(rentalContracts.status, "active")
-            ),
-            // Overlap: existingStart < newEnd AND existingEnd > newStart
-            lt(rentalContracts.startDate, endDate),
-            gt(rentalContracts.endDate, startDate)
-          )
-        )
-        .limit(1);
+      // 3. Date overlap check — contracts only, blocking (historical
+      // behavior). Event overlaps are surfaced as warnings by the events
+      // module, never blocked here.
+      const vehicleConflicts = await checkVehicleConflicts(
+        tx,
+        currentUser.tenantId,
+        [vehicleId],
+        startDate,
+        endDate,
+        { sources: ["contract"] }
+      );
 
-      if (overlapping.length > 0) {
+      if (vehicleConflicts.length > 0) {
         throw new ContractError(
           "Ce véhicule a déjà un contrat sur cette période"
         );
