@@ -254,7 +254,7 @@ export function UserDialog({
               onValueChange={(v) => setRole(v as UserRole)}
               disabled={isSelf}
             >
-              <SelectTrigger id="user-role">
+              <SelectTrigger id="user-role" className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -311,7 +311,7 @@ export function UserDialog({
             <div className="space-y-2">
               <Label htmlFor="user-employmentType">{t("employmentType")}</Label>
               <Select value={employmentType} onValueChange={setEmploymentType}>
-                <SelectTrigger id="user-employmentType">
+                <SelectTrigger id="user-employmentType" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

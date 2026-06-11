@@ -1272,7 +1272,9 @@
       "createButton": "Créer l'événement",
       "updateButton": "Enregistrer les modifications",
       "createSuccess": "Événement créé avec succès",
-      "updateSuccess": "Événement modifié avec succès"
+      "updateSuccess": "Événement modifié avec succès",
+      "noFonctions": "Aucune fonction disponible. Créez-en d'abord dans",
+      "noFonctionsLink": "Réglages → Fonctions"
     },
     "conflicts": {
       "title": "Conflits détectés",
@@ -1373,7 +1375,9 @@
       "createButton": "Créer l'offre",
       "updateButton": "Enregistrer les modifications",
       "createSuccess": "Offre créée avec succès",
-      "updateSuccess": "Offre modifiée avec succès"
+      "updateSuccess": "Offre modifiée avec succès",
+      "noFonctions": "Aucune fonction disponible. Créez-en d'abord dans",
+      "noFonctionsLink": "Réglages → Fonctions"
     },
     "detail": {
       "info": "Informations",

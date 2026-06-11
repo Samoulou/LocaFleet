@@ -238,7 +238,7 @@ export function FonctionDialog({
                 value={defaultTimeUnit}
                 onValueChange={setDefaultTimeUnit}
               >
-                <SelectTrigger id="fonction-defaultTimeUnit">
+                <SelectTrigger id="fonction-defaultTimeUnit" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

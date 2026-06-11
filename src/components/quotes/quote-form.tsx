@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { createQuote, updateQuote, type QuoteDetail } from "@/actions/quotes";
 import type { FonctionSelectItem } from "@/actions/events";
 import { ClientAutocomplete } from "@/components/contracts/client-autocomplete";
@@ -132,27 +132,31 @@ export function QuoteForm({ fonctions, quote }: QuoteFormProps) {
         <div className="space-y-4 rounded-lg border p-4">
           <div className="space-y-2">
             <Label htmlFor="quote-fonction">{t("fonction")} *</Label>
+            {/* Plain text items only: Radix ItemText breaks selection with
+                rich markup under the default item-aligned positioning */}
             <Select value={fonctionId} onValueChange={setFonctionId}>
-              <SelectTrigger id="quote-fonction">
+              <SelectTrigger id="quote-fonction" className="w-full">
                 <SelectValue placeholder={t("fonctionPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
                 {fonctions.map((fonction) => (
                   <SelectItem key={fonction.id} value={fonction.id}>
-                    <span className="flex items-center gap-2">
-                      <span
-                        aria-hidden
-                        className="inline-block size-2.5 rounded-full"
-                        style={{
-                          backgroundColor: fonction.color ?? "#94A3B8",
-                        }}
-                      />
-                      {fonction.name}
-                    </span>
+                    {fonction.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
+            {fonctions.length === 0 && (
+              <p className="text-xs text-amber-600">
+                {t("noFonctions")}{" "}
+                <Link
+                  href="/settings/fonctions"
+                  className="font-medium underline"
+                >
+                  {t("noFonctionsLink")}
+                </Link>
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">

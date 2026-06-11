@@ -1272,7 +1272,9 @@
       "createButton": "Create event",
       "updateButton": "Save changes",
       "createSuccess": "Event created successfully",
-      "updateSuccess": "Event updated successfully"
+      "updateSuccess": "Event updated successfully",
+      "noFonctions": "No functions available. Create them first in",
+      "noFonctionsLink": "Settings → Functions"
     },
     "conflicts": {
       "title": "Conflicts detected",
@@ -1373,7 +1375,9 @@
       "createButton": "Create quote",
       "updateButton": "Save changes",
       "createSuccess": "Quote created successfully",
-      "updateSuccess": "Quote updated successfully"
+      "updateSuccess": "Quote updated successfully",
+      "noFonctions": "No functions available. Create them first in",
+      "noFonctionsLink": "Settings → Functions"
     },
     "detail": {
       "info": "Information",
