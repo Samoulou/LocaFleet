@@ -52,7 +52,8 @@
     "maintenance": "Maintenance",
     "invoices": "Invoices",
     "settings": "Settings",
-    "events": "Events"
+    "events": "Events",
+    "quotes": "Quotes"
   },
   "sidebar": {
     "collapse": "Collapse menu",
@@ -1316,6 +1317,91 @@
       "submit": "Comment",
       "delete": "Delete comment",
       "unknownAuthor": "Deleted user"
+    }
+  },
+  "quotes": {
+    "list": {
+      "title": "Quotes",
+      "subtitle": "Quotes and proposals — convertible into events",
+      "newQuote": "New quote",
+      "empty": "No quotes",
+      "emptyDescription": "Create your first quote",
+      "allStatuses": "All statuses",
+      "total": "{count} quote(s)"
+    },
+    "columns": {
+      "number": "No.",
+      "title": "Subject",
+      "fonction": "Function",
+      "client": "Client",
+      "validUntil": "Valid until",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "expired": "Expired"
+    },
+    "form": {
+      "createPageTitle": "New quote",
+      "createPageSubtitle": "Compose the quote lines; totals are computed automatically",
+      "editPageTitle": "Edit quote",
+      "editPageSubtitle": "Only draft quotes can be edited",
+      "fonction": "Function",
+      "fonctionPlaceholder": "Pick a function...",
+      "client": "Client",
+      "currentClient": "Current client",
+      "title": "Subject",
+      "titlePlaceholder": "e.g. Dupont move",
+      "startDate": "Planned start",
+      "endDate": "Planned end",
+      "periodHint": "The period is optional but required to convert the quote into an event.",
+      "validUntil": "Valid until",
+      "notes": "Notes",
+      "lines": "Lines",
+      "addLine": "Add",
+      "lineDescriptionPlaceholder": "e.g. Truck + 3 movers (per hour)",
+      "lineQuantity": "Qty",
+      "lineUnitPrice": "Unit price (CHF)",
+      "removeLine": "Remove line",
+      "subtotal": "Subtotal",
+      "creating": "Creating...",
+      "updating": "Saving...",
+      "createButton": "Create quote",
+      "updateButton": "Save changes",
+      "createSuccess": "Quote created successfully",
+      "updateSuccess": "Quote updated successfully"
+    },
+    "detail": {
+      "info": "Information",
+      "client": "Client",
+      "period": "Planned period",
+      "validUntil": "Valid until",
+      "notes": "Notes",
+      "linkedEvents": "Linked events",
+      "lineDescription": "Description",
+      "lineQuantity": "Qty",
+      "lineUnitPrice": "Unit price",
+      "lineTotal": "Total",
+      "subtotal": "Subtotal",
+      "tax": "VAT ({rate} %)",
+      "total": "TOTAL",
+      "downloadPdf": "PDF",
+      "edit": "Edit",
+      "delete": "Delete",
+      "statusUpdated": "Status updated",
+      "deleted": "Quote deleted",
+      "converted": "Event {number} created from the quote",
+      "convertToEvent": "Convert to event",
+      "transitions": {
+        "sent": "Mark as sent",
+        "accepted": "Accept",
+        "declined": "Decline",
+        "expired": "Mark as expired"
+      }
     }
   }
 }

@@ -52,7 +52,8 @@
     "maintenance": "Maintenance",
     "invoices": "Factures",
     "settings": "Paramètres",
-    "events": "Événements"
+    "events": "Événements",
+    "quotes": "Offres"
   },
   "sidebar": {
     "collapse": "Réduire le menu",
@@ -1316,6 +1317,91 @@
       "submit": "Commenter",
       "delete": "Supprimer le commentaire",
       "unknownAuthor": "Utilisateur supprimé"
+    }
+  },
+  "quotes": {
+    "list": {
+      "title": "Offres",
+      "subtitle": "Devis et propositions — convertibles en événements",
+      "newQuote": "Nouvelle offre",
+      "empty": "Aucune offre",
+      "emptyDescription": "Créez votre première offre (devis)",
+      "allStatuses": "Tous les statuts",
+      "total": "{count} offre(s)"
+    },
+    "columns": {
+      "number": "N°",
+      "title": "Objet",
+      "fonction": "Fonction",
+      "client": "Client",
+      "validUntil": "Validité",
+      "amount": "Montant",
+      "status": "Statut"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "sent": "Envoyée",
+      "accepted": "Acceptée",
+      "declined": "Refusée",
+      "expired": "Expirée"
+    },
+    "form": {
+      "createPageTitle": "Nouvelle offre",
+      "createPageSubtitle": "Composez les lignes du devis ; les totaux sont calculés automatiquement",
+      "editPageTitle": "Modifier l'offre",
+      "editPageSubtitle": "Seules les offres en brouillon sont modifiables",
+      "fonction": "Fonction",
+      "fonctionPlaceholder": "Choisir une fonction...",
+      "client": "Client",
+      "currentClient": "Client actuel",
+      "title": "Objet",
+      "titlePlaceholder": "ex. Déménagement Dupont",
+      "startDate": "Début prévu",
+      "endDate": "Fin prévue",
+      "periodHint": "La période est facultative mais requise pour convertir l'offre en événement.",
+      "validUntil": "Valable jusqu'au",
+      "notes": "Remarques",
+      "lines": "Lignes",
+      "addLine": "Ajouter",
+      "lineDescriptionPlaceholder": "ex. Camion + 3 déménageurs (par heure)",
+      "lineQuantity": "Qté",
+      "lineUnitPrice": "Prix unitaire (CHF)",
+      "removeLine": "Supprimer la ligne",
+      "subtotal": "Sous-total",
+      "creating": "Création en cours...",
+      "updating": "Modification en cours...",
+      "createButton": "Créer l'offre",
+      "updateButton": "Enregistrer les modifications",
+      "createSuccess": "Offre créée avec succès",
+      "updateSuccess": "Offre modifiée avec succès"
+    },
+    "detail": {
+      "info": "Informations",
+      "client": "Client",
+      "period": "Période prévue",
+      "validUntil": "Valable jusqu'au",
+      "notes": "Remarques",
+      "linkedEvents": "Événements liés",
+      "lineDescription": "Description",
+      "lineQuantity": "Qté",
+      "lineUnitPrice": "Prix unitaire",
+      "lineTotal": "Total",
+      "subtotal": "Sous-total",
+      "tax": "TVA ({rate} %)",
+      "total": "TOTAL",
+      "downloadPdf": "PDF",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "statusUpdated": "Statut mis à jour",
+      "deleted": "Offre supprimée",
+      "converted": "Événement {number} créé depuis l'offre",
+      "convertToEvent": "Convertir en événement",
+      "transitions": {
+        "sent": "Marquer envoyée",
+        "accepted": "Accepter",
+        "declined": "Refuser",
+        "expired": "Marquer expirée"
+      }
     }
   }
 }
