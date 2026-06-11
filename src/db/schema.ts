@@ -507,12 +507,14 @@ export const rentalContracts = pgTable(
       .notNull()
       .references(() => tenants.id, { onDelete: "cascade" }),
     contractNumber: varchar("contract_number", { length: 50 }).notNull(),
+    // Contracts are legal/accounting records: never cascade-delete them when a
+    // client or vehicle goes away (both are soft-deleted in practice).
     clientId: uuid("client_id")
       .notNull()
-      .references(() => clients.id),
+      .references(() => clients.id, { onDelete: "restrict" }),
     vehicleId: uuid("vehicle_id")
       .notNull()
-      .references(() => vehicles.id),
+      .references(() => vehicles.id, { onDelete: "restrict" }),
     createdByUserId: uuid("created_by_user_id").references(() => users.id, {
       onDelete: "set null",
     }),
@@ -701,13 +703,15 @@ export const invoices = pgTable(
     tenantId: uuid("tenant_id")
       .notNull()
       .references(() => tenants.id, { onDelete: "cascade" }),
+    // Invoices are accounting records: block deletion of anything they
+    // reference rather than losing or orphaning them.
     contractId: uuid("contract_id")
       .notNull()
-      .references(() => rentalContracts.id),
+      .references(() => rentalContracts.id, { onDelete: "restrict" }),
     invoiceNumber: varchar("invoice_number", { length: 50 }).notNull(),
     clientId: uuid("client_id")
       .notNull()
-      .references(() => clients.id),
+      .references(() => clients.id, { onDelete: "restrict" }),
     status: invoiceStatusEnum("status").default("pending").notNull(),
     subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
     taxRate: decimal("tax_rate", { precision: 5, scale: 2 }).default("0"),
@@ -775,11 +779,15 @@ export const rentalDossiers = pgTable(
     tenantId: uuid("tenant_id")
       .notNull()
       .references(() => tenants.id, { onDelete: "cascade" }),
+    // Dossiers archive completed rentals: their contract/invoice must outlive
+    // any delete attempt.
     contractId: uuid("contract_id")
       .notNull()
-      .references(() => rentalContracts.id)
+      .references(() => rentalContracts.id, { onDelete: "restrict" })
       .unique(),
-    invoiceId: uuid("invoice_id").references(() => invoices.id),
+    invoiceId: uuid("invoice_id").references(() => invoices.id, {
+      onDelete: "restrict",
+    }),
     dossierNumber: varchar("dossier_number", { length: 50 }).notNull(),
     status: dossierStatusEnum("status").default("open").notNull(),
     clientName: varchar("client_name", { length: 255 }).notNull(),

@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { openrouter, OPENROUTER_MODEL } from "@/lib/ai/openrouter";
+import {
+  getOpenRouterClient,
+  isOpenRouterConfigured,
+  OPENROUTER_MODEL,
+} from "@/lib/ai/openrouter";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { SCHEMA_CONTEXT } from "@/lib/ai/schema-context";
 import { TOOL_DEFINITIONS, type ToolName } from "@/lib/ai/tools";
 import {
@@ -21,7 +26,10 @@ import type OpenAI from "openai";
 // Tool dispatcher
 // ============================================================================
 
-type Executor = (tenantId: string, args: Record<string, unknown>) => Promise<unknown>;
+type Executor = (
+  tenantId: string,
+  args: Record<string, unknown>
+) => Promise<unknown>;
 
 const toolDispatcher: Record<ToolName, Executor> = {
   searchVehicles: searchVehicles as Executor,
@@ -36,6 +44,10 @@ const toolDispatcher: Record<ToolName, Executor> = {
 };
 
 const MAX_ITERATIONS = 10;
+
+// Each request can trigger up to MAX_ITERATIONS LLM calls, so keep the
+// per-user request budget tight to bound OpenRouter costs.
+const RATE_LIMIT = { limit: 10, windowMs: 60_000 };
 
 // OpenAI SDK types have a union for tool calls; `function` property only exists
 // on the function variant. We narrow with this helper type.
@@ -53,9 +65,24 @@ export async function POST(request: NextRequest) {
   try {
     const currentUser = await getCurrentUser();
     if (!currentUser) {
+      return NextResponse.json({ error: "Non authentifie" }, { status: 401 });
+    }
+
+    if (!isOpenRouterConfigured()) {
       return NextResponse.json(
-        { error: "Non authentifie" },
-        { status: 401 }
+        { error: "L'assistant IA n'est pas configuré" },
+        { status: 503 }
+      );
+    }
+
+    const rate = checkRateLimit(`ai-chat:${currentUser.id}`, RATE_LIMIT);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: "Trop de requêtes. Veuillez patienter avant de réessayer." },
+        {
+          status: 429,
+          headers: { "Retry-After": String(rate.retryAfterSeconds) },
+        }
       );
     }
 
@@ -63,13 +90,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parsed = chatRequestSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json(
-        { error: "Requete invalide" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Requete invalide" }, { status: 400 });
     }
 
     const { messages } = parsed.data;
+    const openrouter = getOpenRouterClient();
 
     // Build the running conversation for the LLM
     const conversation: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
@@ -94,10 +119,7 @@ export async function POST(request: NextRequest) {
 
       const choice = response.choices[0];
       if (!choice) {
-        return NextResponse.json(
-          { error: "Reponse IA vide" },
-          { status: 502 }
-        );
+        return NextResponse.json({ error: "Reponse IA vide" }, { status: 502 });
       }
 
       const msg = choice.message;
@@ -130,7 +152,9 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      console.log(`[AI Copilot] Iteration ${iteration + 1}/${MAX_ITERATIONS} — ${functionCalls.length} tool call(s)`);
+      console.log(
+        `[AI Copilot] Iteration ${iteration + 1}/${MAX_ITERATIONS} — ${functionCalls.length} tool call(s)`
+      );
 
       // Execute function calls
       const toolResults: Array<{
@@ -141,7 +165,9 @@ export async function POST(request: NextRequest) {
 
       for (const toolCall of functionCalls) {
         const toolName = toolCall.function.name as ToolName;
-        console.log(`[AI Copilot] Tool: ${toolName} | Args: ${toolCall.function.arguments}`);
+        console.log(
+          `[AI Copilot] Tool: ${toolName} | Args: ${toolCall.function.arguments}`
+        );
         const executor = toolDispatcher[toolName];
 
         if (!executor) {
@@ -204,7 +230,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Max iterations reached without a text response
-    console.log(`[AI Copilot] MAX_ITERATIONS (${MAX_ITERATIONS}) reached without text response`);
+    console.log(
+      `[AI Copilot] MAX_ITERATIONS (${MAX_ITERATIONS}) reached without text response`
+    );
     return NextResponse.json({
       message: {
         role: "assistant",
@@ -217,9 +245,6 @@ export async function POST(request: NextRequest) {
       "AI chat error:",
       err instanceof Error ? err.message : "Unknown error"
     );
-    return NextResponse.json(
-      { error: "Erreur serveur IA" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Erreur serveur IA" }, { status: 500 });
   }
 }

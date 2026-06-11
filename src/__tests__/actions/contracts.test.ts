@@ -63,6 +63,7 @@ function mockSelectChainSequence(results: unknown[][]) {
 
     const resolvedValue = Promise.resolve(currentResult);
     const limit = vi.fn().mockReturnValue(resolvedValue);
+    const forUpdate = vi.fn().mockReturnValue(resolvedValue);
     const orderByResult = Object.assign(Promise.resolve(currentResult), {
       limit,
     });
@@ -70,6 +71,7 @@ function mockSelectChainSequence(results: unknown[][]) {
     const whereResult = Object.assign(Promise.resolve(currentResult), {
       limit,
       orderBy,
+      for: forUpdate,
     });
     const where = vi.fn().mockReturnValue(whereResult);
     const from = vi.fn().mockReturnValue({ where });
