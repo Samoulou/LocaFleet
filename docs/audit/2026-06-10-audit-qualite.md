@@ -158,7 +158,9 @@ Les formulaires d'inspection gèrent leur état avec 10-13 `useState` — migrer
 Trace de performance Chrome à la racine, **trackée dans git** et non ignorée. Aucune donnée sensible détectée (métadonnées de threads), mais : 17 Mo de bloat sur chaque clone.
 → `git rm trace-login.json`, ajouter au `.gitignore`. Pour purger l'historique : `git filter-repo` (optionnel, nécessite un force-push concerté).
 
-### Dépendances inutilisées (11 paquets, vérifié par grep sur tout `src/` et configs)
+### Dépendances inutilisées (vérifié par grep sur tout `src/` et configs)
+
+> Correction après re-vérification : `tw-animate-css` est en réalité **utilisé** (importé dans `src/app/globals.css:2`) et reste installé. En revanche `react-hook-form` s'ajoute à la liste.
 
 | Paquet | Note |
 |---|---|
@@ -169,8 +171,7 @@ Trace de performance Chrome à la racine, **trackée dans git** et non ignorée.
 | `xlsx` | Aucun export Excel |
 | `isomorphic-dompurify` | Aucune sanitisation HTML |
 | `@react-email/components` | Emails envoyés en HTML brut via Resend (`src/actions/inspections.ts`) |
-| `@hookform/resolvers` | react-hook-form sous-exploité (voir 4.3) |
-| `tw-animate-css` (dev) | Non référencé |
+| `@hookform/resolvers`, `react-hook-form` | react-hook-form n'est lui non plus importé nulle part (formulaires en `useState` manuel) |
 
 Remarque : la mort de `pino` signifie qu'**il n'y a aucun logging structuré** — les erreurs serveur partent en `console.error` implicite des catch. Pour une app de production sur Railway, brancher pino (ou le retirer et assumer).
 

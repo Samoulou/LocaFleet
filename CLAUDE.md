@@ -3,7 +3,7 @@
 Swiss car rental fleet management back-office (30-100 vehicles).
 
 ## Stack
-Next.js 15 (App Router) + Drizzle ORM + Supabase (PostgreSQL 16) + Better Auth + Hono + Railway
+Next.js 15 (App Router) + Drizzle ORM + Supabase (PostgreSQL 16) + Better Auth + Railway
 
 ## Commands
 - `npm run dev` — Start dev server (localhost:3000)
@@ -28,7 +28,7 @@ Next.js 15 (App Router) + Drizzle ORM + Supabase (PostgreSQL 16) + Better Auth +
 
 ## Architecture
 - Server Actions for CRUD mutations (in `src/actions/`)
-- Hono API routes for heavy jobs: PDF gen, email, background tasks (in `src/app/api/`)
+- Next.js Route Handlers for heavy jobs: PDF gen, AI copilot (in `src/app/api/`)
 - Zod validation on ALL inputs (server-side, never trust client)
 - EVERY DB query filters by `tenantId` (multi-tenant)
 - Currency: `CHF` with apostrophe thousands separator (1'250.00 CHF)
@@ -69,6 +69,6 @@ Next.js 15 (App Router) + Drizzle ORM + Supabase (PostgreSQL 16) + Better Auth +
 - Navigation is SIDEBAR ONLY (no horizontal nav)
 - No Stripe in V1 (billing is manual: PDF invoice + cash/card/transfer)
 - Inspection has 2 versions: MVP (simple form) first, then V1.1 (structured 4 sections)
-- Planning uses `planby` library (NOT react-big-calendar)
+- Planning is a custom timeline component (`src/components/planning/planning-calendar.tsx`), no external calendar library
 - All amounts in CHF, NOT EUR
 - Swiss formatting: 1'250.00 CHF (apostrophe), dates DD.MM.YYYY
