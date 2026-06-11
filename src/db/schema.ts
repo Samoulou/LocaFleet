@@ -632,6 +632,7 @@ export const rentalContracts = pgTable(
     index("contracts_tenant_idx").on(table.tenantId),
     index("contracts_client_idx").on(table.clientId),
     index("contracts_vehicle_idx").on(table.vehicleId),
+    index("contracts_event_idx").on(table.eventId),
     index("contracts_status_idx").on(table.tenantId, table.status),
     index("contracts_overlap_idx").on(
       table.tenantId,
