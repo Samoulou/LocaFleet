@@ -124,6 +124,33 @@ describe("hasPermission", () => {
     expect(hasPermission("viewer", "users", "read")).toBe(true);
     expect(hasPermission("viewer", "users", "create")).toBe(false);
   });
+
+  // --- employee ---
+  it("employee can only read vehicles", () => {
+    expect(hasPermission("employee", "vehicles", "read")).toBe(true);
+    expect(hasPermission("employee", "vehicles", "create")).toBe(false);
+    expect(hasPermission("employee", "vehicles", "update")).toBe(false);
+    expect(hasPermission("employee", "vehicles", "delete")).toBe(false);
+  });
+
+  it("employee has no access to other resources", () => {
+    const resources: Resource[] = [
+      "clients",
+      "contracts",
+      "inspections",
+      "invoices",
+      "payments",
+      "users",
+      "settings",
+    ];
+    const actions: Action[] = ["create", "read", "update", "delete"];
+
+    for (const resource of resources) {
+      for (const action of actions) {
+        expect(hasPermission("employee", resource, action)).toBe(false);
+      }
+    }
+  });
 });
 
 // ============================================================================
@@ -141,6 +168,10 @@ describe("hasSpecialPermission", () => {
 
   it("viewer does not have process_payment permission", () => {
     expect(hasSpecialPermission("viewer", "process_payment")).toBe(false);
+  });
+
+  it("employee does not have process_payment permission", () => {
+    expect(hasSpecialPermission("employee", "process_payment")).toBe(false);
   });
 });
 
@@ -275,8 +306,8 @@ describe("ROLE_PERMISSIONS", () => {
     expect(Object.isFrozen(ROLE_PERMISSIONS)).toBe(true);
   });
 
-  it("covers all three roles", () => {
-    const roles: Role[] = ["admin", "agent", "viewer"];
+  it("covers all four roles", () => {
+    const roles: Role[] = ["admin", "agent", "viewer", "employee"];
     expect(Object.keys(ROLE_PERMISSIONS).sort()).toEqual(roles.sort());
   });
 });

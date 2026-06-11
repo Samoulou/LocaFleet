@@ -346,6 +346,101 @@
       },
       "error": "An error occurred while loading categories",
       "noRate": "—"
+    },
+    "nav": {
+      "categories": "Categories",
+      "fonctions": "Functions",
+      "users": "Users"
+    },
+    "fonctions": {
+      "title": "Functions",
+      "subtitle": "Manage activity types (rental, moving...)",
+      "toggleSuccess": "Function updated successfully",
+      "columns": {
+        "name": "Name",
+        "behavior": "Behavior",
+        "defaultTimeUnit": "Default unit",
+        "status": "Active"
+      },
+      "badges": {
+        "requiresEmployees": "Employees required",
+        "allowsContract": "Rental contract"
+      },
+      "units": {
+        "none": "—",
+        "hours": "Hours",
+        "trips": "Trips",
+        "flat": "Flat rate"
+      },
+      "emptyState": {
+        "title": "No functions",
+        "description": "Create your first function (e.g. Rental, Moving)"
+      },
+      "form": {
+        "createTitle": "New function",
+        "editTitle": "Edit function",
+        "name": "Name",
+        "namePlaceholder": "e.g. Rental, Moving...",
+        "color": "Color",
+        "requiresEmployees": "Employees required",
+        "requiresEmployeesHint": "Warns when no employee is assigned to the event",
+        "allowsContract": "Rental contract",
+        "allowsContractHint": "Allows generating a contract from the event",
+        "defaultTimeUnit": "Default time unit",
+        "sortOrder": "Sort order",
+        "creating": "Creating...",
+        "updating": "Saving...",
+        "createButton": "Create function",
+        "updateButton": "Save changes",
+        "createSuccess": "Function created successfully",
+        "updateSuccess": "Function updated successfully"
+      }
+    },
+    "users": {
+      "title": "Users",
+      "subtitle": "Manage your team accounts (office and field staff)",
+      "statusUpdated": "Status updated successfully",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "phone": "Phone",
+        "hourlyRate": "Hourly rate",
+        "employmentType": "Employment type",
+        "status": "Active"
+      },
+      "employmentTypes": {
+        "none": "—",
+        "salaried": "Salaried",
+        "hourly": "Hourly"
+      },
+      "emptyState": {
+        "title": "No users",
+        "description": "Create your team's first account"
+      },
+      "form": {
+        "createTitle": "New user",
+        "editTitle": "Edit user",
+        "name": "Name",
+        "namePlaceholder": "e.g. John Smith",
+        "email": "Email",
+        "emailPlaceholder": "e.g. john@company.ch",
+        "password": "Initial password",
+        "passwordHint": "At least 6 characters. Share it with the employee, they can change it later.",
+        "role": "Role",
+        "phone": "Phone",
+        "phonePlaceholder": "e.g. +41 79 123 45 67",
+        "hourlyRate": "Hourly rate (CHF)",
+        "hourlyRatePlaceholder": "e.g. 28.50",
+        "employmentType": "Employment type",
+        "selfRoleHint": "You cannot change your own role",
+        "creating": "Creating...",
+        "updating": "Saving...",
+        "createButton": "Create user",
+        "updateButton": "Save changes",
+        "createSuccess": "User created successfully",
+        "updateSuccess": "User updated successfully"
+      }
     }
   },
   "maintenance": {
@@ -622,7 +717,8 @@
     "roles": {
       "admin": "Administrator",
       "agent": "Agent",
-      "viewer": "Viewer"
+      "viewer": "Viewer",
+      "employee": "Employee"
     },
     "errors": {
       "notAuthenticated": "You must be logged in",

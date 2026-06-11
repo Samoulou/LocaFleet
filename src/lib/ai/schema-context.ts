@@ -48,7 +48,11 @@ Fields: id, tenantId, contractId, vehicleId, type (departure|return), mileage, f
 
 -- Users --
 Table: users
-Fields: id, tenantId, email, name, role (admin|agent|viewer), isActive
+Fields: id, tenantId, email, name, role (admin|agent|viewer|employee), isActive, phone, hourlyRate, employmentType (salaried|hourly)
+
+-- Fonctions (activity types) --
+Table: fonctions
+Fields: id, tenantId, name, color, requiresEmployees, allowsContract, defaultTimeUnit (hours|trips|flat), isActive, sortOrder
 
 -- Tenants --
 Table: tenants

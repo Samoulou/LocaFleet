@@ -51,4 +51,9 @@ describe("nav-config", () => {
     expect(items.find((i) => i.key === "settings")).toBeUndefined();
     expect(items.find((i) => i.disabled)).toBeUndefined();
   });
+
+  it("getVisibleNavItems('employee') returns only vehicles", () => {
+    const items = getVisibleNavItems("employee");
+    expect(items.map((i) => i.key)).toEqual(["vehicles"]);
+  });
 });

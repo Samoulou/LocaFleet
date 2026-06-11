@@ -14,6 +14,7 @@ import type {
   inspections,
   inspectionPhotos,
   inspectionDamages,
+  fonctions,
 } from "@/db/schema";
 
 // ============================================================================
@@ -32,6 +33,7 @@ export type SelectInspection = typeof inspections.$inferSelect;
 export type SelectInspectionPhoto = typeof inspectionPhotos.$inferSelect;
 export type SelectInspectionDamage = typeof inspectionDamages.$inferSelect;
 export type SelectClientDocument = typeof clientDocuments.$inferSelect;
+export type SelectFonction = typeof fonctions.$inferSelect;
 
 // ============================================================================
 // INSERT types (required fields for creating a row)
@@ -48,6 +50,7 @@ export type InsertPayment = typeof payments.$inferInsert;
 export type InsertInspection = typeof inspections.$inferInsert;
 export type InsertInspectionPhoto = typeof inspectionPhotos.$inferInsert;
 export type InsertInspectionDamage = typeof inspectionDamages.$inferInsert;
+export type InsertFonction = typeof fonctions.$inferInsert;
 
 // ============================================================================
 // Enum utility types
@@ -59,6 +62,9 @@ export type ContractStatus = SelectRentalContract["status"];
 export type InvoiceStatus = SelectInvoice["status"];
 export type FuelLevel = SelectInspection["fuelLevel"];
 export type InspectionType = SelectInspection["type"];
+export type EmploymentType = NonNullable<SelectUser["employmentType"]>;
+export type InvoicingMode = SelectClient["invoicingMode"];
+export type TimeEntryUnit = NonNullable<SelectFonction["defaultTimeUnit"]>;
 
 // ============================================================================
 // Server Action result type

@@ -346,6 +346,101 @@
       },
       "error": "Une erreur est survenue lors du chargement des catégories",
       "noRate": "—"
+    },
+    "nav": {
+      "categories": "Catégories",
+      "fonctions": "Fonctions",
+      "users": "Utilisateurs"
+    },
+    "fonctions": {
+      "title": "Fonctions",
+      "subtitle": "Gérez les types d'activité (location, déménagement...)",
+      "toggleSuccess": "Fonction mise à jour avec succès",
+      "columns": {
+        "name": "Nom",
+        "behavior": "Comportement",
+        "defaultTimeUnit": "Unité par défaut",
+        "status": "Active"
+      },
+      "badges": {
+        "requiresEmployees": "Employés requis",
+        "allowsContract": "Contrat de location"
+      },
+      "units": {
+        "none": "—",
+        "hours": "Heures",
+        "trips": "Courses",
+        "flat": "Forfait"
+      },
+      "emptyState": {
+        "title": "Aucune fonction",
+        "description": "Créez votre première fonction (ex. Location, Déménagement)"
+      },
+      "form": {
+        "createTitle": "Nouvelle fonction",
+        "editTitle": "Modifier la fonction",
+        "name": "Nom",
+        "namePlaceholder": "ex. Location, Déménagement...",
+        "color": "Couleur",
+        "requiresEmployees": "Employés requis",
+        "requiresEmployeesHint": "Avertit si aucun employé n'est attribué à l'événement",
+        "allowsContract": "Contrat de location",
+        "allowsContractHint": "Permet de générer un contrat depuis l'événement",
+        "defaultTimeUnit": "Unité par défaut",
+        "sortOrder": "Ordre de tri",
+        "creating": "Création en cours...",
+        "updating": "Modification en cours...",
+        "createButton": "Créer la fonction",
+        "updateButton": "Enregistrer les modifications",
+        "createSuccess": "Fonction créée avec succès",
+        "updateSuccess": "Fonction modifiée avec succès"
+      }
+    },
+    "users": {
+      "title": "Utilisateurs",
+      "subtitle": "Gérez les comptes de votre équipe (bureau et terrain)",
+      "statusUpdated": "Statut mis à jour avec succès",
+      "columns": {
+        "name": "Nom",
+        "email": "E-mail",
+        "role": "Rôle",
+        "phone": "Téléphone",
+        "hourlyRate": "Taux horaire",
+        "employmentType": "Type d'emploi",
+        "status": "Actif"
+      },
+      "employmentTypes": {
+        "none": "—",
+        "salaried": "Salarié",
+        "hourly": "À l'heure"
+      },
+      "emptyState": {
+        "title": "Aucun utilisateur",
+        "description": "Créez le premier compte de votre équipe"
+      },
+      "form": {
+        "createTitle": "Nouvel utilisateur",
+        "editTitle": "Modifier l'utilisateur",
+        "name": "Nom",
+        "namePlaceholder": "ex. Jean Dupont",
+        "email": "E-mail",
+        "emailPlaceholder": "ex. jean@entreprise.ch",
+        "password": "Mot de passe initial",
+        "passwordHint": "Au moins 6 caractères. Communiquez-le à l'employé, il pourra le changer.",
+        "role": "Rôle",
+        "phone": "Téléphone",
+        "phonePlaceholder": "ex. +41 79 123 45 67",
+        "hourlyRate": "Taux horaire (CHF)",
+        "hourlyRatePlaceholder": "ex. 28.50",
+        "employmentType": "Type d'emploi",
+        "selfRoleHint": "Vous ne pouvez pas modifier votre propre rôle",
+        "creating": "Création en cours...",
+        "updating": "Modification en cours...",
+        "createButton": "Créer l'utilisateur",
+        "updateButton": "Enregistrer les modifications",
+        "createSuccess": "Utilisateur créé avec succès",
+        "updateSuccess": "Utilisateur modifié avec succès"
+      }
     }
   },
   "maintenance": {
@@ -622,7 +717,8 @@
     "roles": {
       "admin": "Administrateur",
       "agent": "Agent",
-      "viewer": "Lecteur"
+      "viewer": "Lecteur",
+      "employee": "Employé"
     },
     "errors": {
       "notAuthenticated": "Vous devez être connecté",

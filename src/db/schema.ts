@@ -26,7 +26,12 @@ import {
 // ENUMS
 // ============================================================================
 
-export const userRoleEnum = pgEnum("user_role", ["admin", "agent", "viewer"]);
+export const userRoleEnum = pgEnum("user_role", [
+  "admin",
+  "agent",
+  "viewer",
+  "employee",
+]);
 
 export const vehicleStatusEnum = pgEnum("vehicle_status", [
   "available",
@@ -187,6 +192,25 @@ export const trialRequestStatusEnum = pgEnum("trial_request_status", [
   "declined",
 ]);
 
+// -- CRM multi-activités (Phase 1) --------------------------------------------
+
+export const employmentTypeEnum = pgEnum("employment_type", [
+  "salaried",
+  "hourly",
+]);
+
+export const invoicingModeEnum = pgEnum("invoicing_mode", [
+  "manual",
+  "monthly",
+  "automatic",
+]);
+
+export const timeEntryUnitEnum = pgEnum("time_entry_unit", [
+  "hours",
+  "trips",
+  "flat",
+]);
+
 // ============================================================================
 // EPIC 1 — FOUNDATION & AUTH
 // ============================================================================
@@ -221,6 +245,10 @@ export const users = pgTable(
     image: text("image"),
     role: userRoleEnum("role").default("agent").notNull(),
     isActive: boolean("is_active").default(true).notNull(),
+    // Employee (field staff) attributes — nullable, unused for office roles
+    phone: varchar("phone", { length: 30 }),
+    hourlyRate: decimal("hourly_rate", { precision: 10, scale: 2 }),
+    employmentType: employmentTypeEnum("employment_type"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -439,6 +467,11 @@ export const clients = pgTable(
     companyName: varchar("company_name", { length: 255 }),
     notes: text("notes"),
     isTrusted: boolean("is_trusted").default(false).notNull(),
+    // How completed events for this client are routed to invoicing:
+    // manual = billing queue, monthly = grouped batch, automatic = immediate
+    invoicingMode: invoicingModeEnum("invoicing_mode")
+      .default("manual")
+      .notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
     deletedAt: timestamp("deleted_at"),
@@ -934,6 +967,41 @@ export const trialRequests = pgTable(
 );
 
 // ============================================================================
+// PHASE CRM — MULTI-ACTIVITÉS
+// ============================================================================
+
+// -- Fonctions (activity types: location, déménagement... configurable) --------
+// Behavior is driven by capability flags so tenants can add activities
+// (e.g. transport scolaire) without code changes.
+
+export const fonctions = pgTable(
+  "fonctions",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    tenantId: uuid("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    name: varchar("name", { length: 100 }).notNull(),
+    // Hex color for planning bars (e.g. #2563EB)
+    color: varchar("color", { length: 7 }),
+    // Déménagement: events should have employees assigned (warning if none)
+    requiresEmployees: boolean("requires_employees").default(false).notNull(),
+    // Location: enables "Générer le contrat" from an event
+    allowsContract: boolean("allows_contract").default(false).notNull(),
+    // Transport scolaire: time entries default to trips instead of hours
+    defaultTimeUnit: timeEntryUnitEnum("default_time_unit"),
+    isActive: boolean("is_active").default(true).notNull(),
+    sortOrder: integer("sort_order").default(0),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("fonctions_tenant_idx").on(table.tenantId),
+    uniqueIndex("fonctions_name_tenant_idx").on(table.name, table.tenantId),
+  ]
+);
+
+// ============================================================================
 // RELATIONS
 // ============================================================================
 
@@ -951,6 +1019,14 @@ export const tenantsRelations = relations(tenants, ({ many }) => ({
   emailLogs: many(emailLogs),
   notifications: many(notifications),
   auditLogs: many(auditLogs),
+  fonctions: many(fonctions),
+}));
+
+export const fonctionsRelations = relations(fonctions, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [fonctions.tenantId],
+    references: [tenants.id],
+  }),
 }));
 
 export const usersRelations = relations(users, ({ one, many }) => ({

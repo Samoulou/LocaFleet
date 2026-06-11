@@ -3,12 +3,14 @@ import {
   SEED_TENANT,
   SEED_USERS,
   SEED_CATEGORIES,
+  SEED_FONCTIONS,
   SEED_VEHICLES,
   SEED_CLIENTS,
   DEFAULT_SEED_PASSWORD,
   seedTenantSchema,
   seedUserSchema,
   seedCategorySchema,
+  seedFonctionSchema,
   seedVehicleSchema,
   seedClientSchema,
   seedConfigSchema,
@@ -37,8 +39,8 @@ describe("Seed tenant", () => {
 });
 
 describe("Seed users", () => {
-  it("contains 3 users", () => {
-    expect(SEED_USERS).toHaveLength(3);
+  it("contains 4 users", () => {
+    expect(SEED_USERS).toHaveLength(4);
   });
 
   it("has exactly one admin", () => {
@@ -54,6 +56,11 @@ describe("Seed users", () => {
   it("has exactly one viewer", () => {
     const viewers = SEED_USERS.filter((u) => u.role === "viewer");
     expect(viewers).toHaveLength(1);
+  });
+
+  it("has exactly one employee", () => {
+    const employees = SEED_USERS.filter((u) => u.role === "employee");
+    expect(employees).toHaveLength(1);
   });
 
   it("admin email is admin@locafleet.ch", () => {
@@ -85,6 +92,41 @@ describe("Seed categories", () => {
       expect(cat.dailyRate).toMatch(/^\d+\.\d{2}$/);
       expect(cat.weeklyRate).toMatch(/^\d+\.\d{2}$/);
     }
+  });
+});
+
+describe("Seed fonctions", () => {
+  it("contains 3 fonctions", () => {
+    expect(SEED_FONCTIONS).toHaveLength(3);
+  });
+
+  it("contains Location, Déménagement and Transport scolaire", () => {
+    const names = SEED_FONCTIONS.map((f) => f.name);
+    expect(names).toContain("Location");
+    expect(names).toContain("Déménagement");
+    expect(names).toContain("Transport scolaire");
+  });
+
+  it("Location allows contracts but does not require employees", () => {
+    const location = SEED_FONCTIONS.find((f) => f.name === "Location");
+    expect(location?.allowsContract).toBe(true);
+    expect(location?.requiresEmployees).toBe(false);
+  });
+
+  it("Déménagement requires employees", () => {
+    const demenagement = SEED_FONCTIONS.find((f) => f.name === "Déménagement");
+    expect(demenagement?.requiresEmployees).toBe(true);
+    expect(demenagement?.allowsContract).toBe(false);
+  });
+
+  it("Transport scolaire defaults to trips unit", () => {
+    const transport = SEED_FONCTIONS.find(
+      (f) => f.name === "Transport scolaire"
+    );
+    expect(
+      "defaultTimeUnit" in (transport ?? {}) &&
+        (transport as { defaultTimeUnit?: string }).defaultTimeUnit
+    ).toBe("trips");
   });
 });
 
@@ -124,6 +166,7 @@ describe("Unique IDs across all seed data", () => {
       SEED_TENANT.id,
       ...SEED_USERS.map((u) => u.id),
       ...SEED_CATEGORIES.map((c) => c.id),
+      ...SEED_FONCTIONS.map((f) => f.id),
       ...SEED_VEHICLES.map((v) => v.id),
       ...SEED_CLIENTS.map((c) => c.id),
     ];
@@ -217,6 +260,31 @@ describe("seedCategorySchema", () => {
   });
 });
 
+describe("seedFonctionSchema", () => {
+  const validFonction = SEED_FONCTIONS[0];
+
+  it("accepts all seed fonctions", () => {
+    for (const fonction of SEED_FONCTIONS) {
+      expect(seedFonctionSchema.safeParse(fonction).success).toBe(true);
+    }
+  });
+
+  it("rejects invalid color format", () => {
+    expect(
+      seedFonctionSchema.safeParse({ ...validFonction, color: "blue" }).success
+    ).toBe(false);
+  });
+
+  it("rejects invalid defaultTimeUnit", () => {
+    expect(
+      seedFonctionSchema.safeParse({
+        ...validFonction,
+        defaultTimeUnit: "days",
+      }).success
+    ).toBe(false);
+  });
+});
+
 describe("seedVehicleSchema", () => {
   const validVehicle = SEED_VEHICLES[0];
 
@@ -256,6 +324,7 @@ describe("seedConfigSchema (composite)", () => {
     tenant: SEED_TENANT,
     users: [...SEED_USERS],
     categories: [...SEED_CATEGORIES],
+    fonctions: [...SEED_FONCTIONS],
     vehicles: [...SEED_VEHICLES],
     clients: [...SEED_CLIENTS],
   };

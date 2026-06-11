@@ -16,7 +16,7 @@ export type Resource =
 
 export type SpecialPermission = "process_payment";
 
-export type Role = "admin" | "agent" | "viewer";
+export type Role = "admin" | "agent" | "viewer" | "employee";
 
 // ============================================================================
 // Permission Matrix
@@ -64,6 +64,19 @@ export const ROLE_PERMISSIONS: Readonly<
     invoices: READ_ONLY,
     payments: NONE,
     users: READ_ONLY,
+    settings: NONE,
+  }),
+  // Field staff (déménageurs, chauffeurs): vehicles only for now. Their own
+  // events/hours/tasks arrive with the CRM phases (row-scoped in the
+  // corresponding actions, not in this coarse matrix).
+  employee: Object.freeze({
+    vehicles: READ_ONLY,
+    clients: NONE,
+    contracts: NONE,
+    inspections: NONE,
+    invoices: NONE,
+    payments: NONE,
+    users: NONE,
     settings: NONE,
   }),
 });

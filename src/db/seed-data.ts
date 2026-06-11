@@ -37,6 +37,42 @@ export const SEED_USERS = [
     name: "Viewer LocaFleet",
     role: "viewer" as const,
   },
+  {
+    id: "00000000-0000-0000-0000-000000000013",
+    email: "employee@locafleet.ch",
+    name: "Employé LocaFleet",
+    role: "employee" as const,
+  },
+] as const;
+
+// ── Fonctions (activity types) ──────────────────────────────────────────────
+
+export const SEED_FONCTIONS = [
+  {
+    id: "00000000-0000-0000-0000-000000000900",
+    name: "Location",
+    color: "#2563EB",
+    requiresEmployees: false,
+    allowsContract: true,
+    sortOrder: 1,
+  },
+  {
+    id: "00000000-0000-0000-0000-000000000901",
+    name: "Déménagement",
+    color: "#D97706",
+    requiresEmployees: true,
+    allowsContract: false,
+    sortOrder: 2,
+  },
+  {
+    id: "00000000-0000-0000-0000-000000000902",
+    name: "Transport scolaire",
+    color: "#16A34A",
+    requiresEmployees: true,
+    allowsContract: false,
+    defaultTimeUnit: "trips" as const,
+    sortOrder: 3,
+  },
 ] as const;
 
 // ── Vehicle Categories ──────────────────────────────────────────────────────
@@ -794,7 +830,17 @@ export const seedUserSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
   name: z.string().min(1),
-  role: z.enum(["admin", "agent", "viewer"]),
+  role: z.enum(["admin", "agent", "viewer", "employee"]),
+});
+
+export const seedFonctionSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(1),
+  color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+  requiresEmployees: z.boolean(),
+  allowsContract: z.boolean(),
+  defaultTimeUnit: z.enum(["hours", "trips", "flat"]).optional(),
+  sortOrder: z.number().int().positive(),
 });
 
 const decimalString = z.string().regex(/^\d+\.\d{2}$/);
@@ -883,6 +929,7 @@ export const seedConfigSchema = z.object({
   tenant: seedTenantSchema,
   users: z.array(seedUserSchema).min(1),
   categories: z.array(seedCategorySchema).min(1),
+  fonctions: z.array(seedFonctionSchema).optional(),
   vehicles: z.array(seedVehicleSchema),
   clients: z.array(seedClientSchema),
   contracts: z.array(seedContractSchema).optional(),

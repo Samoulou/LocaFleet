@@ -148,6 +148,8 @@ describe("Insert types are correctly inferred", () => {
 
 describe("UserRole type", () => {
   it("matches the expected union type", () => {
-    expectTypeOf<UserRole>().toEqualTypeOf<"admin" | "agent" | "viewer">();
+    expectTypeOf<UserRole>().toEqualTypeOf<
+      "admin" | "agent" | "viewer" | "employee"
+    >();
   });
 });
