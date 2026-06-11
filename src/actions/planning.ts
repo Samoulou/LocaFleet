@@ -8,6 +8,9 @@ import {
   clients,
   vehicleCategories,
   maintenanceRecords,
+  events,
+  eventVehicles,
+  fonctions,
 } from "@/db/schema";
 import { requirePermission, AuthorizationError } from "@/lib/rbac-guards";
 import type { ActionResult } from "@/types";
@@ -38,6 +41,19 @@ export type PlanningMaintenance = {
   endDate: Date | null;
 };
 
+export type PlanningEvent = {
+  id: string;
+  eventNumber: string;
+  title: string;
+  vehicleId: string;
+  clientName: string;
+  fonctionName: string;
+  fonctionColor: string | null;
+  startDate: Date;
+  endDate: Date;
+  status: string;
+};
+
 export type PlanningVehicle = {
   id: string;
   name: string;
@@ -47,6 +63,7 @@ export type PlanningVehicle = {
   categoryName: string | null;
   contracts: PlanningContract[];
   maintenance: PlanningMaintenance[];
+  events: PlanningEvent[];
 };
 
 export type PlanningData = {
@@ -145,6 +162,34 @@ export async function getPlanningData(
         )
       );
 
+    // Fetch events (via vehicle assignments) overlapping the date range
+    const eventRows = await db
+      .select({
+        id: events.id,
+        eventNumber: events.eventNumber,
+        title: events.title,
+        vehicleId: eventVehicles.vehicleId,
+        clientFirstName: clients.firstName,
+        clientLastName: clients.lastName,
+        fonctionName: fonctions.name,
+        fonctionColor: fonctions.color,
+        startDate: events.startDate,
+        endDate: events.endDate,
+        status: events.status,
+      })
+      .from(eventVehicles)
+      .innerJoin(events, eq(eventVehicles.eventId, events.id))
+      .innerJoin(fonctions, eq(events.fonctionId, fonctions.id))
+      .innerJoin(clients, eq(events.clientId, clients.id))
+      .where(
+        and(
+          eq(events.tenantId, tenantId),
+          gte(events.endDate, startDate),
+          lte(events.startDate, endDate),
+          sql`${events.status} IN ('draft', 'confirmed', 'in_progress')`
+        )
+      );
+
     // Group contracts by vehicle
     const contractsByVehicle = new Map<string, PlanningContract[]>();
     for (const row of contractRows) {
@@ -183,6 +228,27 @@ export async function getPlanningData(
       maintenanceByVehicle.set(row.vehicleId, list);
     }
 
+    // Group events by vehicle (one event can appear on several vehicle rows)
+    const eventsByVehicle = new Map<string, PlanningEvent[]>();
+    for (const row of eventRows) {
+      const event: PlanningEvent = {
+        id: row.id,
+        eventNumber: row.eventNumber,
+        title: row.title,
+        vehicleId: row.vehicleId,
+        clientName: `${row.clientFirstName} ${row.clientLastName}`,
+        fonctionName: row.fonctionName,
+        fonctionColor: row.fonctionColor,
+        startDate: row.startDate,
+        endDate: row.endDate,
+        status: row.status,
+      };
+
+      const list = eventsByVehicle.get(row.vehicleId) ?? [];
+      list.push(event);
+      eventsByVehicle.set(row.vehicleId, list);
+    }
+
     const planningVehicles: PlanningVehicle[] = vehicleRows.map((v) => {
       const vehicleContracts = contractsByVehicle.get(v.id) ?? [];
       const vehicleMaintenance = maintenanceByVehicle.get(v.id) ?? [];
@@ -204,6 +270,7 @@ export async function getPlanningData(
           plateNumber: v.plateNumber,
         })),
         maintenance: vehicleMaintenance,
+        events: eventsByVehicle.get(v.id) ?? [],
       };
     });
 

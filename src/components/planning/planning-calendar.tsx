@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   CalendarIcon,
+  CalendarCheck,
   FileText,
   CheckCircle2,
   Wrench,
@@ -33,6 +34,7 @@ import type {
   PlanningData,
   PlanningContract,
   PlanningMaintenance,
+  PlanningEvent,
 } from "@/actions/planning";
 
 type PlanningCalendarProps = {
@@ -84,6 +86,38 @@ function getContractVisibleRange(
   const endIdx = Math.min(
     Math.floor((vEnd.getTime() - vStart.getTime()) / msPerDay),
     Math.floor((cEnd.getTime() - vStart.getTime()) / msPerDay)
+  );
+
+  if (startIdx > endIdx) return null;
+  return { startIdx, endIdx };
+}
+
+/** Get the day index (0-N) within the visible window for an event's overlap */
+function getEventVisibleRange(
+  event: PlanningEvent,
+  viewStart: Date,
+  viewEnd: Date
+): { startIdx: number; endIdx: number } | null {
+  const eStart = new Date(event.startDate);
+  eStart.setHours(0, 0, 0, 0);
+  const eEnd = new Date(event.endDate);
+  eEnd.setHours(23, 59, 59, 999);
+
+  const vStart = new Date(viewStart);
+  vStart.setHours(0, 0, 0, 0);
+  const vEnd = new Date(viewEnd);
+  vEnd.setHours(23, 59, 59, 999);
+
+  if (eEnd < vStart || eStart > vEnd) return null;
+
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const startIdx = Math.max(
+    0,
+    Math.floor((eStart.getTime() - vStart.getTime()) / msPerDay)
+  );
+  const endIdx = Math.min(
+    Math.floor((vEnd.getTime() - vStart.getTime()) / msPerDay),
+    Math.floor((eEnd.getTime() - vStart.getTime()) / msPerDay)
   );
 
   if (startIdx > endIdx) return null;
@@ -342,10 +376,15 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
               ...newVehicle.maintenance.map((m) => [m.id, m] as const),
               ...v.maintenance.map((m) => [m.id, m] as const),
             ]);
+            const mergedEvents = new Map([
+              ...newVehicle.events.map((ev) => [ev.id, ev] as const),
+              ...v.events.map((ev) => [ev.id, ev] as const),
+            ]);
             return {
               ...v,
               contracts: Array.from(contracts.values()),
               maintenance: Array.from(maintenance.values()),
+              events: Array.from(mergedEvents.values()),
             };
           });
           // Add any vehicles from new data that weren't in prev
@@ -412,10 +451,15 @@ export function PlanningCalendar({ initialData }: PlanningCalendarProps) {
               ...v.maintenance.map((m) => [m.id, m] as const),
               ...newVehicle.maintenance.map((m) => [m.id, m] as const),
             ]);
+            const mergedEvents = new Map([
+              ...v.events.map((ev) => [ev.id, ev] as const),
+              ...newVehicle.events.map((ev) => [ev.id, ev] as const),
+            ]);
             return {
               ...v,
               contracts: Array.from(contracts.values()),
               maintenance: Array.from(maintenance.values()),
+              events: Array.from(mergedEvents.values()),
             };
           });
           const existingIds = new Set(prev.vehicles.map((v) => v.id));
@@ -1022,7 +1066,7 @@ function VehicleRow({
   const viewEnd = days[days.length - 1];
   viewEnd.setHours(23, 59, 59, 999);
 
-  const { contractBars, maintenanceBars, numLanes } = useMemo(() => {
+  const { contractBars, eventBars, maintenanceBars, numLanes } = useMemo(() => {
     const visibleContracts: Array<{
       contract: PlanningContract;
       startIdx: number;
@@ -1036,17 +1080,42 @@ function VehicleRow({
       }
     }
 
-    const lanes = assignLanes(
-      visibleContracts.map((c) => ({
+    const visibleEvents: Array<{
+      event: PlanningEvent;
+      startIdx: number;
+      endIdx: number;
+    }> = [];
+
+    for (const event of vehicle.events) {
+      const range = getEventVisibleRange(event, viewStart, viewEnd);
+      if (range) {
+        visibleEvents.push({ event, ...range });
+      }
+    }
+
+    // Contracts and events share the lane pool so an acknowledged
+    // double-booking is visibly stacked instead of overlapping.
+    const lanes = assignLanes([
+      ...visibleContracts.map((c) => ({
         id: c.contract.id,
         startIdx: c.startIdx,
         endIdx: c.endIdx,
-      }))
-    );
+      })),
+      ...visibleEvents.map((e) => ({
+        id: e.event.id,
+        startIdx: e.startIdx,
+        endIdx: e.endIdx,
+      })),
+    ]);
 
     const bars = visibleContracts.map((c) => ({
       ...c,
       lane: lanes.get(c.contract.id) ?? 0,
+    }));
+
+    const evBars = visibleEvents.map((e) => ({
+      ...e,
+      lane: lanes.get(e.event.id) ?? 0,
     }));
 
     const visibleMaintenance: Array<{
@@ -1075,12 +1144,27 @@ function VehicleRow({
       lane: maintLanes.get(m.maintenance.id) ?? 0,
     }));
 
+    // lanes.size counts items, not lanes — derive the lane count
+    const laneCount =
+      lanes.size > 0 ? Math.max(...Array.from(lanes.values())) + 1 : 0;
+    const maintLaneCount =
+      maintLanes.size > 0
+        ? Math.max(...Array.from(maintLanes.values())) + 1
+        : 0;
+
     return {
       contractBars: bars,
+      eventBars: evBars,
       maintenanceBars: maintBars,
-      numLanes: Math.max(lanes.size, maintLanes.size),
+      numLanes: Math.max(laneCount, maintLaneCount),
     };
-  }, [vehicle.contracts, vehicle.maintenance, viewStart, viewEnd]);
+  }, [
+    vehicle.contracts,
+    vehicle.events,
+    vehicle.maintenance,
+    viewStart,
+    viewEnd,
+  ]);
 
   const rowHeight = Math.max(64, 40 + numLanes * LANE_HEIGHT);
 
@@ -1139,6 +1223,9 @@ function VehicleRow({
         const hasContract = contractBars.some(
           (b) => dayIdx >= b.startIdx && dayIdx <= b.endIdx
         );
+        const hasEvent = eventBars.some(
+          (b) => dayIdx >= b.startIdx && dayIdx <= b.endIdx
+        );
         const hasMaintenance = maintenanceBars.some(
           (b) => dayIdx >= b.startIdx && dayIdx <= b.endIdx
         );
@@ -1154,11 +1241,12 @@ function VehicleRow({
               hasMaintenance &&
                 !selected &&
                 !hasContract &&
+                !hasEvent &&
                 "bg-amber-50 dark:bg-amber-950/20"
             )}
             style={{ height: rowHeight }}
           >
-            {!hasContract && !hasMaintenance && (
+            {!hasContract && !hasEvent && !hasMaintenance && (
               <div className="flex h-full items-center justify-center pointer-events-none">
                 <CheckCircle2 className="size-4 text-green-400 opacity-40" />
               </div>
@@ -1204,6 +1292,52 @@ function VehicleRow({
                 <FileText className="size-3 shrink-0" />
                 <span className="truncate">
                   {contract.clientName} — {contract.contractNumber}
+                </span>
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Event bars overlay (colored by fonction) */}
+      <div
+        className="relative pointer-events-none"
+        style={{
+          gridColumn: `2 / -1`,
+          height: rowHeight,
+          marginTop: `-${rowHeight}px`,
+        }}
+      >
+        {eventBars.map(({ event, startIdx, endIdx, lane }) => {
+          const left = (startIdx / numDays) * 100;
+          const width = ((endIdx - startIdx + 1) / numDays) * 100;
+          const top = 6 + lane * LANE_HEIGHT;
+
+          return (
+            <Link
+              key={`${event.id}-${event.vehicleId}`}
+              href={`/events/${event.id}`}
+              className={cn(
+                "absolute truncate rounded px-2 py-0.5 text-[10px] font-medium text-white transition-opacity hover:opacity-90 pointer-events-auto shadow-sm",
+                event.status === "draft" &&
+                  "opacity-70 border border-dashed border-white/60"
+              )}
+              style={{
+                left: `${left}%`,
+                width: `${width}%`,
+                top: `${top}px`,
+                height: `${BAR_HEIGHT}px`,
+                lineHeight: `${BAR_HEIGHT}px`,
+                backgroundColor: event.fonctionColor ?? "#64748B",
+              }}
+              title={`${event.eventNumber} — ${event.fonctionName} — ${event.title} (${event.clientName})`}
+              onMouseDown={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className="flex items-center gap-1">
+                <CalendarCheck className="size-3 shrink-0" />
+                <span className="truncate">
+                  {event.title} — {event.eventNumber}
                 </span>
               </span>
             </Link>
