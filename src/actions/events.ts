@@ -1042,6 +1042,42 @@ export async function getFonctionsForEventForm(): Promise<
   }
 }
 
+export type VehicleSelectItem = {
+  id: string;
+  brand: string;
+  model: string;
+  plateNumber: string;
+};
+
+/** Assignable vehicles for the event form (events permission). */
+export async function getVehiclesForEventForm(): Promise<
+  ActionResult<VehicleSelectItem[]>
+> {
+  try {
+    const currentUser = await requirePermission("events", "read");
+
+    const result = await db
+      .select({
+        id: vehicles.id,
+        brand: vehicles.brand,
+        model: vehicles.model,
+        plateNumber: vehicles.plateNumber,
+      })
+      .from(vehicles)
+      .where(
+        and(
+          eq(vehicles.tenantId, currentUser.tenantId),
+          isNull(vehicles.deletedAt)
+        )
+      )
+      .orderBy(asc(vehicles.brand), asc(vehicles.model));
+
+    return { success: true, data: result };
+  } catch (err) {
+    return handleEventActionError(err, "getVehiclesForEventForm");
+  }
+}
+
 export type EmployeeSelectItem = {
   id: string;
   name: string;

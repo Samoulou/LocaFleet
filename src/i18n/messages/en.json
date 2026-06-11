@@ -51,7 +51,8 @@
     "inspections": "Inspections",
     "maintenance": "Maintenance",
     "invoices": "Invoices",
-    "settings": "Settings"
+    "settings": "Settings",
+    "events": "Events"
   },
   "sidebar": {
     "collapse": "Collapse menu",
@@ -1209,6 +1210,112 @@
       "legal": "Legal notice",
       "copyright": "© {year} LocaFleet. All rights reserved.",
       "madeIn": "Designed and hosted in Switzerland"
+    }
+  },
+  "events": {
+    "list": {
+      "title": "Events",
+      "subtitle": "Rentals, moves and other planned jobs",
+      "newEvent": "New event",
+      "empty": "No events",
+      "emptyDescription": "Create your first event (rental, move...)",
+      "allStatuses": "All statuses",
+      "total": "{count} event(s)"
+    },
+    "columns": {
+      "number": "No.",
+      "title": "Title",
+      "fonction": "Function",
+      "client": "Client",
+      "period": "Period",
+      "resources": "Vehicles / Team",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "status": {
+      "draft": "Draft",
+      "confirmed": "Confirmed",
+      "in_progress": "In progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "form": {
+      "createPageTitle": "New event",
+      "createPageSubtitle": "Plan a job and assign vehicles and employees",
+      "editPageTitle": "Edit event",
+      "editPageSubtitle": "Detected conflicts remain warnings, never blockers",
+      "fonction": "Function",
+      "fonctionPlaceholder": "Pick a function...",
+      "client": "Client",
+      "currentClient": "Current client",
+      "title": "Title",
+      "titlePlaceholder": "e.g. Dupont move, Weekend rental...",
+      "startDate": "Start",
+      "endDate": "End",
+      "location": "Location / Departure",
+      "locationPlaceholder": "e.g. Rue du Marché 12, Geneva",
+      "destination": "Destination",
+      "destinationPlaceholder": "e.g. Avenue de la Gare 3, Lausanne",
+      "agreedAmount": "Agreed amount (CHF)",
+      "agreedAmountPlaceholder": "e.g. 1250.00",
+      "description": "Description",
+      "notes": "Internal notes",
+      "vehicles": "Assigned vehicles",
+      "noVehicles": "No vehicles available",
+      "employees": "Assigned employees",
+      "noEmployees": "No employees available",
+      "requiresEmployeesWarning": "This function expects at least one employee. You can still confirm.",
+      "rolePlaceholder": "Role (driver...)",
+      "creating": "Creating...",
+      "updating": "Saving...",
+      "createButton": "Create event",
+      "updateButton": "Save changes",
+      "createSuccess": "Event created successfully",
+      "updateSuccess": "Event updated successfully"
+    },
+    "conflicts": {
+      "title": "Conflicts detected",
+      "description": "Overlaps were detected. You can fix them or confirm anyway.",
+      "missingEmployees": "This function expects at least one assigned employee.",
+      "vehicleConflicts": "Vehicles already booked:",
+      "employeeConflicts": "Employees already busy:",
+      "vehicleConflictLine": "{vehicle} — already taken by {ref} from {start} to {end}",
+      "employeeConflictLine": "{employee} — already busy with {ref} from {start} to {end}",
+      "confirmAnyway": "Confirm anyway",
+      "confirming": "Confirming..."
+    },
+    "detail": {
+      "info": "Information",
+      "client": "Client",
+      "period": "Period",
+      "locations": "Location → Destination",
+      "agreedAmount": "Agreed amount",
+      "description": "Description",
+      "notes": "Internal notes",
+      "vehicles": "Vehicles",
+      "noVehicles": "No vehicles assigned",
+      "team": "Team",
+      "noEmployees": "No employees assigned",
+      "noEmployeesWarning": "No employees assigned — this function expects at least one",
+      "linkedContracts": "Linked contracts",
+      "statusUpdated": "Status updated",
+      "deleted": "Event deleted",
+      "edit": "Edit",
+      "delete": "Delete",
+      "transitions": {
+        "confirmed": "Confirm",
+        "in_progress": "Start",
+        "completed": "Complete",
+        "cancelled": "Cancel"
+      }
+    },
+    "comments": {
+      "title": "Comments",
+      "empty": "No comments yet",
+      "placeholder": "Inventory supplement, overtime, total hours...",
+      "submit": "Comment",
+      "delete": "Delete comment",
+      "unknownAuthor": "Deleted user"
     }
   }
 }

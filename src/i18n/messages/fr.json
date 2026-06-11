@@ -51,7 +51,8 @@
     "inspections": "États des lieux",
     "maintenance": "Maintenance",
     "invoices": "Factures",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "events": "Événements"
   },
   "sidebar": {
     "collapse": "Réduire le menu",
@@ -1209,6 +1210,112 @@
       "legal": "Mentions légales",
       "copyright": "© {year} LocaFleet. Tous droits réservés.",
       "madeIn": "Conçu et hébergé en Suisse"
+    }
+  },
+  "events": {
+    "list": {
+      "title": "Événements",
+      "subtitle": "Locations, déménagements et autres missions planifiées",
+      "newEvent": "Nouvel événement",
+      "empty": "Aucun événement",
+      "emptyDescription": "Créez votre premier événement (location, déménagement...)",
+      "allStatuses": "Tous les statuts",
+      "total": "{count} événement(s)"
+    },
+    "columns": {
+      "number": "N°",
+      "title": "Titre",
+      "fonction": "Fonction",
+      "client": "Client",
+      "period": "Période",
+      "resources": "Véhicules / Équipe",
+      "amount": "Montant",
+      "status": "Statut"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "confirmed": "Confirmé",
+      "in_progress": "En cours",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "form": {
+      "createPageTitle": "Nouvel événement",
+      "createPageSubtitle": "Planifiez une mission et attribuez véhicules et employés",
+      "editPageTitle": "Modifier l'événement",
+      "editPageSubtitle": "Les conflits détectés restent des avertissements, jamais des blocages",
+      "fonction": "Fonction",
+      "fonctionPlaceholder": "Choisir une fonction...",
+      "client": "Client",
+      "currentClient": "Client actuel",
+      "title": "Titre",
+      "titlePlaceholder": "ex. Déménagement Dupont, Location week-end...",
+      "startDate": "Début",
+      "endDate": "Fin",
+      "location": "Lieu / Départ",
+      "locationPlaceholder": "ex. Rue du Marché 12, Genève",
+      "destination": "Destination",
+      "destinationPlaceholder": "ex. Avenue de la Gare 3, Lausanne",
+      "agreedAmount": "Montant convenu (CHF)",
+      "agreedAmountPlaceholder": "ex. 1250.00",
+      "description": "Description",
+      "notes": "Notes internes",
+      "vehicles": "Véhicules attribués",
+      "noVehicles": "Aucun véhicule disponible",
+      "employees": "Employés attribués",
+      "noEmployees": "Aucun employé disponible",
+      "requiresEmployeesWarning": "Cette fonction attend au moins un employé. Vous pourrez tout de même valider.",
+      "rolePlaceholder": "Rôle (chauffeur...)",
+      "creating": "Création en cours...",
+      "updating": "Modification en cours...",
+      "createButton": "Créer l'événement",
+      "updateButton": "Enregistrer les modifications",
+      "createSuccess": "Événement créé avec succès",
+      "updateSuccess": "Événement modifié avec succès"
+    },
+    "conflicts": {
+      "title": "Conflits détectés",
+      "description": "Des chevauchements ont été détectés. Vous pouvez corriger ou valider malgré tout.",
+      "missingEmployees": "Cette fonction attend au moins un employé attribué.",
+      "vehicleConflicts": "Véhicules déjà réservés :",
+      "employeeConflicts": "Employés déjà occupés :",
+      "vehicleConflictLine": "{vehicle} — déjà pris par {ref} du {start} au {end}",
+      "employeeConflictLine": "{employee} — déjà occupé par {ref} du {start} au {end}",
+      "confirmAnyway": "Valider malgré tout",
+      "confirming": "Validation..."
+    },
+    "detail": {
+      "info": "Informations",
+      "client": "Client",
+      "period": "Période",
+      "locations": "Lieu → Destination",
+      "agreedAmount": "Montant convenu",
+      "description": "Description",
+      "notes": "Notes internes",
+      "vehicles": "Véhicules",
+      "noVehicles": "Aucun véhicule attribué",
+      "team": "Équipe",
+      "noEmployees": "Aucun employé attribué",
+      "noEmployeesWarning": "Aucun employé attribué — cette fonction en attend au moins un",
+      "linkedContracts": "Contrats liés",
+      "statusUpdated": "Statut mis à jour",
+      "deleted": "Événement supprimé",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "transitions": {
+        "confirmed": "Confirmer",
+        "in_progress": "Démarrer",
+        "completed": "Terminer",
+        "cancelled": "Annuler"
+      }
+    },
+    "comments": {
+      "title": "Commentaires",
+      "empty": "Aucun commentaire pour l'instant",
+      "placeholder": "Supplément d'inventaire, heures supplémentaires, total des heures...",
+      "submit": "Commenter",
+      "delete": "Supprimer le commentaire",
+      "unknownAuthor": "Utilisateur supprimé"
     }
   }
 }

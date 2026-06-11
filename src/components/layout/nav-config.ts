@@ -7,6 +7,7 @@ import {
   Settings,
   LayoutDashboard,
   CalendarDays,
+  CalendarCheck,
   type LucideIcon,
 } from "lucide-react";
 import { hasPermission, type Resource, type Role } from "@/lib/rbac";
@@ -46,6 +47,12 @@ export const NAV_SECTIONS: NavSection[] = [
         href: "/planning",
         icon: CalendarDays,
         resource: "contracts",
+      },
+      {
+        key: "events",
+        href: "/events",
+        icon: CalendarCheck,
+        resource: "events",
       },
       { key: "vehicles", href: "/vehicles", icon: Car, resource: "vehicles" },
       {

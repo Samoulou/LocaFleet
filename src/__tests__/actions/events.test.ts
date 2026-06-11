@@ -537,3 +537,80 @@ describe("deleteEvent", () => {
     expect(result.success).toBe(false);
   });
 });
+
+// ============================================================================
+// Form helper actions
+// ============================================================================
+
+describe("event form helpers", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(getCurrentUser).mockResolvedValue(ADMIN_USER);
+  });
+
+  it("getFonctionsForEventForm returns active fonctions", async () => {
+    const { getFonctionsForEventForm } = await import("@/actions/events");
+    mockSelectSequence([
+      [
+        {
+          id: FONCTION_ID,
+          name: "Déménagement",
+          color: "#D97706",
+          requiresEmployees: true,
+          allowsContract: false,
+        },
+      ],
+    ]);
+
+    const result = await getFonctionsForEventForm();
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data[0].name).toBe("Déménagement");
+    }
+  });
+
+  it("getVehiclesForEventForm returns vehicles", async () => {
+    const { getVehiclesForEventForm } = await import("@/actions/events");
+    mockSelectSequence([
+      [
+        {
+          id: VEHICLE_ID,
+          brand: "Renault",
+          model: "Master",
+          plateNumber: "GE 12345",
+        },
+      ],
+    ]);
+
+    const result = await getVehiclesForEventForm();
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data[0].plateNumber).toBe("GE 12345");
+    }
+  });
+
+  it("getEmployeesForEventForm returns active users", async () => {
+    const { getEmployeesForEventForm } = await import("@/actions/events");
+    mockSelectSequence([
+      [{ id: EMPLOYEE_ID, name: "Marco", role: "employee" }],
+    ]);
+
+    const result = await getEmployeesForEventForm();
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data[0].name).toBe("Marco");
+    }
+  });
+
+  it("form helpers reject unauthenticated users", async () => {
+    const { getFonctionsForEventForm } = await import("@/actions/events");
+    vi.mocked(getCurrentUser).mockResolvedValue(null);
+
+    const result = await getFonctionsForEventForm();
+
+    expect(result.success).toBe(false);
+  });
+});
