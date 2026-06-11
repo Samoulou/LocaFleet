@@ -25,12 +25,31 @@ export default defineConfig({
         "src/__tests__/**",
         "src/types/**",
       ],
+      // Regression guards on the business-critical layers (set just below
+      // current coverage). UI components are intentionally not gated.
+      thresholds: {
+        "src/actions/**": {
+          statements: 85,
+          branches: 70,
+          functions: 85,
+          lines: 85,
+        },
+        "src/lib/validations/**": {
+          statements: 95,
+          branches: 90,
+          functions: 85,
+          lines: 95,
+        },
+      },
     },
   },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "next/navigation": path.resolve(__dirname, "./node_modules/next/navigation.js"),
+      "next/navigation": path.resolve(
+        __dirname,
+        "./node_modules/next/navigation.js"
+      ),
     },
   },
 });
