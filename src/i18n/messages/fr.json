@@ -51,7 +51,9 @@
     "inspections": "États des lieux",
     "maintenance": "Maintenance",
     "invoices": "Factures",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "events": "Événements",
+    "quotes": "Offres"
   },
   "sidebar": {
     "collapse": "Réduire le menu",
@@ -346,6 +348,101 @@
       },
       "error": "Une erreur est survenue lors du chargement des catégories",
       "noRate": "—"
+    },
+    "nav": {
+      "categories": "Catégories",
+      "fonctions": "Fonctions",
+      "users": "Utilisateurs"
+    },
+    "fonctions": {
+      "title": "Fonctions",
+      "subtitle": "Gérez les types d'activité (location, déménagement...)",
+      "toggleSuccess": "Fonction mise à jour avec succès",
+      "columns": {
+        "name": "Nom",
+        "behavior": "Comportement",
+        "defaultTimeUnit": "Unité par défaut",
+        "status": "Active"
+      },
+      "badges": {
+        "requiresEmployees": "Employés requis",
+        "allowsContract": "Contrat de location"
+      },
+      "units": {
+        "none": "—",
+        "hours": "Heures",
+        "trips": "Courses",
+        "flat": "Forfait"
+      },
+      "emptyState": {
+        "title": "Aucune fonction",
+        "description": "Créez votre première fonction (ex. Location, Déménagement)"
+      },
+      "form": {
+        "createTitle": "Nouvelle fonction",
+        "editTitle": "Modifier la fonction",
+        "name": "Nom",
+        "namePlaceholder": "ex. Location, Déménagement...",
+        "color": "Couleur",
+        "requiresEmployees": "Employés requis",
+        "requiresEmployeesHint": "Avertit si aucun employé n'est attribué à l'événement",
+        "allowsContract": "Contrat de location",
+        "allowsContractHint": "Permet de générer un contrat depuis l'événement",
+        "defaultTimeUnit": "Unité par défaut",
+        "sortOrder": "Ordre de tri",
+        "creating": "Création en cours...",
+        "updating": "Modification en cours...",
+        "createButton": "Créer la fonction",
+        "updateButton": "Enregistrer les modifications",
+        "createSuccess": "Fonction créée avec succès",
+        "updateSuccess": "Fonction modifiée avec succès"
+      }
+    },
+    "users": {
+      "title": "Utilisateurs",
+      "subtitle": "Gérez les comptes de votre équipe (bureau et terrain)",
+      "statusUpdated": "Statut mis à jour avec succès",
+      "columns": {
+        "name": "Nom",
+        "email": "E-mail",
+        "role": "Rôle",
+        "phone": "Téléphone",
+        "hourlyRate": "Taux horaire",
+        "employmentType": "Type d'emploi",
+        "status": "Actif"
+      },
+      "employmentTypes": {
+        "none": "—",
+        "salaried": "Salarié",
+        "hourly": "À l'heure"
+      },
+      "emptyState": {
+        "title": "Aucun utilisateur",
+        "description": "Créez le premier compte de votre équipe"
+      },
+      "form": {
+        "createTitle": "Nouvel utilisateur",
+        "editTitle": "Modifier l'utilisateur",
+        "name": "Nom",
+        "namePlaceholder": "ex. Jean Dupont",
+        "email": "E-mail",
+        "emailPlaceholder": "ex. jean@entreprise.ch",
+        "password": "Mot de passe initial",
+        "passwordHint": "Au moins 6 caractères. Communiquez-le à l'employé, il pourra le changer.",
+        "role": "Rôle",
+        "phone": "Téléphone",
+        "phonePlaceholder": "ex. +41 79 123 45 67",
+        "hourlyRate": "Taux horaire (CHF)",
+        "hourlyRatePlaceholder": "ex. 28.50",
+        "employmentType": "Type d'emploi",
+        "selfRoleHint": "Vous ne pouvez pas modifier votre propre rôle",
+        "creating": "Création en cours...",
+        "updating": "Modification en cours...",
+        "createButton": "Créer l'utilisateur",
+        "updateButton": "Enregistrer les modifications",
+        "createSuccess": "Utilisateur créé avec succès",
+        "updateSuccess": "Utilisateur modifié avec succès"
+      }
     }
   },
   "maintenance": {
@@ -622,7 +719,8 @@
     "roles": {
       "admin": "Administrateur",
       "agent": "Agent",
-      "viewer": "Lecteur"
+      "viewer": "Lecteur",
+      "employee": "Employé"
     },
     "errors": {
       "notAuthenticated": "Vous devez être connecté",
@@ -1113,6 +1211,201 @@
       "legal": "Mentions légales",
       "copyright": "© {year} LocaFleet. Tous droits réservés.",
       "madeIn": "Conçu et hébergé en Suisse"
+    }
+  },
+  "events": {
+    "list": {
+      "title": "Événements",
+      "subtitle": "Locations, déménagements et autres missions planifiées",
+      "newEvent": "Nouvel événement",
+      "empty": "Aucun événement",
+      "emptyDescription": "Créez votre premier événement (location, déménagement...)",
+      "allStatuses": "Tous les statuts",
+      "total": "{count} événement(s)"
+    },
+    "columns": {
+      "number": "N°",
+      "title": "Titre",
+      "fonction": "Fonction",
+      "client": "Client",
+      "period": "Période",
+      "resources": "Véhicules / Équipe",
+      "amount": "Montant",
+      "status": "Statut"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "confirmed": "Confirmé",
+      "in_progress": "En cours",
+      "completed": "Terminé",
+      "cancelled": "Annulé"
+    },
+    "form": {
+      "createPageTitle": "Nouvel événement",
+      "createPageSubtitle": "Planifiez une mission et attribuez véhicules et employés",
+      "editPageTitle": "Modifier l'événement",
+      "editPageSubtitle": "Les conflits détectés restent des avertissements, jamais des blocages",
+      "fonction": "Fonction",
+      "fonctionPlaceholder": "Choisir une fonction...",
+      "client": "Client",
+      "currentClient": "Client actuel",
+      "title": "Titre",
+      "titlePlaceholder": "ex. Déménagement Dupont, Location week-end...",
+      "startDate": "Début",
+      "endDate": "Fin",
+      "location": "Lieu / Départ",
+      "locationPlaceholder": "ex. Rue du Marché 12, Genève",
+      "destination": "Destination",
+      "destinationPlaceholder": "ex. Avenue de la Gare 3, Lausanne",
+      "agreedAmount": "Montant convenu (CHF)",
+      "agreedAmountPlaceholder": "ex. 1250.00",
+      "description": "Description",
+      "notes": "Notes internes",
+      "vehicles": "Véhicules attribués",
+      "noVehicles": "Aucun véhicule disponible",
+      "employees": "Employés attribués",
+      "noEmployees": "Aucun employé disponible",
+      "requiresEmployeesWarning": "Cette fonction attend au moins un employé. Vous pourrez tout de même valider.",
+      "rolePlaceholder": "Rôle (chauffeur...)",
+      "creating": "Création en cours...",
+      "updating": "Modification en cours...",
+      "createButton": "Créer l'événement",
+      "updateButton": "Enregistrer les modifications",
+      "createSuccess": "Événement créé avec succès",
+      "updateSuccess": "Événement modifié avec succès",
+      "noFonctions": "Aucune fonction disponible. Créez-en d'abord dans",
+      "noFonctionsLink": "Réglages → Fonctions"
+    },
+    "conflicts": {
+      "title": "Conflits détectés",
+      "description": "Des chevauchements ont été détectés. Vous pouvez corriger ou valider malgré tout.",
+      "missingEmployees": "Cette fonction attend au moins un employé attribué.",
+      "vehicleConflicts": "Véhicules déjà réservés :",
+      "employeeConflicts": "Employés déjà occupés :",
+      "vehicleConflictLine": "{vehicle} — déjà pris par {ref} du {start} au {end}",
+      "employeeConflictLine": "{employee} — déjà occupé par {ref} du {start} au {end}",
+      "confirmAnyway": "Valider malgré tout",
+      "confirming": "Validation..."
+    },
+    "detail": {
+      "info": "Informations",
+      "client": "Client",
+      "period": "Période",
+      "locations": "Lieu → Destination",
+      "agreedAmount": "Montant convenu",
+      "description": "Description",
+      "notes": "Notes internes",
+      "vehicles": "Véhicules",
+      "noVehicles": "Aucun véhicule attribué",
+      "team": "Équipe",
+      "noEmployees": "Aucun employé attribué",
+      "noEmployeesWarning": "Aucun employé attribué — cette fonction en attend au moins un",
+      "linkedContracts": "Contrats liés",
+      "statusUpdated": "Statut mis à jour",
+      "deleted": "Événement supprimé",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "transitions": {
+        "confirmed": "Confirmer",
+        "in_progress": "Démarrer",
+        "completed": "Terminer",
+        "cancelled": "Annuler"
+      }
+    },
+    "comments": {
+      "title": "Commentaires",
+      "empty": "Aucun commentaire pour l'instant",
+      "placeholder": "Supplément d'inventaire, heures supplémentaires, total des heures...",
+      "submit": "Commenter",
+      "delete": "Supprimer le commentaire",
+      "unknownAuthor": "Utilisateur supprimé"
+    }
+  },
+  "quotes": {
+    "list": {
+      "title": "Offres",
+      "subtitle": "Devis et propositions — convertibles en événements",
+      "newQuote": "Nouvelle offre",
+      "empty": "Aucune offre",
+      "emptyDescription": "Créez votre première offre (devis)",
+      "allStatuses": "Tous les statuts",
+      "total": "{count} offre(s)"
+    },
+    "columns": {
+      "number": "N°",
+      "title": "Objet",
+      "fonction": "Fonction",
+      "client": "Client",
+      "validUntil": "Validité",
+      "amount": "Montant",
+      "status": "Statut"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "sent": "Envoyée",
+      "accepted": "Acceptée",
+      "declined": "Refusée",
+      "expired": "Expirée"
+    },
+    "form": {
+      "createPageTitle": "Nouvelle offre",
+      "createPageSubtitle": "Composez les lignes du devis ; les totaux sont calculés automatiquement",
+      "editPageTitle": "Modifier l'offre",
+      "editPageSubtitle": "Seules les offres en brouillon sont modifiables",
+      "fonction": "Fonction",
+      "fonctionPlaceholder": "Choisir une fonction...",
+      "client": "Client",
+      "currentClient": "Client actuel",
+      "title": "Objet",
+      "titlePlaceholder": "ex. Déménagement Dupont",
+      "startDate": "Début prévu",
+      "endDate": "Fin prévue",
+      "periodHint": "La période est facultative mais requise pour convertir l'offre en événement.",
+      "validUntil": "Valable jusqu'au",
+      "notes": "Remarques",
+      "lines": "Lignes",
+      "addLine": "Ajouter",
+      "lineDescriptionPlaceholder": "ex. Camion + 3 déménageurs (par heure)",
+      "lineQuantity": "Qté",
+      "lineUnitPrice": "Prix unitaire (CHF)",
+      "removeLine": "Supprimer la ligne",
+      "subtotal": "Sous-total",
+      "creating": "Création en cours...",
+      "updating": "Modification en cours...",
+      "createButton": "Créer l'offre",
+      "updateButton": "Enregistrer les modifications",
+      "createSuccess": "Offre créée avec succès",
+      "updateSuccess": "Offre modifiée avec succès",
+      "noFonctions": "Aucune fonction disponible. Créez-en d'abord dans",
+      "noFonctionsLink": "Réglages → Fonctions"
+    },
+    "detail": {
+      "info": "Informations",
+      "client": "Client",
+      "period": "Période prévue",
+      "validUntil": "Valable jusqu'au",
+      "notes": "Remarques",
+      "linkedEvents": "Événements liés",
+      "lineDescription": "Description",
+      "lineQuantity": "Qté",
+      "lineUnitPrice": "Prix unitaire",
+      "lineTotal": "Total",
+      "subtotal": "Sous-total",
+      "tax": "TVA ({rate} %)",
+      "total": "TOTAL",
+      "downloadPdf": "PDF",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "statusUpdated": "Statut mis à jour",
+      "deleted": "Offre supprimée",
+      "converted": "Événement {number} créé depuis l'offre",
+      "convertToEvent": "Convertir en événement",
+      "transitions": {
+        "sent": "Marquer envoyée",
+        "accepted": "Accepter",
+        "declined": "Refuser",
+        "expired": "Marquer expirée"
+      }
     }
   }
 }

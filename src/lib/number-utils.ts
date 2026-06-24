@@ -1,6 +1,12 @@
 import { sql, like, eq, and } from "drizzle-orm";
 import { db } from "@/db";
-import { rentalContracts, invoices, rentalDossiers } from "@/db/schema";
+import {
+  rentalContracts,
+  invoices,
+  rentalDossiers,
+  events,
+  quotes,
+} from "@/db/schema";
 
 /**
  * DbLike — minimal interface for Drizzle transaction objects.
@@ -32,7 +38,7 @@ export class ContractError extends Error {
 export async function acquireNumberLock(
   tx: DbLike,
   tenantId: string,
-  entity: "contract" | "invoice" | "dossier"
+  entity: "contract" | "invoice" | "dossier" | "event" | "quote"
 ): Promise<void> {
   // Build a 64-bit key from entity hash + tenant UUID hash
   const entityHash = entity.split("").reduce((h, c) => {
@@ -113,6 +119,64 @@ export async function generateNextInvoiceNumber(
   let maxSeq = 0;
   for (const row of rows) {
     const num = row.invoiceNumber;
+    if (typeof num !== "string") continue;
+    const seq = safeParseSeq(num.slice(prefix.length));
+    if (seq !== null && seq > maxSeq) {
+      maxSeq = seq;
+    }
+  }
+
+  return `${prefix}${String(maxSeq + 1).padStart(4, "0")}`;
+}
+
+export async function generateNextEventNumber(
+  tenantId: string,
+  tx: DbLike
+): Promise<string> {
+  const currentYear = new Date().getFullYear();
+  const prefix = `EVT-${currentYear}-`;
+
+  await acquireNumberLock(tx, tenantId, "event");
+
+  const rows = await tx
+    .select({ eventNumber: events.eventNumber })
+    .from(events)
+    .where(
+      and(eq(events.tenantId, tenantId), like(events.eventNumber, `${prefix}%`))
+    );
+
+  let maxSeq = 0;
+  for (const row of rows) {
+    const num = row.eventNumber;
+    if (typeof num !== "string") continue;
+    const seq = safeParseSeq(num.slice(prefix.length));
+    if (seq !== null && seq > maxSeq) {
+      maxSeq = seq;
+    }
+  }
+
+  return `${prefix}${String(maxSeq + 1).padStart(4, "0")}`;
+}
+
+export async function generateNextQuoteNumber(
+  tenantId: string,
+  tx: DbLike
+): Promise<string> {
+  const currentYear = new Date().getFullYear();
+  const prefix = `OFF-${currentYear}-`;
+
+  await acquireNumberLock(tx, tenantId, "quote");
+
+  const rows = await tx
+    .select({ quoteNumber: quotes.quoteNumber })
+    .from(quotes)
+    .where(
+      and(eq(quotes.tenantId, tenantId), like(quotes.quoteNumber, `${prefix}%`))
+    );
+
+  let maxSeq = 0;
+  for (const row of rows) {
+    const num = row.quoteNumber;
     if (typeof num !== "string") continue;
     const seq = safeParseSeq(num.slice(prefix.length));
     if (seq !== null && seq > maxSeq) {

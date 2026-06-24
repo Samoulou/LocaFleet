@@ -14,6 +14,12 @@ import type {
   inspections,
   inspectionPhotos,
   inspectionDamages,
+  fonctions,
+  events,
+  eventVehicles,
+  eventEmployees,
+  eventComments,
+  quotes,
 } from "@/db/schema";
 
 // ============================================================================
@@ -32,6 +38,12 @@ export type SelectInspection = typeof inspections.$inferSelect;
 export type SelectInspectionPhoto = typeof inspectionPhotos.$inferSelect;
 export type SelectInspectionDamage = typeof inspectionDamages.$inferSelect;
 export type SelectClientDocument = typeof clientDocuments.$inferSelect;
+export type SelectFonction = typeof fonctions.$inferSelect;
+export type SelectEvent = typeof events.$inferSelect;
+export type SelectEventVehicle = typeof eventVehicles.$inferSelect;
+export type SelectEventEmployee = typeof eventEmployees.$inferSelect;
+export type SelectEventComment = typeof eventComments.$inferSelect;
+export type SelectQuote = typeof quotes.$inferSelect;
 
 // ============================================================================
 // INSERT types (required fields for creating a row)
@@ -48,6 +60,12 @@ export type InsertPayment = typeof payments.$inferInsert;
 export type InsertInspection = typeof inspections.$inferInsert;
 export type InsertInspectionPhoto = typeof inspectionPhotos.$inferInsert;
 export type InsertInspectionDamage = typeof inspectionDamages.$inferInsert;
+export type InsertFonction = typeof fonctions.$inferInsert;
+export type InsertEvent = typeof events.$inferInsert;
+export type InsertEventVehicle = typeof eventVehicles.$inferInsert;
+export type InsertEventEmployee = typeof eventEmployees.$inferInsert;
+export type InsertEventComment = typeof eventComments.$inferInsert;
+export type InsertQuote = typeof quotes.$inferInsert;
 
 // ============================================================================
 // Enum utility types
@@ -59,6 +77,23 @@ export type ContractStatus = SelectRentalContract["status"];
 export type InvoiceStatus = SelectInvoice["status"];
 export type FuelLevel = SelectInspection["fuelLevel"];
 export type InspectionType = SelectInspection["type"];
+export type EmploymentType = NonNullable<SelectUser["employmentType"]>;
+export type InvoicingMode = SelectClient["invoicingMode"];
+export type TimeEntryUnit = NonNullable<SelectFonction["defaultTimeUnit"]>;
+export type EventStatus = SelectEvent["status"];
+export type EventBillingStatus = SelectEvent["billingStatus"];
+export type QuoteStatus = SelectQuote["status"];
+
+// ============================================================================
+// Quote line item (JSONB snapshot, mirrors InvoiceLineItem without `type`)
+// ============================================================================
+
+export type QuoteLineItem = {
+  description: string;
+  quantity: number;
+  unitPrice: string;
+  totalPrice: string;
+};
 
 // ============================================================================
 // Server Action result type

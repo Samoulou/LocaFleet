@@ -148,8 +148,13 @@ describe("Soft delete", () => {
 // ============================================================================
 
 describe("Enums", () => {
-  it("userRoleEnum has admin, agent, viewer", () => {
-    expect(userRoleEnum.enumValues).toEqual(["admin", "agent", "viewer"]);
+  it("userRoleEnum has admin, agent, viewer, employee", () => {
+    expect(userRoleEnum.enumValues).toEqual([
+      "admin",
+      "agent",
+      "viewer",
+      "employee",
+    ]);
   });
 
   it("vehicleStatusEnum has 4 values", () => {

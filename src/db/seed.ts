@@ -8,6 +8,7 @@ import {
   SEED_TENANT,
   SEED_USERS,
   SEED_CATEGORIES,
+  SEED_FONCTIONS,
   SEED_VEHICLES,
   SEED_CLIENTS,
   SEED_CONTRACTS,
@@ -23,6 +24,7 @@ const {
   users,
   accounts,
   vehicleCategories,
+  fonctions,
   vehicles,
   clients,
   rentalContracts,
@@ -38,6 +40,9 @@ async function seed() {
     users: SEED_USERS as unknown as Array<(typeof SEED_USERS)[number]>,
     categories: SEED_CATEGORIES as unknown as Array<
       (typeof SEED_CATEGORIES)[number]
+    >,
+    fonctions: SEED_FONCTIONS as unknown as Array<
+      (typeof SEED_FONCTIONS)[number]
     >,
     vehicles: SEED_VEHICLES as unknown as Array<(typeof SEED_VEHICLES)[number]>,
     clients: SEED_CLIENTS as unknown as Array<(typeof SEED_CLIENTS)[number]>,
@@ -60,12 +65,14 @@ async function seed() {
     admin: process.env.SEED_ADMIN_PASSWORD || DEFAULT_SEED_PASSWORD,
     agent: process.env.SEED_AGENT_PASSWORD || DEFAULT_SEED_PASSWORD,
     viewer: process.env.SEED_VIEWER_PASSWORD || DEFAULT_SEED_PASSWORD,
+    employee: process.env.SEED_EMPLOYEE_PASSWORD || DEFAULT_SEED_PASSWORD,
   };
 
   if (
     !process.env.SEED_ADMIN_PASSWORD ||
     !process.env.SEED_AGENT_PASSWORD ||
-    !process.env.SEED_VIEWER_PASSWORD
+    !process.env.SEED_VIEWER_PASSWORD ||
+    !process.env.SEED_EMPLOYEE_PASSWORD
   ) {
     console.warn(
       "⚠ SEED_*_PASSWORD env vars not set — using default password for dev"
@@ -114,7 +121,7 @@ async function seed() {
         .onConflictDoNothing();
     }
 
-    console.log("✓ Users seeded (admin, agent, viewer)");
+    console.log("✓ Users seeded (admin, agent, viewer, employee)");
 
     // ── Vehicle Categories ──────────────────────────────────────────────
     for (const cat of SEED_CATEGORIES) {
@@ -125,6 +132,16 @@ async function seed() {
     }
 
     console.log("✓ Vehicle categories seeded (4)");
+
+    // ── Fonctions ───────────────────────────────────────────────────────
+    for (const f of SEED_FONCTIONS) {
+      await db
+        .insert(fonctions)
+        .values({ ...f, tenantId: SEED_TENANT.id })
+        .onConflictDoNothing();
+    }
+
+    console.log(`✓ Fonctions seeded (${SEED_FONCTIONS.length})`);
 
     // ── Vehicles ────────────────────────────────────────────────────────
     for (const v of SEED_VEHICLES) {

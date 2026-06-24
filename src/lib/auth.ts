@@ -66,7 +66,7 @@ export type Session = typeof auth.$Infer.Session;
 export type CurrentUser = {
   id: string;
   tenantId: string;
-  role: "admin" | "agent" | "viewer";
+  role: "admin" | "agent" | "viewer" | "employee";
   email: string;
   name: string;
   isActive: boolean;

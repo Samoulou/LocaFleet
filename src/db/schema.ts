@@ -20,13 +20,19 @@ import {
   jsonb,
   index,
   uniqueIndex,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
 // ============================================================================
 // ENUMS
 // ============================================================================
 
-export const userRoleEnum = pgEnum("user_role", ["admin", "agent", "viewer"]);
+export const userRoleEnum = pgEnum("user_role", [
+  "admin",
+  "agent",
+  "viewer",
+  "employee",
+]);
 
 export const vehicleStatusEnum = pgEnum("vehicle_status", [
   "available",
@@ -187,6 +193,51 @@ export const trialRequestStatusEnum = pgEnum("trial_request_status", [
   "declined",
 ]);
 
+// -- CRM multi-activités (Phase 1) --------------------------------------------
+
+export const employmentTypeEnum = pgEnum("employment_type", [
+  "salaried",
+  "hourly",
+]);
+
+export const invoicingModeEnum = pgEnum("invoicing_mode", [
+  "manual",
+  "monthly",
+  "automatic",
+]);
+
+export const timeEntryUnitEnum = pgEnum("time_entry_unit", [
+  "hours",
+  "trips",
+  "flat",
+]);
+
+export const eventStatusEnum = pgEnum("event_status", [
+  "draft",
+  "confirmed",
+  "in_progress",
+  "completed",
+  "cancelled",
+]);
+
+// The «fichier facturation» state of an event:
+// to_review = awaiting manual validation, monthly = waiting for the monthly
+// batch, invoiced = attached to an invoice, not_billed = explicitly excluded
+export const eventBillingStatusEnum = pgEnum("event_billing_status", [
+  "to_review",
+  "monthly",
+  "invoiced",
+  "not_billed",
+]);
+
+export const quoteStatusEnum = pgEnum("quote_status", [
+  "draft",
+  "sent",
+  "accepted",
+  "declined",
+  "expired",
+]);
+
 // ============================================================================
 // EPIC 1 — FOUNDATION & AUTH
 // ============================================================================
@@ -221,6 +272,10 @@ export const users = pgTable(
     image: text("image"),
     role: userRoleEnum("role").default("agent").notNull(),
     isActive: boolean("is_active").default(true).notNull(),
+    // Employee (field staff) attributes — nullable, unused for office roles
+    phone: varchar("phone", { length: 30 }),
+    hourlyRate: decimal("hourly_rate", { precision: 10, scale: 2 }),
+    employmentType: employmentTypeEnum("employment_type"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -439,6 +494,11 @@ export const clients = pgTable(
     companyName: varchar("company_name", { length: 255 }),
     notes: text("notes"),
     isTrusted: boolean("is_trusted").default(false).notNull(),
+    // How completed events for this client are routed to invoicing:
+    // manual = billing queue, monthly = grouped batch, automatic = immediate
+    invoicingMode: invoicingModeEnum("invoicing_mode")
+      .default("manual")
+      .notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
     deletedAt: timestamp("deleted_at"),
@@ -518,6 +578,11 @@ export const rentalContracts = pgTable(
     createdByUserId: uuid("created_by_user_id").references(() => users.id, {
       onDelete: "set null",
     }),
+    // Source event when the contract was generated from one (CRM phase).
+    // Forward reference: events is declared later in this file.
+    eventId: uuid("event_id").references((): AnyPgColumn => events.id, {
+      onDelete: "set null",
+    }),
     status: contractStatusEnum("status").default("draft").notNull(),
     startDate: timestamp("start_date").notNull(),
     endDate: timestamp("end_date").notNull(),
@@ -567,6 +632,7 @@ export const rentalContracts = pgTable(
     index("contracts_tenant_idx").on(table.tenantId),
     index("contracts_client_idx").on(table.clientId),
     index("contracts_vehicle_idx").on(table.vehicleId),
+    index("contracts_event_idx").on(table.eventId),
     index("contracts_status_idx").on(table.tenantId, table.status),
     index("contracts_overlap_idx").on(
       table.tenantId,
@@ -934,6 +1000,231 @@ export const trialRequests = pgTable(
 );
 
 // ============================================================================
+// PHASE CRM — MULTI-ACTIVITÉS
+// ============================================================================
+
+// -- Fonctions (activity types: location, déménagement... configurable) --------
+// Behavior is driven by capability flags so tenants can add activities
+// (e.g. transport scolaire) without code changes.
+
+export const fonctions = pgTable(
+  "fonctions",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    tenantId: uuid("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    name: varchar("name", { length: 100 }).notNull(),
+    // Hex color for planning bars (e.g. #2563EB)
+    color: varchar("color", { length: 7 }),
+    // Déménagement: events should have employees assigned (warning if none)
+    requiresEmployees: boolean("requires_employees").default(false).notNull(),
+    // Location: enables "Générer le contrat" from an event
+    allowsContract: boolean("allows_contract").default(false).notNull(),
+    // Transport scolaire: time entries default to trips instead of hours
+    defaultTimeUnit: timeEntryUnitEnum("default_time_unit"),
+    isActive: boolean("is_active").default(true).notNull(),
+    sortOrder: integer("sort_order").default(0),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("fonctions_tenant_idx").on(table.tenantId),
+    uniqueIndex("fonctions_name_tenant_idx").on(table.name, table.tenantId),
+  ]
+);
+
+// -- Events (jobs: a location, a déménagement, a school-transport day...) ------
+// Central planning entity: typed by a fonction, owned by a client, with
+// vehicles and employees assigned through junction tables. Overlaps raise
+// warnings but are never forbidden (acknowledged by the user).
+
+export const events = pgTable(
+  "events",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    tenantId: uuid("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    eventNumber: varchar("event_number", { length: 50 }).notNull(),
+    fonctionId: uuid("fonction_id")
+      .notNull()
+      .references(() => fonctions.id, { onDelete: "restrict" }),
+    clientId: uuid("client_id")
+      .notNull()
+      .references(() => clients.id, { onDelete: "restrict" }),
+    title: varchar("title", { length: 255 }).notNull(),
+    status: eventStatusEnum("status").default("draft").notNull(),
+    startDate: timestamp("start_date").notNull(),
+    endDate: timestamp("end_date").notNull(),
+    location: text("location"),
+    // Arrival address for déménagement-type events
+    destination: text("destination"),
+    description: text("description"),
+    notes: text("notes"),
+    // Agreed price — prefills the invoice line when billed
+    agreedAmount: decimal("agreed_amount", { precision: 10, scale: 2 }),
+    billingStatus: eventBillingStatusEnum("billing_status")
+      .default("to_review")
+      .notNull(),
+    // One invoice can cover many events (monthly batch): the FK lives here.
+    invoiceId: uuid("invoice_id").references(() => invoices.id, {
+      onDelete: "set null",
+    }),
+    // Source offer when converted. Forward reference: quotes is declared
+    // later in this file.
+    quoteId: uuid("quote_id").references((): AnyPgColumn => quotes.id, {
+      onDelete: "set null",
+    }),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("events_tenant_idx").on(table.tenantId),
+    uniqueIndex("events_number_tenant_idx").on(
+      table.eventNumber,
+      table.tenantId
+    ),
+    index("events_status_idx").on(table.tenantId, table.status),
+    index("events_period_idx").on(
+      table.tenantId,
+      table.startDate,
+      table.endDate
+    ),
+    index("events_billing_idx").on(table.tenantId, table.billingStatus),
+    index("events_fonction_idx").on(table.fonctionId),
+    index("events_client_idx").on(table.clientId),
+    index("events_invoice_idx").on(table.invoiceId),
+  ]
+);
+
+// -- Event ↔ Vehicles (n-n, scoped through the parent event like contractOptions)
+
+export const eventVehicles = pgTable(
+  "event_vehicles",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    vehicleId: uuid("vehicle_id")
+      .notNull()
+      .references(() => vehicles.id, { onDelete: "restrict" }),
+    notes: text("notes"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex("event_vehicles_event_vehicle_idx").on(
+      table.eventId,
+      table.vehicleId
+    ),
+    index("event_vehicles_vehicle_idx").on(table.vehicleId),
+  ]
+);
+
+// -- Event ↔ Employees (n-n; role is free text: chauffeur, porteur...) ---------
+
+export const eventEmployees = pgTable(
+  "event_employees",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "restrict" }),
+    role: varchar("role", { length: 100 }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex("event_employees_event_user_idx").on(
+      table.eventId,
+      table.userId
+    ),
+    index("event_employees_user_idx").on(table.userId),
+  ]
+);
+
+// -- Event comments (thread: inventory supplements, overtime, total hours...) --
+
+export const eventComments = pgTable(
+  "event_comments",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    tenantId: uuid("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    authorUserId: uuid("author_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    body: text("body").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("event_comments_event_idx").on(table.eventId, table.createdAt),
+  ]
+);
+
+// -- Quotes (offres/devis) — accepted quotes convert into events ---------------
+// Line items are a JSONB snapshot (same approach as invoices.lineItems).
+
+export const quotes = pgTable(
+  "quotes",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    tenantId: uuid("tenant_id")
+      .notNull()
+      .references(() => tenants.id, { onDelete: "cascade" }),
+    quoteNumber: varchar("quote_number", { length: 50 }).notNull(),
+    clientId: uuid("client_id")
+      .notNull()
+      .references(() => clients.id, { onDelete: "restrict" }),
+    fonctionId: uuid("fonction_id")
+      .notNull()
+      .references(() => fonctions.id, { onDelete: "restrict" }),
+    status: quoteStatusEnum("status").default("draft").notNull(),
+    title: varchar("title", { length: 255 }),
+    // Planned period — prefills the event at conversion
+    startDate: timestamp("start_date"),
+    endDate: timestamp("end_date"),
+    lineItems: jsonb("line_items").default([]),
+    subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
+    taxRate: decimal("tax_rate", { precision: 5, scale: 2 }).default("0"),
+    taxAmount: decimal("tax_amount", { precision: 10, scale: 2 }).default("0"),
+    totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
+    validUntil: date("valid_until"),
+    quotePdfUrl: text("quote_pdf_url"),
+    sentAt: timestamp("sent_at"),
+    acceptedAt: timestamp("accepted_at"),
+    declinedAt: timestamp("declined_at"),
+    notes: text("notes"),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("quotes_tenant_idx").on(table.tenantId),
+    uniqueIndex("quotes_number_tenant_idx").on(
+      table.quoteNumber,
+      table.tenantId
+    ),
+    index("quotes_status_idx").on(table.tenantId, table.status),
+    index("quotes_client_idx").on(table.clientId),
+    index("quotes_fonction_idx").on(table.fonctionId),
+  ]
+);
+
+// ============================================================================
 // RELATIONS
 // ============================================================================
 
@@ -951,6 +1242,101 @@ export const tenantsRelations = relations(tenants, ({ many }) => ({
   emailLogs: many(emailLogs),
   notifications: many(notifications),
   auditLogs: many(auditLogs),
+  fonctions: many(fonctions),
+  events: many(events),
+  quotes: many(quotes),
+}));
+
+export const fonctionsRelations = relations(fonctions, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [fonctions.tenantId],
+    references: [tenants.id],
+  }),
+  events: many(events),
+}));
+
+export const eventsRelations = relations(events, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [events.tenantId],
+    references: [tenants.id],
+  }),
+  fonction: one(fonctions, {
+    fields: [events.fonctionId],
+    references: [fonctions.id],
+  }),
+  client: one(clients, {
+    fields: [events.clientId],
+    references: [clients.id],
+  }),
+  invoice: one(invoices, {
+    fields: [events.invoiceId],
+    references: [invoices.id],
+  }),
+  quote: one(quotes, {
+    fields: [events.quoteId],
+    references: [quotes.id],
+  }),
+  createdBy: one(users, {
+    fields: [events.createdByUserId],
+    references: [users.id],
+  }),
+  vehicles: many(eventVehicles),
+  employees: many(eventEmployees),
+  comments: many(eventComments),
+  contracts: many(rentalContracts),
+}));
+
+export const quotesRelations = relations(quotes, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [quotes.tenantId],
+    references: [tenants.id],
+  }),
+  client: one(clients, {
+    fields: [quotes.clientId],
+    references: [clients.id],
+  }),
+  fonction: one(fonctions, {
+    fields: [quotes.fonctionId],
+    references: [fonctions.id],
+  }),
+  createdBy: one(users, {
+    fields: [quotes.createdByUserId],
+    references: [users.id],
+  }),
+  events: many(events),
+}));
+
+export const eventVehiclesRelations = relations(eventVehicles, ({ one }) => ({
+  event: one(events, {
+    fields: [eventVehicles.eventId],
+    references: [events.id],
+  }),
+  vehicle: one(vehicles, {
+    fields: [eventVehicles.vehicleId],
+    references: [vehicles.id],
+  }),
+}));
+
+export const eventEmployeesRelations = relations(eventEmployees, ({ one }) => ({
+  event: one(events, {
+    fields: [eventEmployees.eventId],
+    references: [events.id],
+  }),
+  user: one(users, {
+    fields: [eventEmployees.userId],
+    references: [users.id],
+  }),
+}));
+
+export const eventCommentsRelations = relations(eventComments, ({ one }) => ({
+  event: one(events, {
+    fields: [eventComments.eventId],
+    references: [events.id],
+  }),
+  author: one(users, {
+    fields: [eventComments.authorUserId],
+    references: [users.id],
+  }),
 }));
 
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -1028,6 +1414,7 @@ export const clientsRelations = relations(clients, ({ one, many }) => ({
   documents: many(clientDocuments),
   rentalContracts: many(rentalContracts),
   invoices: many(invoices),
+  events: many(events),
 }));
 
 export const clientDocumentsRelations = relations(
@@ -1065,6 +1452,10 @@ export const rentalContractsRelations = relations(
     createdBy: one(users, {
       fields: [rentalContracts.createdByUserId],
       references: [users.id],
+    }),
+    event: one(events, {
+      fields: [rentalContracts.eventId],
+      references: [events.id],
     }),
     options: many(contractOptions),
     inspections: many(inspections),
