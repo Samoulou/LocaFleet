@@ -6,7 +6,7 @@ import OpenAI from "openai";
 
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 const OPENROUTER_MODEL =
-  process.env.OPENROUTER_MODEL ?? "qwen/qwen3-235b-a22b-2507";
+  process.env.OPENROUTER_MODEL ?? "deepseek/deepseek-v4-flash-0731";
 
 let client: OpenAI | null = null;
 
