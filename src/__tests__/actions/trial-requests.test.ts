@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { db } from "@/db";
 import { submitTrialRequest } from "@/actions/trial-requests";
+import { resetRateLimits } from "@/lib/rate-limit";
 
 // ============================================================================
 // Mocks
@@ -12,6 +13,14 @@ vi.mock("resend", () => ({
   Resend: vi.fn().mockImplementation(() => ({
     emails: { send: sendEmailMock },
   })),
+}));
+
+const headerValues: Record<string, string> = {};
+
+vi.mock("next/headers", () => ({
+  headers: () => ({
+    get: (name: string) => headerValues[name.toLowerCase()] ?? null,
+  }),
 }));
 
 // ============================================================================
@@ -50,6 +59,9 @@ describe("submitTrialRequest", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.unstubAllEnvs();
+    resetRateLimits();
+    for (const key of Object.keys(headerValues)) delete headerValues[key];
+    headerValues["x-forwarded-for"] = "203.0.113.10";
     sendEmailMock.mockResolvedValue({ data: { id: "email-id" }, error: null });
   });
 
@@ -165,5 +177,65 @@ describe("submitTrialRequest", () => {
         "Une erreur est survenue lors de l'envoi de votre demande"
       );
     }
+  });
+
+  it("throttles after 5 requests from the same IP", async () => {
+    for (let i = 0; i < 5; i++) {
+      mockInsertChain([{ id: `${REQUEST_ID}-${i}` }]);
+      const ok = await submitTrialRequest({
+        ...VALID_INPUT,
+        email: `jean.dupont+${i}@lemania.ch`,
+      });
+      expect(ok.success).toBe(true);
+    }
+
+    vi.mocked(db.insert).mockClear();
+    mockInsertChain([{ id: "never-inserted" }]);
+    const throttled = await submitTrialRequest({
+      ...VALID_INPUT,
+      email: "jean.dupont+6@lemania.ch",
+    });
+
+    expect(throttled.success).toBe(false);
+    if (!throttled.success) {
+      expect(throttled.error).toContain("Trop de demandes");
+    }
+    expect(db.insert).not.toHaveBeenCalled();
+  });
+
+  it("applies a separate budget per IP", async () => {
+    for (let i = 0; i < 5; i++) {
+      mockInsertChain([{ id: `${REQUEST_ID}-ip1-${i}` }]);
+      await submitTrialRequest({
+        ...VALID_INPUT,
+        email: `ip1-${i}@lemania.ch`,
+      });
+    }
+
+    headerValues["x-forwarded-for"] = "198.51.100.7";
+    mockInsertChain([{ id: REQUEST_ID }]);
+
+    const result = await submitTrialRequest({
+      ...VALID_INPUT,
+      email: "autre@exemple.ch",
+    });
+
+    expect(result.success).toBe(true);
+  });
+
+  it("does not consume rate-limit budget when the honeypot triggers", async () => {
+    for (let i = 0; i < 8; i++) {
+      const bot = await submitTrialRequest({
+        ...VALID_INPUT,
+        website: "https://spam.example.com",
+      });
+      expect(bot.success).toBe(true);
+    }
+    expect(db.insert).not.toHaveBeenCalled();
+
+    // Real submission still goes through
+    mockInsertChain([{ id: REQUEST_ID }]);
+    const result = await submitTrialRequest(VALID_INPUT);
+    expect(result.success).toBe(true);
   });
 });

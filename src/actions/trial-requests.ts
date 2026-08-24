@@ -1,10 +1,12 @@
 "use server";
 
+import { headers } from "next/headers";
 import { Resend } from "resend";
 import { db } from "@/db";
 import { trialRequests } from "@/db/schema";
 import { trialRequestSchema } from "@/lib/validations/trial-request";
 import { getZodErrorMessage } from "@/lib/validations/utils";
+import { checkRateLimit } from "@/lib/rate-limit";
 import type { ActionResult } from "@/types";
 
 // ============================================================================
@@ -100,6 +102,26 @@ export async function submitTrialRequest(
     // Honeypot filled in → silently pretend success (don't tip off bots)
     if (data.website) {
       return { success: true, data: { id: "ok" } };
+    }
+
+    // Public endpoint: throttle per IP (5/hour) so floods cannot fill the
+    // table or burn Resend quota. Per-process limiter — acceptable for the
+    // single-instance deployment, same trade-off as src/lib/rate-limit.ts.
+    const requestHeaders = await headers();
+    const ip =
+      requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      requestHeaders.get("x-real-ip") ||
+      "unknown";
+    const rate = checkRateLimit(`trial-request:${ip}`, {
+      limit: 5,
+      windowMs: 60 * 60 * 1000,
+    });
+    if (!rate.allowed) {
+      return {
+        success: false,
+        error:
+          "Trop de demandes depuis cette adresse. Merci de réessayer plus tard.",
+      };
     }
 
     const [created] = await db

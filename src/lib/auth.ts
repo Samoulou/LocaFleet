@@ -25,7 +25,18 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    minPasswordLength: 6,
+    minPasswordLength: 10,
+  },
+  // Explicit throttling instead of library defaults (100 req/min is far too
+  // permissive for credential sign-in). Window is in seconds.
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 20,
+    specialRules: {
+      "/sign-in/email": { window: 60, max: 5 },
+      "/sign-up/email": { window: 60, max: 5 },
+    },
   },
   user: {
     additionalFields: {

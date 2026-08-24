@@ -31,6 +31,11 @@ export function getOpenRouterClient(): OpenAI {
     client = new OpenAI({
       baseURL: OPENROUTER_BASE_URL,
       apiKey,
+      // Bound the wall-clock cost of one copilot request: the route can loop
+      // up to MAX_ITERATIONS times, so an unbounded default timeout would let
+      // a single request hang for minutes.
+      timeout: 30_000,
+      maxRetries: 1,
       defaultHeaders: {
         "HTTP-Referer":
           process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",

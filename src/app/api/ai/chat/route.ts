@@ -20,6 +20,7 @@ import {
   generateEmail,
 } from "@/lib/ai/tool-executors";
 import { chatRequestSchema } from "@/lib/validations/ai";
+import { canUseTool } from "@/lib/ai/tool-permissions";
 import type OpenAI from "openai";
 
 // ============================================================================
@@ -96,6 +97,12 @@ export async function POST(request: NextRequest) {
     const { messages } = parsed.data;
     const openrouter = getOpenRouterClient();
 
+    // Only offer tools the caller's role is allowed to use (RBAC gate —
+    // see src/lib/ai/tool-permissions.ts). The dispatcher re-checks anyway.
+    const allowedToolDefinitions = TOOL_DEFINITIONS.filter((tool) =>
+      canUseTool(currentUser.role, tool.function.name)
+    );
+
     // Build the running conversation for the LLM
     const conversation: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       { role: "system", content: SCHEMA_CONTEXT },
@@ -109,7 +116,7 @@ export async function POST(request: NextRequest) {
       const response = await openrouter.chat.completions.create({
         model: OPENROUTER_MODEL,
         messages: conversation,
-        tools: TOOL_DEFINITIONS.map((t) => ({
+        tools: allowedToolDefinitions.map((t) => ({
           type: t.type,
           function: t.function,
         })),
@@ -165,10 +172,21 @@ export async function POST(request: NextRequest) {
 
       for (const toolCall of functionCalls) {
         const toolName = toolCall.function.name as ToolName;
-        console.log(
-          `[AI Copilot] Tool: ${toolName} | Args: ${toolCall.function.arguments}`
-        );
+        console.log(`[AI Copilot] Tool: ${toolName}`);
         const executor = toolDispatcher[toolName];
+
+        // Defense in depth: the model only sees role-allowed tools, but a
+        // hallucinated or smuggled call is rejected here as well.
+        if (!canUseTool(currentUser.role, toolName)) {
+          toolResults.push({
+            role: "tool",
+            tool_call_id: toolCall.id,
+            content: JSON.stringify({
+              error: "Permission insuffisante pour cet outil",
+            }),
+          });
+          continue;
+        }
 
         if (!executor) {
           toolResults.push({

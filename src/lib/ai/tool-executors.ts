@@ -8,16 +8,34 @@ import {
   invoices,
   maintenanceRecords,
 } from "@/db/schema";
+import { checkVehicleConflicts } from "@/lib/conflicts";
 
 // ============================================================================
 // Tool executors — each function is tenant-scoped and read-only
 // ============================================================================
 
+/** Hard cap so a hallucinated `limit` argument cannot dump the whole table. */
+const MAX_LIMIT = 50;
+
+function clampLimit(limit: number | undefined): number {
+  const n = Math.floor(Number(limit));
+  if (!Number.isFinite(n)) return 20;
+  return Math.min(Math.max(n, 1), MAX_LIMIT);
+}
+
+function parseDate(value: string): Date {
+  const d = new Date(value);
+  if (isNaN(d.getTime())) {
+    throw new Error("Date invalide");
+  }
+  return d;
+}
+
 export async function searchVehicles(
   tenantId: string,
   args: { query: string; status?: string; limit?: number }
 ) {
-  const limit = args.limit ?? 20;
+  const limit = clampLimit(args.limit);
   const pattern = `%${args.query}%`;
 
   const conditions: SQL<unknown>[] = [
@@ -64,11 +82,8 @@ export async function getVehicleAvailability(
   tenantId: string,
   args: { startDate: string; endDate: string }
 ) {
-  const start = new Date(args.startDate);
-  const end = new Date(args.endDate);
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-    throw new Error("Dates invalides");
-  }
+  const start = parseDate(args.startDate);
+  const end = parseDate(args.endDate);
 
   // Fetch all non-deleted vehicles that are not permanently out of service
   const allVehicles = await db
@@ -88,32 +103,31 @@ export async function getVehicleAvailability(
       )
     );
 
-  // Find contracts that overlap with the requested period
-  const overlappingContracts = await db
-    .select({
-      vehicleId: rentalContracts.vehicleId,
-      contractNumber: rentalContracts.contractNumber,
-      startDate: rentalContracts.startDate,
-      endDate: rentalContracts.endDate,
-      status: rentalContracts.status,
-    })
-    .from(rentalContracts)
-    .where(
-      and(
-        eq(rentalContracts.tenantId, tenantId),
-        sql`${rentalContracts.status} IN ('approved', 'pending_cg', 'active')`,
-        lt(rentalContracts.startDate, end),
-        gte(rentalContracts.endDate, start)
-      )
-    );
+  // Single source of truth for occupancy: the same conflict engine used by
+  // createDraftContract (blocking contracts incl. drafts + active events).
+  // Otherwise the copilot could report a vehicle as available while contract
+  // creation would refuse it.
+  const conflicts = await checkVehicleConflicts(
+    db,
+    tenantId,
+    allVehicles.map((v) => v.id),
+    start,
+    end
+  );
 
-  const busyVehicleIds = new Set(overlappingContracts.map((c) => c.vehicleId));
+  const busyVehicleIds = new Set(conflicts.map((c) => c.vehicleId));
 
   const availableVehicles = allVehicles.filter((v) => !busyVehicleIds.has(v.id));
 
   return {
     availableVehicles,
-    overlappingContracts,
+    conflictingBookings: conflicts.map((c) => ({
+      vehicleId: c.vehicleId,
+      source: c.source,
+      refNumber: c.refNumber,
+      startDate: c.startDate.toISOString(),
+      endDate: c.endDate.toISOString(),
+    })),
     period: { startDate: args.startDate, endDate: args.endDate },
   };
 }
@@ -122,7 +136,7 @@ export async function searchClients(
   tenantId: string,
   args: { query: string; limit?: number }
 ) {
-  const limit = args.limit ?? 20;
+  const limit = clampLimit(args.limit);
   const pattern = `%${args.query}%`;
 
   const conditions: SQL<unknown>[] = [
@@ -238,7 +252,7 @@ export async function getContracts(
   tenantId: string,
   args: { status?: string; startDateFrom?: string; startDateTo?: string; limit?: number }
 ) {
-  const limit = args.limit ?? 20;
+  const limit = clampLimit(args.limit);
   const conditions = [eq(rentalContracts.tenantId, tenantId)];
 
   if (args.status) {
@@ -247,10 +261,10 @@ export async function getContracts(
     );
   }
   if (args.startDateFrom) {
-    conditions.push(gte(rentalContracts.startDate, new Date(args.startDateFrom)));
+    conditions.push(gte(rentalContracts.startDate, parseDate(args.startDateFrom)));
   }
   if (args.startDateTo) {
-    conditions.push(lte(rentalContracts.startDate, new Date(args.startDateTo)));
+    conditions.push(lte(rentalContracts.startDate, parseDate(args.startDateTo)));
   }
 
   const rows = await db
@@ -281,7 +295,7 @@ export async function getMaintenanceRecords(
   tenantId: string,
   args: { vehicleId?: string; status?: string; limit?: number }
 ) {
-  const limit = args.limit ?? 20;
+  const limit = clampLimit(args.limit);
   const conditions = [
     eq(maintenanceRecords.tenantId, tenantId),
   ];
